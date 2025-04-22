@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\JobRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
 class Job
@@ -15,15 +16,21 @@ class Job
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $location = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\GreaterThan(0)]
     private ?int $salary = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
