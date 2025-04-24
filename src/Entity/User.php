@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[UniqueEntity(fields: ['companyName'], message: 'There is already an account with this companyName')]
+#[UniqueEntity(fields: ['company_name'], message: 'There is already an account with this companyName')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,7 +21,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    private ?string $companyName = null;
+    private ?string $company_name = null;
 
     /**
      * @var list<string> The user roles
@@ -66,12 +66,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCompanyName(): ?string
     {
-        return $this->companyName;
+        return $this->company_name;
     }
 
-    public function setCompanyName(string $companyName): static
+    public function setCompanyName(string $company_name): static
     {
-        $this->companyName = $companyName;
+        $this->company_name = $company_name;
 
         return $this;
     }
@@ -83,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->companyName;
+        return (string) $this->company_name;
     }
 
     /**
