@@ -2,31 +2,30 @@
 
 namespace App\Factory;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Entity\Job;
+use App\Repository\JobRepository;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
 /**
- * @extends PersistentProxyObjectFactory<User>
+ * @extends PersistentProxyObjectFactory<Job>
  */
-final class UserFactory extends PersistentProxyObjectFactory{
+final class JobFactory extends PersistentProxyObjectFactory{
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
      * @todo inject services if required
      */
-    public function __construct(private readonly UserPasswordHasherInterface $hasher)
+    public function __construct()
     {
         parent::__construct();
     }
 
     public static function class(): string
     {
-        return User::class;
+        return Job::class;
     }
 
         /**
@@ -36,11 +35,9 @@ final class UserFactory extends PersistentProxyObjectFactory{
      */
     protected function defaults(): array|callable    {
         return [
-            'company_name' => self::faker()->text(10),
-            'email' => self::faker()->password,
-            'isVerified' => true,
-            'password' => self::faker()->text(),
-            'roles' => self::faker()->randomElements(['ROLE_USER', 'ROLE_PUBLISHER']),
+            'description' => self::faker()->text(255),
+            'location' => self::faker()->address(),
+            'title' => self::faker()->text(10),
         ];
     }
 
@@ -50,9 +47,7 @@ final class UserFactory extends PersistentProxyObjectFactory{
     protected function initialize(): static
     {
         return $this
-             ->afterInstantiate(function(User $user): void {
-                 $this->hasher->hashPassword($user, $user->getPassword());
-             })
+            // ->afterInstantiate(function(Job $job): void {})
         ;
     }
 }
