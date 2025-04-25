@@ -2,31 +2,33 @@
 
 namespace App\Factory;
 
+use App\Entity\Job;
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Repository\JobRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use function Zenstruck\Foundry\factory;
 
 /**
- * @extends PersistentProxyObjectFactory<User>
+ * @extends PersistentProxyObjectFactory<Job>
  */
-final class UserFactory extends PersistentProxyObjectFactory{
+final class JobFactory extends PersistentProxyObjectFactory{
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
      * @todo inject services if required
      */
-    public function __construct(private readonly UserPasswordHasherInterface $hasher)
-    {
+    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher) {
         parent::__construct();
     }
 
+
     public static function class(): string
     {
-        return User::class;
+        return Job::class;
     }
 
         /**
@@ -35,12 +37,22 @@ final class UserFactory extends PersistentProxyObjectFactory{
      * @todo add your default values here
      */
     protected function defaults(): array|callable    {
+        $user = new User();
+        $hashedPassword = $this->passwordHasher->hashPassword($user, '123456');
+        $user->setPassword($hashedPassword);
+        $user = UserFactory::createOne([
+            'company_name' => 'test',
+            'email' => 'example@example.com',
+            'password' => $user->getPassword(),
+        ]);
         return [
-            'company_name' => self::faker()->text(10),
-            'email' => self::faker()->password,
-            'isVerified' => true,
-            'password' => self::faker()->text(),
-            'roles' => self::faker()->randomElements(['ROLE_USER', 'ROLE_PUBLISHER']),
+            'description' => self::faker()->text(255),
+            'location' => self::faker()->address(),
+            'title' => self::faker()->text(10),
+            'salary' => self::faker()->randomFloat(2, 5),
+            'createdBy' => $user,
+            'createdAt' => self::faker()->dateTimeBetween('-30 days', 'now')
+
         ];
     }
 
@@ -50,9 +62,7 @@ final class UserFactory extends PersistentProxyObjectFactory{
     protected function initialize(): static
     {
         return $this
-             ->afterInstantiate(function(User $user): void {
-                 $this->hasher->hashPassword($user, $user->getPassword());
-             })
+            // ->afterInstantiate(function(Job $job): void {})
         ;
     }
 }

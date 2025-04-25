@@ -1,45 +1,121 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Job index{% endblock %}
+{% block title %}Job Board - Find Your Next Opportunity{% endblock %}
 
 {% block body %}
-    <h1>Job index</h1>
+    <div class="min-h-screen bg-gray-50">
+        <!-- Hero Section -->
+        <div class="bg-blue-800 text-white py-16">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl font-bold mb-6">Find Your Next Opportunity</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Location</th>
-                <th>Salary</th>
-                <th>Tags</th>
-                <th>Created_at</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for job in jobs %}
-            <tr>
-                <td>{{ job.id }}</td>
-                <td>{{ job.title }}</td>
-                <td>{{ job.description }}</td>
-                <td>{{ job.location }}</td>
-                <td>{{ job.salary }}</td>
-                <td>{{ job.tags ? job.tags|join(', ') : '' }}</td>
-                <td>{{ job.createdAt ? job.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_job_show', {'id': job.id}) }}">show</a>
-                    <a href="{{ path('app_job_edit', {'id': job.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                <!-- Search Form -->
+                <div class="bg-white rounded-lg p-4 shadow-lg">
+                    <form class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <input type="text"
+                                   placeholder="Job title, keywords, or company"
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="flex-1">
+                            <input type="text"
+                                   placeholder="City, state, or remote"
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                            Search
+                        </button>
+                    </form>
+                </div>
 
-    <a href="{{ path('app_job_new') }}">Create new</a>
+                <!-- Popular Searches -->
+                <div class="mt-6 flex flex-wrap gap-2 text-sm">
+                    <span class="font-semibold">Popular:</span>
+                    <a href="#" class="hover:underline">Software Engineer</a>
+                    <a href="#" class="hover:underline">Marketing Manager</a>
+                    <a href="#" class="hover:underline">Data Analyst</a>
+                    <a href="#" class="hover:underline">Remote Jobs</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 py-8">
+            <!-- Filters -->
+            <div class="mb-8 flex flex-wrap gap-4 items-center">
+                <select class="p-2 border rounded-lg">
+                    <option>Job Type</option>
+                    <option>Full-time</option>
+                    <option>Part-time</option>
+                    <option>Contract</option>
+                </select>
+
+                <select class="p-2 border rounded-lg">
+                    <option>Experience Level</option>
+                    <option>Entry Level</option>
+                    <option>Mid Level</option>
+                    <option>Senior Level</option>
+                </select>
+
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="remote" class="h-4 w-4">
+                    <label for="remote" class="text-sm">Remote Only</label>
+                </div>
+            </div>
+
+            <!-- Job Listings -->
+            <div class="grid gap-4">
+                <!-- Job Card -->
+                {% for job in jobs %}
+
+                <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6">
+                    <div class="flex flex-col md:flex-row justify-between">
+                        <div class="flex-1">
+                            <h2 class="text-xl font-semibold text-blue-800 mb-2">{{ job.title }}</h2>
+                            <div class="flex items-center gap-4 mb-4 text-gray-600">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                                {{ job.createdBy.companyName }}
+                            </span>
+                                <span class="flex items-center gap-1">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                {{ job.location }}
+                            </span>
+                            </div>
+                            <p class="text-gray-600 mb-4 line-clamp-2">
+                                {{ job.description }}
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">{{ job.tags }}</span>
+                            </div>
+                        </div>
+                        <div class="md:w-48 flex flex-col justify-between items-start md:items-end">
+                            <div class="text-lg font-semibold text-green-700">{{ job.salary|format_currency('EUR') }}</div>
+                            <div class="text-sm text-gray-500">{{ job.createdAt|ago }}</div>
+                            <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Apply Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repeat Job Cards (Dynamic content would go here) -->
+
+                    <!-- Twig loop for dynamic job listings -->
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-8 flex justify-center">
+                <button class="px-4 py-2 border rounded-lg hover:bg-gray-100">
+                    Load More Jobs
+                </button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
