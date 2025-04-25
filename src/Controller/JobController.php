@@ -6,6 +6,7 @@ use App\Entity\Job;
 use App\Form\JobType;
 use App\Repository\JobRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +17,23 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted("ROLE_USER")]
 final class JobController extends AbstractController{
     #[Route(name: 'app_job_index', methods: ['GET'])]
-    public function index(JobRepository $jobRepository): Response
+    public function index(Request $request,JobRepository $jobRepository, PaginatorInterface $paginator): Response
     {
+        $query = $jobRepository->createQueryBuilder('j')
+            ->orderBy('j.created_at', 'DESC')
+            ->getQuery();
+        $jobsPerPage = 2;
+
+        $page = $request->query->getInt('page', 1);
+        $pagination = $paginator->paginate(
+            $query,
+            $page,
+            $jobsPerPage
+        );
         return $this->render('job/index.html.twig', [
-            'jobs' => $jobRepository->findAll(),
+            'jobs' => $pagination,
+            'page' => $page,
+            'totalPages' => ceil($pagination->getTotalItemCount() / $jobsPerPage),
         ]);
     }
 
