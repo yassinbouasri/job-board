@@ -3,7 +3,7 @@ security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     role_hierarchy:
-        ROLE_COMPANY: ROLE_USER
+        ROLE_COMPANY: ROLE_PUBLISHER
         ROLE_SEEKER: ROLE_USER
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
@@ -11,7 +11,7 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: company_name
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
