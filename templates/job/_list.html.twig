@@ -48,13 +48,13 @@
             Load More
         </button>
     </form>
-    {%  else %}
+    {%  elseif page > 1 %}
         <form action="{{ path('app_job_index')}}" method="GET" class="mt-8 text-center">
-            <input type="hidden" name="page" value="{{ page - 1 }}" />
+            <input type="hidden" name="page" value="{{  page - totalPages + 1}}" />
 
             <button type="submit"
                     class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
-                Previous Page
+                First Page
             </button>
         </form>
 {% endif %}

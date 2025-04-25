@@ -22,7 +22,7 @@ final class JobController extends AbstractController{
         $query = $jobRepository->createQueryBuilder('j')
             ->orderBy('j.created_at', 'DESC')
             ->getQuery();
-        $jobsPerPage = 5;
+        $jobsPerPage = 2;
 
         $page = $request->query->getInt('page', 1);
         $pagination = $paginator->paginate(
