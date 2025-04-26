@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
+#[ORM\Index('IDX___job___title', fields: ['title'])]
 class Job
 {
     #[ORM\Id]
@@ -41,7 +42,7 @@ class Job
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'jobs')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'jobs')]
     private ?user $createdBy = null;
 
     /**
