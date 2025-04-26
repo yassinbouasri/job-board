@@ -1,4 +1,4 @@
-{% for job in jobs %}
+{% for job in pagination %}
 
     <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6">
         <div class="flex flex-col md:flex-row justify-between">
@@ -39,22 +39,25 @@
     <p>No jobs found.</p>
 {% endfor %}
 
-{% if page < totalPages %}
-    <form action="{{ path('app_job_index')}}" method="GET" class="mt-8 text-center">
-        <input type="hidden" name="page" value="{{ page + 1 }}" />
+{#{% if page < totalPages %}#}
+{#    <form action="{{ path('app_job_index')}}" method="GET" class="mt-8 text-center">#}
+{#        <input type="hidden" name="page" value="{{ page + 1 }}" />#}
 
-        <button type="submit"
-                class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
-            Load More
-        </button>
-    </form>
-    {%  elseif page > 1 %}
-        <form action="{{ path('app_job_index')}}" method="GET" class="mt-8 text-center">
-            <input type="hidden" name="page" value="{{  page - totalPages + 1}}" />
+{#        <button type="submit"#}
+{#                class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">#}
+{#            Load More#}
+{#        </button>#}
+{#    </form>#}
+{#    {%  elseif page > 1 %}#}
+{#        <form action="{{ path('app_job_index')}}" method="GET" class="mt-8 text-center">#}
+{#            <input type="hidden" name="page" value="{{  page - totalPages + 1}}" />#}
 
-            <button type="submit"
-                    class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
-                First Page
-            </button>
-        </form>
-{% endif %}
+{#            <button type="submit"#}
+{#                    class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">#}
+{#                First Page#}
+{#            </button>#}
+{#        </form>#}
+{#{% endif %}#}
+
+{{ knp_pagination_render(pagination) }}
+{#{{ dump(pagination) }}#}

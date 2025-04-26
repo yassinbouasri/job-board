@@ -76,7 +76,7 @@
                 <!-- Job Card -->
                 <div class="jobs-list">
                     {% include 'job/_list.html.twig' with {
-                        'jobs': jobs,
+                        'pagination': pagination,
                         'page': page,
                         'totalPages': totalPages
                     } %}

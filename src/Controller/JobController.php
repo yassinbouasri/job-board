@@ -34,8 +34,9 @@ final class JobController extends AbstractController{
             $page,
             $jobsPerPage
         );
+
         return $this->render('job/index.html.twig', [
-            'jobs' => $pagination,
+            'pagination' => $pagination,
             'page' => $page,
             'totalPages' => ceil($pagination->getTotalItemCount() / $jobsPerPage),
             'search' => $search,

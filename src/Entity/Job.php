@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
+#[ORM\Index('IDX___job___title', fields: ['title'])]
 class Job
 {
     #[ORM\Id]
