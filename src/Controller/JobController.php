@@ -19,8 +19,12 @@ final class JobController extends AbstractController{
     #[Route(name: 'app_job_index', methods: ['GET'])]
     public function index(Request $request,JobRepository $jobRepository, PaginatorInterface $paginator): Response
     {
-        $query = $jobRepository->createQueryBuilder('j')
-            ->orderBy('j.created_at', 'DESC')
+        $search = $request->query->get('search');
+
+        $location = $request->query->get('location');
+
+
+        $query = $jobRepository->createPaginatedQueryBuilder($search, $location)
             ->getQuery();
         $jobsPerPage = 2;
 
