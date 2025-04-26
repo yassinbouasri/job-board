@@ -41,7 +41,7 @@ class Job
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'jobs')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'jobs')]
     private ?user $createdBy = null;
 
     /**

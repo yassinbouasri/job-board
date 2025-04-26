@@ -38,6 +38,8 @@ final class JobController extends AbstractController{
             'jobs' => $pagination,
             'page' => $page,
             'totalPages' => ceil($pagination->getTotalItemCount() / $jobsPerPage),
+            'search' => $search,
+            'location' => $location,
         ]);
     }
 

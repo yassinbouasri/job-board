@@ -16,7 +16,7 @@
                             <label>
                                 <input type="text"
                                        name="search"
-{#                                       value="{{ search }}"#}
+                                       value="{{ search }}"
                                        placeholder="Job title, keywords, or company"
                                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500">
                             </label>
@@ -25,6 +25,7 @@
                             <label>
                                 <input type="text"
                                        name="location"
+                                       value="{{ location }}"
                                        placeholder="City, state, or remote"
                                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500">
                             </label>
@@ -38,10 +39,10 @@
                 <!-- Popular Searches -->
                 <div class="mt-6 flex flex-wrap gap-2 text-sm">
                     <span class="font-semibold">Popular:</span>
-                    <a href="#" class="hover:underline">Software Engineer</a>
-                    <a href="#" class="hover:underline">Marketing Manager</a>
-                    <a href="#" class="hover:underline">Data Analyst</a>
-                    <a href="#" class="hover:underline">Remote Jobs</a>
+                    <a href="?search=Software+Engineer" class="hover:underline">Software Engineer</a>
+                    <a href="?search=Marketing+Manager" class="hover:underline">Marketing Manager</a>
+                    <a href="?search=Data+Analyst" class="hover:underline">Data Analyst</a>
+                    <a href="?search=Remote+Jobs" class="hover:underline">Remote Jobs</a>
                 </div>
             </div>
         </div>

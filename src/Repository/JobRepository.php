@@ -22,7 +22,11 @@ class JobRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('j')
             ->orderBy('j.created_at', 'DESC');
         if ($search) {
-            $qb->where('j.title LIKE :search')
+            $qb->join('j.createdBy', 'u')
+               ->addSelect('u')
+                ->where('u.company_name LIKE :search')
+                ->orWhere('j.title LIKE :search')
+                ->orWhere('j.description LIKE :search')
                 ->setParameter('search', "%{$search}%");
         }
 
