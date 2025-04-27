@@ -1,11 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Job{% endblock %}
+{% block title %}Create New Job{% endblock %}
 
 {% block body %}
-    <h1>Create new Job</h1>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Create New Job</h1>
+            <a href="{{ path('app_job_index') }}" class="text-indigo-600 hover:text-indigo-800 text-sm mt-2 inline-block">
+                ← Back to list
+            </a>
+        </div>
 
-    {{ include('job/_form.html.twig') }}
+        {{ form_start(form, {'attr': {'class': 'bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'}}) }}
+        <div class="grid grid-cols-1 gap-6">
+        <div>
+            {{ form_label(form.title, 'Title', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+            {{ form_errors(form.title) }}
+        </div>
 
-    <a href="{{ path('app_job_index') }}">back to list</a>
+        <div>
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-32 resize-none leading-tight focus:outline-none focus:shadow-outline'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div>
+            {{ form_label(form.location, 'Location', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+            {{ form_widget(form.location, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+            {{ form_errors(form.location) }}
+        </div>
+
+        <div>
+            {{ form_label(form.salary, 'Salary', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+            {{ form_widget(form.salary, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+            {{ form_errors(form.salary) }}
+        </div>
+
+        <div>
+            {{ form_label(form.tags, 'Tags', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+            {{ form_widget(form.tags, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+            <p class="text-gray-600 text-xs italic mt-1">Separate tags with commas</p>
+            {{ form_errors(form.tags) }}
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                {{ form_label(form.created_at, 'Created At', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                {{ form_widget(form.created_at, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                {{ form_errors(form.created_at) }}
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between mt-6">
+            <button type="submit" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Save
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+    </div>
 {% endblock %}
