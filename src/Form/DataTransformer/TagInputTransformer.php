@@ -12,11 +12,12 @@ class TagInputTransformer implements DataTransformerInterface
 
     public function transform(mixed $value): mixed
     {
-       return implode(',', $value);
+       return implode(', ', $value ?? []);
     }
 
     public function reverseTransform(mixed $value): mixed
     {
-        return explode(',', $value);
+        return array_filter(array_map('trim', explode(',', $value)));
+
     }
 }
