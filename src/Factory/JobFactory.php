@@ -37,20 +37,13 @@ final class JobFactory extends PersistentProxyObjectFactory{
      * @todo add your default values here
      */
     protected function defaults(): array|callable    {
-        $user = new User();
-        $hashedPassword = $this->passwordHasher->hashPassword($user, '123456');
-        $user->setPassword($hashedPassword);
-        $user = UserFactory::createOne([
-            'company_name' => 'test',
-            'email' => 'example@example.com',
-            'password' => $user->getPassword(),
-        ]);
+
         return [
             'description' => self::faker()->text(255),
             'location' => self::faker()->address(),
             'title' => self::faker()->text(10),
             'salary' => self::faker()->randomFloat(2, 5),
-            'createdBy' => $user,
+            'createdBy' => UserFactory::randomOrCreate(),
             'createdAt' => self::faker()->dateTimeBetween('-30 days', 'now')
 
         ];
