@@ -47,6 +47,7 @@ final class JobController extends AbstractController{
     }
 
     #[Route('/new', name: 'app_job_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_PUBLISHER")]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $job = new Job();
