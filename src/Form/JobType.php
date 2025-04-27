@@ -6,6 +6,7 @@ use App\Entity\Job;
 use App\Entity\user;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,7 +19,13 @@ class JobType extends AbstractType
             ->add('description')
             ->add('location')
             ->add('salary')
-            ->add('tags')
+            ->add('tags', TextType::class, [
+                'required' => false,
+                'attr' => [
+                    'data-role' => 'tag',
+                    'placeholder' => 'Tags',
+                ]
+            ])
             ->add('created_at', null, [
                 'widget' => 'single_text'
             ])

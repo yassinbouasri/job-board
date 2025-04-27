@@ -53,9 +53,11 @@ final class JobController extends AbstractController{
         $form->handleRequest($request);
 
 
+
         $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $job->setTags(null);
             $job->setCreatedBy($user);
 
