@@ -36,6 +36,7 @@ final class JobController extends AbstractController{
             $jobsPerPage
         );
 
+
         return $this->render('job/index.html.twig', [
             'pagination' => $pagination,
             'page' => $page,
@@ -56,9 +57,10 @@ final class JobController extends AbstractController{
 
         $user = $this->getUser();
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $job->setTags(null);
+//            $job->setTags(null);
             $job->setCreatedBy($user);
 
             $entityManager->persist($job);

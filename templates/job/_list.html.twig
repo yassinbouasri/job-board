@@ -23,7 +23,9 @@
                     {{ job.description }}
                 </p>
                 <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">{{ job.tags }}</span>
+                    {% for tag in job.tags %}
+                    <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">{{ tag }}</span>
+                    {% endfor %}
                 </div>
             </div>
             <div class="md:w-48 flex flex-col justify-between items-start md:items-end">
