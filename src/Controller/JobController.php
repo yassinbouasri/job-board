@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Job;
 use App\Form\JobType;
 use App\Repository\JobRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,7 +52,13 @@ final class JobController extends AbstractController{
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
+
+        $user = $this->getUser();
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $job->setTags(null);
+            $job->setCreatedBy($user);
+
             $entityManager->persist($job);
             $entityManager->flush();
 
