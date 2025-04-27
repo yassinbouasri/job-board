@@ -22,10 +22,6 @@ class JobType extends AbstractType
             ->add('created_at', null, [
                 'widget' => 'single_text'
             ])
-            ->add('createdBy', EntityType::class, [
-                'class' => user::class,
-'choice_label' => 'id',
-            ])
         ;
     }
 
