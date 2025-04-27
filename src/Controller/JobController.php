@@ -36,6 +36,7 @@ final class JobController extends AbstractController{
             $jobsPerPage
         );
 
+
         return $this->render('job/index.html.twig', [
             'pagination' => $pagination,
             'page' => $page,
@@ -46,6 +47,7 @@ final class JobController extends AbstractController{
     }
 
     #[Route('/new', name: 'app_job_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_PUBLISHER")]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $job = new Job();
@@ -53,10 +55,13 @@ final class JobController extends AbstractController{
         $form->handleRequest($request);
 
 
+
         $user = $this->getUser();
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $job->setTags(null);
+
+//            $job->setTags(null);
             $job->setCreatedBy($user);
 
             $entityManager->persist($job);

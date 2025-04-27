@@ -18,9 +18,10 @@ class UserFixtures extends Fixture
         $hashedPassword = $this->passwordHasher->hashPassword($user, '123456');
         $user->setPassword($hashedPassword);
         UserFactory::createOne([
-            'company_name' => 'test',
+            'company_name' => 'user',
             'email' => 'example@example.com',
             'password' => $user->getPassword(),
+            'roles' => ['ROLE_USER'],
 
         ]);
 
@@ -28,9 +29,8 @@ class UserFixtures extends Fixture
             'company_name' => 'company',
             'email' => 'example@company.com',
             'password' => $user->getPassword(),
-
+            'roles' => ['ROLE_USER', 'ROLE_PUBLISHER'],
         ]);
 
-        UserFactory::new()->createMany(3);
     }
 }
