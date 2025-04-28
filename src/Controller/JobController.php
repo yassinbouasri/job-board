@@ -61,7 +61,7 @@ final class JobController extends AbstractController{
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-//            $job->setTags(null);
+
             $job->setCreatedBy($user);
 
             $entityManager->persist($job);
