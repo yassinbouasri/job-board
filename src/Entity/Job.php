@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Index('IDX___job___title', fields: ['title'])]
 class Job
 {
@@ -39,7 +40,7 @@ class Job
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private ?array $tags = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable',nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'jobs')]
@@ -121,14 +122,16 @@ class Job
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(?\DateTimeImmutable $created_at): static
+    #[ORM\PrePersist]
+    public function setCreatedAt(): static
     {
-        $this->created_at = $created_at;
+        $this->created_at = new \DateTimeImmutable();
 
         return $this;
     }

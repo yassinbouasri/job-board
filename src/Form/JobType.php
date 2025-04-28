@@ -28,9 +28,6 @@ class JobType extends AbstractType
                     'placeholder' => 'Tags',
                 ]
             ])
-            ->add('created_at', null, [
-                'widget' => 'single_text'
-            ])
         ;
 
         $builder->get('tags')->addModelTransformer(new TagInputTransformer());
