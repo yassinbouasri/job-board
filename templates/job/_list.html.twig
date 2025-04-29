@@ -3,7 +3,7 @@
     <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6">
         <div class="flex flex-col md:flex-row justify-between">
             <div class="flex-1">
-                <h2 class="text-xl font-semibold text-indigo-800 mb-2">{{ job.title }}</h2>
+                <h2 class="text-xl font-semibold text-indigo-800 mb-2"><a href="{{ path('app_job_show', {'id': job.id}) }}"> {{ job.title }}</a></h2>
                 <div class="flex items-center gap-4 mb-4 text-gray-600">
                             <span class="flex items-center gap-1">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
