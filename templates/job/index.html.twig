@@ -9,7 +9,7 @@
             <div class="container mx-auto px-4">
                 <div class="grid md:grid-cols-2 gap-x-8 gap-y-6">
                     <h1 class="text-4xl font-bold mb-6">Find Your Next Opportunity</h1>
-
+                    {% if is_granted('ROLE_PUBLISHER') %}
                     <a href="{{ path('app_job_new') }}" class=" mb-8 block p-2 ml-auto max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-50 transition-colors">
                         <div class="flex items-center">
                             <div class="p-3 mr-4 bg-indigo-100 rounded-full text-indigo-600">
@@ -23,6 +23,7 @@
                             </div>
                         </div>
                     </a>
+                    {% endif %}
                 </div>
 
                 <!-- Search Form -->
