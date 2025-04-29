@@ -24,7 +24,7 @@
                 </p>
                 <div class="flex flex-wrap gap-2 mb-4">
                     {% for tag in job.tags %}
-                    <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">{{ tag }}</span>
+                    <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full"><a href="?search={{ tag }}"> {{ tag }}</a></span>
                     {% endfor %}
                 </div>
             </div>
@@ -41,25 +41,4 @@
     <p>No jobs found.</p>
 {% endfor %}
 
-{#{% if page < totalPages %}#}
-{#    <form action="{{ path('app_job_index')}}" method="GET" class="mt-8 text-center">#}
-{#        <input type="hidden" name="page" value="{{ page + 1 }}" />#}
-
-{#        <button type="submit"#}
-{#                class="bg-indigo-500 text-white px-6 py-3 rounded-lg hover:bg-indigo-600">#}
-{#            Load More#}
-{#        </button>#}
-{#    </form>#}
-{#    {%  elseif page > 1 %}#}
-{#        <form action="{{ path('app_job_index')}}" method="GET" class="mt-8 text-center">#}
-{#            <input type="hidden" name="page" value="{{  page - totalPages + 1}}" />#}
-
-{#            <button type="submit"#}
-{#                    class="bg-indigo-500 text-white px-6 py-3 rounded-lg hover:bg-indigo-600">#}
-{#                First Page#}
-{#            </button>#}
-{#        </form>#}
-{#{% endif %}#}
-
 {{ knp_pagination_render(pagination) }}
-{#{{ dump(pagination) }}#}
