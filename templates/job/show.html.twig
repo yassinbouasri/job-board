@@ -1,46 +1,112 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Job{% endblock %}
+{% block title %}{{ job.title }}{% endblock %}
 
 {% block body %}
-    <h1>Job</h1>
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="mb-6 flex justify-between items-start">
+            <a href="{{ path('app_job_index') }}" class="text-indigo-600 hover:text-indigo-800 flex items-center">
+                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Jobs
+            </a>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ job.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ job.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ job.description }}</td>
-            </tr>
-            <tr>
-                <th>Location</th>
-                <td>{{ job.location }}</td>
-            </tr>
-            <tr>
-                <th>Salary</th>
-                <td>{{ job.salary }}</td>
-            </tr>
-            <tr>
-                <th>Tags</th>
-                <td>{{ job.tags ? job.tags|join(', ') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ job.createdAt ? job.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+            {% if is_granted('ROLE_PUBLISHER') %}
+            <div class="flex space-x-2">
+                <a href="{{ path('app_job_edit', {'id': job.id}) }}"
+                   class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                    </svg>
+                    Edit
+                </a>
 
-    <a href="{{ path('app_job_index') }}">back to list</a>
+                {{ include('job/_delete_form.html.twig') }}
+            </div>
+            {% endif %}
+        </div>
 
-    <a href="{{ path('app_job_edit', {'id': job.id}) }}">edit</a>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            {# Header Section #}
+            <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 p-6 text-white">
+                <h1 class="text-3xl font-bold mb-2">{{ job.title }}</h1>
+                <div class="flex flex-wrap items-center gap-4 text-sm">
+                <span class="flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    {{ job.createdBy.companyName ?? 'Company Name' }}
+                </span>
+                    <span class="flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    {{ job.location }}
+                </span>
+                    <span class="flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    {{ job.salary|format_currency('EUR')}}
+                </span>
+                    <span class="flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Posted {{ job.createdAt|ago }}
+                </span>
+                </div>
+            </div>
 
-    {{ include('job/_delete_form.html.twig') }}
+            {# Main Content #}
+            <div class="p-6">
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Job Description</h2>
+                    <div class="prose max-w-none text-gray-700">
+                        {{ job.description }}
+                    </div>
+                </div>
+
+                {# Tags Section #}
+                {% if job.tags %}
+                    <div class="mb-8">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Tags</h2>
+                        <div class="flex flex-wrap gap-2">
+                            {% for tag in job.tags %}
+                                <span class="px-3 py-1 bg-blue-100 text-indigo-800 rounded-full text-sm font-medium">
+                        {{ tag }}
+                    </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Additional Info Section #}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Job Type</h2>
+                        <p class="text-gray-700">{{ job.type ?? 'Not specified' }}</p>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Experience Level</h2>
+                        <p class="text-gray-700">{{ job.experienceLevel ?? 'Not specified' }}</p>
+                    </div>
+                </div>
+            </div>
+
+
+            {% if is_granted('ROLE_USER') %}
+            <div class="bg-gray-50 px-6 py-4 border-t">
+                <a href="#" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md font-medium inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    Apply Now
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
