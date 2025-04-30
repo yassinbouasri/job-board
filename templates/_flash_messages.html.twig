@@ -1,7 +1,7 @@
 
 {% for type, messages in app.flashes %}
     {% for message in messages %}
-        <div class="flash-message flash-{{ type }} fixed top-4 right-4 z-50 flex items-center justify-between p-4 mb-4 rounded-lg shadow-lg max-w-md animate-fade-in">
+        <div class="flash-message flash-{{ type }} fixed top-16 right-4 z-50 flex items-center justify-between p-4 mb-4 rounded-lg shadow-lg max-w-md animate-fade-in" data-flash-message>
             <div class="flex items-center">
                 {% if type == 'success' %}
                     <svg class="w-5 h-5 mr-2 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -53,3 +53,50 @@
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
+<script>
+    // Add this at the bottom of your base template or in a separate JS file
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashMessages = document.querySelectorAll('[data-flash-message]');
+
+        if (flashMessages.length === 0) {
+            console.log('No flash messages found');
+            return;
+        }
+
+        flashMessages.forEach(flash => {
+            console.log('Initializing flash message:', flash);
+
+            // Show animation
+            setTimeout(() => {
+                flash.classList.add('opacity-100', 'translate-y-0');
+                console.log('Showing flash message');
+            }, 50);  // Slight delay to ensure CSS applies correctly
+
+            // Auto-hide after 5 seconds
+            const autoHideTimer = setTimeout(() => {
+                hideFlash(flash);
+            }, 5000);
+
+            // Manual close
+            const closeBtn = flash.querySelector('.flash-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    console.log('Manual close triggered');
+                    clearTimeout(autoHideTimer);
+                    hideFlash(flash);
+                });
+            } else {
+                console.warn('Close button not found in flash message');
+            }
+        });
+
+        function hideFlash(flashElement) {
+            flashElement.classList.remove('opacity-100');
+            flashElement.classList.add('opacity-0');
+            setTimeout(() => {
+                flashElement.remove();
+                console.log('Flash message removed');
+            }, 300); // Match this duration with your CSS transition
+        }
+    });
+</script>
