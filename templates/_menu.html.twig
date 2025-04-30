@@ -24,7 +24,7 @@
 
                     <div class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu">
                         <div class="py-1">
-                            <span class="block px-4 py-2 text-sm text-gray-400 hover:bg-gray-100" role="menuitem">{{ app.user.email }}</span>
+                            <span class="block px-4 py-2 text-sm text-gray-400 hover:bg-gray-100" role="menuitem">{{ app.user.email ?? ""}}</span>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
                             {% if is_granted('ROLE_PUBLISHER') %}
                                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Applications</a>
