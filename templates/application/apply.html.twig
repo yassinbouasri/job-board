@@ -20,15 +20,25 @@
 
         <div>
             {{ form_label(form.coverLetter, 'Cover Letter', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-            {{ form_widget(form.coverLetter, {'attr': {'class': 'shadow appearance-none border rounded w-1/2 py-32 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+            {{ form_widget(form.coverLetter, {'attr': {'class': 'shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
             {{ form_errors(form.coverLetter) }}
         </div>
 
 
         <div class="flex items-center justify-between mt-6">
-            <button type="submit" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Apply Now
-            </button>
+            {% if applied == true %}
+                <button type="submit"
+                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-not-allowed">
+                    Apply Now
+                </button>
+
+                {% else %}
+                    <button type="submit"
+                            class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-50">
+                        Apply Now
+                    </button>
+            {% endif %}
+
         </div>
 
     </div>

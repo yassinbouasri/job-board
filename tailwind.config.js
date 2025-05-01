@@ -7,4 +7,11 @@ module.exports = {
         extend: {},
     },
     plugins: [],
+    variants: {
+        extend: {
+            backgroundColor: ['disabled', 'enabled'],
+            opacity: ['disabled'],
+            cursor: ['disabled'],
+        },
+    },
 }
