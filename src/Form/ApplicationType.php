@@ -7,24 +7,36 @@ use App\Entity\Job;
 use App\Entity\user;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ApplicationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('resume')
-            ->add('coverLetter')
-            ->add('job', EntityType::class, [
-                'class' => Job::class,
-'choice_label' => 'id',
+            ->add('resume', FileType::class, [
+                'label' => 'Upload your CV (PDF or DOCX)',
+                'mapped' => false, // This field is not mapped to the entity
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2M',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF or Word document',
+                    ])
+                ],
+                'attr' => [
+                    'accept' => '.pdf,.docx'
+                ]
             ])
-            ->add('applicant', EntityType::class, [
-                'class' => user::class,
-'choice_label' => 'id',
-            ])
+            ->add('coverLetter', TextareaType::class)
         ;
     }
 

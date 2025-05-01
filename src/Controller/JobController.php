@@ -20,7 +20,6 @@ final class JobController extends AbstractController{
     #[Route(name: 'app_job_index', methods: ['GET'])]
     public function index(Request $request,JobRepository $jobRepository, PaginatorInterface $paginator): Response
     {
-        $this->addFlash('success', 'test ');
         $search = $request->query->get('search');
 
         $location = $request->query->get('location');
@@ -67,6 +66,7 @@ final class JobController extends AbstractController{
 
             $entityManager->persist($job);
             $entityManager->flush();
+            $this->addFlash('success', 'Job created.');
 
             return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
         }
