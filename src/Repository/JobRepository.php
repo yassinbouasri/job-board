@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Job;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,7 +18,7 @@ class JobRepository extends ServiceEntityRepository
         parent::__construct($registry, Job::class);
     }
 
-    public function createPaginatedQueryBuilder(string $search = null, string $location = null): QueryBuilder
+    public function createPaginatedQueryBuilder(?string $search = null, ?string $location = null, ?User $createdBy = null): QueryBuilder
     {
         $qb = $this->createQueryBuilder('j')
             ->orderBy('j.created_at', 'DESC');
@@ -35,6 +36,11 @@ class JobRepository extends ServiceEntityRepository
         if ($location) {
             $qb->andWhere('j.location like :location')
                 ->setParameter('location', "%{$location}%");
+        }
+
+        if ($createdBy) {
+            $qb->andWhere('j.createdBy = :createdBy')
+                ->setParameter('createdBy', $createdBy);
         }
 
         return $qb;
