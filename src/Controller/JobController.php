@@ -36,7 +36,6 @@ final class JobController extends AbstractController{
             $jobsPerPage
         );
 
-
         return $this->render('job/index.html.twig', [
             'pagination' => $pagination,
             'page' => $page,
