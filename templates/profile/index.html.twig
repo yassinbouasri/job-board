@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile!{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h1 class="text-2xl font-bold mb-6">Edit Profile</h1>
+
+                    {{ form_start(form) }}
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                {{ form_label(form.fullName, 'First Name', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                                {{ form_widget(form.fullName, {'attr': {'class': 'shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                                {{ form_errors(form.fullName) }}
+                            </div>
+                        </div>
+
+                        <div>
+                            {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                            {{ form_widget(form.phone, {'attr': {'class': 'shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                            {{ form_errors(form.phone) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.profilePicture, 'Profile Image', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                            {{ form_widget(form.profilePicture, {'attr': {'class': 'shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                            {{ form_errors(form.profilePicture) }}
+                        </div>
+
+                        <div>
+                            {{ form_label(form.cv, 'Upload Your CV', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                            {{ form_widget(form.cv, {'attr': {'class': 'shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+                            {{ form_errors(form.cv) }}
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit"
+                                    class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-50">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
