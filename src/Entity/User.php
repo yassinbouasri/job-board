@@ -54,6 +54,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Application::class, mappedBy: 'applicant', orphanRemoval: true)]
     private Collection $applications;
 
+    #[ORM\OneToOne(mappedBy: 'userProfile', cascade: ['persist', 'remove'])]
+    private ?Profile $profile = null;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
@@ -213,6 +216,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $application->setApplicant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProfile(): ?Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(Profile $profile): static
+    {
+        // set the owning side of the relation if necessary
+        if ($profile->getUserProfile() !== $this) {
+            $profile->setUserProfile($this);
+        }
+
+        $this->profile = $profile;
 
         return $this;
     }
