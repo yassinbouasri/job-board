@@ -28,7 +28,6 @@ final class ProfileController extends AbstractController{
             $isNew = false;
         }
 
-//        dd($profile);
         $form = $this->createForm(ProfileFormType::class, $profile);
         $form->handleRequest($request);
 
@@ -57,7 +56,7 @@ final class ProfileController extends AbstractController{
         }
 
         return $this->render('profile/index.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 

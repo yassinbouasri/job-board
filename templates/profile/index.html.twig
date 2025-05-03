@@ -52,6 +52,12 @@
                             {{ form_label(form.cv, 'Upload Your CV', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2 mt-2'}}) }}
                             {{ form_widget(form.cv, {'attr': {'class': 'shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
                             {{ form_errors(form.cv) }}
+                            <span class="block text-gray-700 text-sm font-thin mt-1">
+                                 {% if app.user.profile.cv is not null %}
+                                     download your cv <a href="{{ asset('uploads/resumes/' ~ app.user.profile.cv)  }}">here</a>
+                                 {% endif %}
+                            </span>
+
                         </div>
 
                         <div class="flex justify-end">
