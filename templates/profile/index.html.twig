@@ -14,7 +14,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="md:col-span-1">
                                 <div class="space-y-4">
-                                    {% if app.user.profile.profilePicture %}
+                                    {% if app.user.profile.profilePicture is defined %}
                                         <div class="relative">
                                             <img src="{{ asset('uploads/profiles/' ~ app.user.profile.profilePicture) }}"
                                                  alt="Current profile image"
