@@ -129,10 +129,14 @@ class Job
     }
 
     #[ORM\PrePersist]
-    public function setCreatedAt(): static
+    public function setCreatedAtValue(): void
     {
         $this->created_at = new \DateTimeImmutable();
+    }
 
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->created_at = $createdAt;
         return $this;
     }
 
