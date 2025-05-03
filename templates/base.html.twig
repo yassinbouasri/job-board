@@ -17,6 +17,7 @@
     <div id="flash-messages">
         {{ include('_flash_messages.html.twig') }}
     </div>
+
     {% if is_granted("IS_AUTHENTICATED_FULLY") %}
         {% include('_menu.html.twig') %}
     {% endif %}
