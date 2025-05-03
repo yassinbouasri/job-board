@@ -101,6 +101,8 @@ class ApplicationController extends AbstractController
                     $this->addFlash('error', $exception->getMessage());
                 }
 
+            } else {
+                $application->setResume($user->getProfile()->getCv());
             }
 
             $application->setCoverLetter($form->get('coverLetter')->getData());
