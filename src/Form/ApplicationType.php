@@ -20,8 +20,8 @@ class ApplicationType extends AbstractType
         $builder
             ->add('resume', FileType::class, [
                 'label' => 'Upload your CV (PDF or DOCX)',
-                'mapped' => false, // This field is not mapped to the entity
-                'required' => true,
+                'mapped' => false,
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '2M',

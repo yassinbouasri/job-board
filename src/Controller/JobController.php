@@ -73,6 +73,7 @@ final class JobController extends AbstractController{
         return $this->render('job/new.html.twig', [
             'job' => $job,
             'form' => $form,
+            'title' => 'Create New Job',
         ]);
     }
 
@@ -84,6 +85,7 @@ final class JobController extends AbstractController{
         ]);
     }
 
+    #[IsGranted("ROLE_PUBLISHER")]
     #[Route('/{id}/edit', name: 'app_job_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Job $job, EntityManagerInterface $entityManager): Response
     {
@@ -92,13 +94,14 @@ final class JobController extends AbstractController{
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'Job updated.');
             return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('job/edit.html.twig', [
             'job' => $job,
             'form' => $form,
+            'title' => 'Edit Job',
         ]);
     }
 

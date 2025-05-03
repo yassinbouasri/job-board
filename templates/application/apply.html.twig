@@ -12,10 +12,20 @@
         </div>
         {{ form_start(form, {'attr': {'class': 'bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'}}) }}
     <div class="grid grid-cols-1 gap-6">
+
         <div>
             {{ form_label(form.resume, 'Resume', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
             {{ form_widget(form.resume, {'attr': {'class': 'shadow appearance-none border rounded w-1/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
             {{ form_errors(form.resume) }}
+            {% if app.user.profile.cv is defined %}
+                <span class="block text-gray-700 text-sm font-thin mt-1">
+                    Use this Resume
+                    <a href="{{ asset('uploads/resumes/' ~ app.user.profile.cv) }}" class="text-indigo-600  mt-2">
+                        {{ app.user.profile.cv }}
+                    </a>
+                    Or you can upload another one.
+                </span>
+            {% endif %}
         </div>
 
         <div>
