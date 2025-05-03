@@ -19,6 +19,8 @@ class ProfileFormType extends AbstractType
             ->add('phone')
             ->add('profilePicture', FileType::class, [
                 'required' => false,
+                'mapped' => false,
+                'attr' => ['class' => 'form-input mt-1 block w-full'],
             ])
             ->add('cv', FileType::class, [
                 'required' => false,

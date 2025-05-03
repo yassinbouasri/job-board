@@ -9,35 +9,43 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class ProfileController extends AbstractController{
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
-    public function updateOrCreate(Request $request,ProfileFormType $form, EntityManagerInterface $entityManager): Response
+    public function updateOrCreate(Request $request,ProfileFormType $form, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $profile = $this->getUser()->getProfile();
         if(!$profile){
             $profile = new Profile();
+            $profile->setUserProfile($this->getUser());
+            $isNew = true;
+        }else{
+            $isNew = false;
         }
 
-        dd($profile);
+//        dd($profile);
         $form = $this->createForm(ProfileFormType::class, $profile);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $profile->setUserProfile($this->getUser());
-            if (!empty($imageFile = $form->get('profilePicture')->getData() ?? '')) {
-                $newFileName = md5(uniqid()) . '.' . $imageFile->guessExtension();
-                $imageFile->move(
-                    $this->getParameter('profile_images_directory'),
-                    $newFileName
-                );
+            $imageFile = $form->get('profilePicture')->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFileName = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                $imageFile->move($this->getParameter('profile_images_directory'), $newFileName);
                 $profile->setProfilePicture($newFileName);
             }
-            $entityManager->persist($profile);
-//            $entityManager->flush();
 
-            dump($profile);
+            if ($isNew){
+                $entityManager->persist($profile);
+            }
+            $entityManager->flush();
+
             $this->addFlash('success', 'Profile updated successfully.');
             return $this->redirectToRoute('app_profile');
         }
