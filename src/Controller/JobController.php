@@ -73,6 +73,7 @@ final class JobController extends AbstractController{
         return $this->render('job/new.html.twig', [
             'job' => $job,
             'form' => $form,
+            'title' => 'Create New Job',
         ]);
     }
 
@@ -92,13 +93,14 @@ final class JobController extends AbstractController{
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'Job updated.');
             return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('job/edit.html.twig', [
             'job' => $job,
             'form' => $form,
+            'title' => 'Edit Job',
         ]);
     }
 
