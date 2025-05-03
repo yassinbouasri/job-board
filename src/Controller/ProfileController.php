@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Profile;
+use App\Entity\User;
 use App\Form\ProfileFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,14 +32,35 @@ final class ProfileController extends AbstractController{
 
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('profilePicture')->getData();
+            $cvFile = $form->get('cv')->getData();
 
             if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFileName = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                try {
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFileName = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-                $imageFile->move($this->getParameter('profile_images_directory'), $newFileName);
-                $profile->setProfilePicture($newFileName);
+                    $imageFile->move($this->getParameter('profile_images_directory'), $newFileName);
+                    $profile->setProfilePicture($newFileName);
+                }catch (\Exception $e){
+                    $this->addFlash('error', $e->getMessage());
+                }
+
+            }
+
+            if ($cvFile) {
+
+                try {
+                    $originalFilename = pathinfo($cvFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFileName = $safeFilename.'-'.uniqid().'.'.$cvFile->guessExtension();
+
+                    $cvFile->move($this->getParameter('resume_directory'), $newFileName);
+                    $profile->setCv($newFileName);
+                }catch (\Exception $e){
+                    $this->addFlash('error', $e->getMessage());
+                }
+
             }
 
             if ($isNew){

@@ -24,6 +24,8 @@ class ProfileFormType extends AbstractType
             ])
             ->add('cv', FileType::class, [
                 'required' => false,
+                'mapped' => false,
+                'attr' => ['class' => 'form-input mt-1 block w-full'],
             ])
         ;
     }
