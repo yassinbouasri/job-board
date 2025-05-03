@@ -13,8 +13,11 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class ProfileController extends AbstractController{
+
+    public function __construct(private readonly SluggerInterface $slugger) { }
+
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
-    public function updateOrCreate(Request $request,ProfileFormType $form, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function updateOrCreate(Request $request,ProfileFormType $form, EntityManagerInterface $entityManager): Response
     {
         $profile = $this->getUser()->getProfile();
         if(!$profile){
@@ -34,33 +37,14 @@ final class ProfileController extends AbstractController{
             $imageFile = $form->get('profilePicture')->getData();
             $cvFile = $form->get('cv')->getData();
 
-            if ($imageFile) {
-                try {
-                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFileName = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-
-                    $imageFile->move($this->getParameter('profile_images_directory'), $newFileName);
-                    $profile->setProfilePicture($newFileName);
-                }catch (\Exception $e){
-                    $this->addFlash('error', $e->getMessage());
-                }
-
+            if($imageFile){
+                $newProfileImage = $this->fileHandler($imageFile, 'profile_images_directory');
+                $profile->setProfilePicture($newProfileImage);
             }
 
-            if ($cvFile) {
-
-                try {
-                    $originalFilename = pathinfo($cvFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFileName = $safeFilename.'-'.uniqid().'.'.$cvFile->guessExtension();
-
-                    $cvFile->move($this->getParameter('resume_directory'), $newFileName);
-                    $profile->setCv($newFileName);
-                }catch (\Exception $e){
-                    $this->addFlash('error', $e->getMessage());
-                }
-
+            if($cvFile){
+                $newCV = $this->fileHandler($cvFile, 'resume_directory');
+                $profile->setCv($newCV);
             }
 
             if ($isNew){
@@ -75,5 +59,24 @@ final class ProfileController extends AbstractController{
         return $this->render('profile/index.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param  mixed  $imageFile
+     * @param  Profile  $profile
+     */
+    private function fileHandler(mixed $imageFile, string $directory)
+    {
+            try {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalFilename);
+                $newFileName = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                $imageFile->move($this->getParameter($directory), $newFileName);
+
+                return $newFileName;
+            } catch (\Exception $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
     }
 }
