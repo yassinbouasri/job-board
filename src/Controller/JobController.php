@@ -85,6 +85,7 @@ final class JobController extends AbstractController{
         ]);
     }
 
+    #[IsGranted("ROLE_PUBLISHER")]
     #[Route('/{id}/edit', name: 'app_job_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Job $job, EntityManagerInterface $entityManager): Response
     {
