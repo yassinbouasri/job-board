@@ -111,6 +111,7 @@ final class JobController extends AbstractController{
         if ($this->isCsrfTokenValid('delete'.$job->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($job);
             $entityManager->flush();
+            $this->addFlash('success', 'Job deleted.');
         }
 
         return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
