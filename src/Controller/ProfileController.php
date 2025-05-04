@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+#[IsGranted("IS_AUTHENTICATED_FULLY")]
 final class ProfileController extends AbstractController{
 
     public function __construct(private readonly SluggerInterface $slugger) { }
@@ -20,9 +22,13 @@ final class ProfileController extends AbstractController{
     public function updateOrCreate(Request $request,ProfileFormType $form, EntityManagerInterface $entityManager): Response
     {
         $profile = $this->getUser()->getProfile();
+        /** @var  User $user */
+        $user = $this->getUser();
+
+
         if(!$profile){
             $profile = new Profile();
-            $profile->setUserProfile($this->getUser());
+            $profile->setUserProfile($user);
             $isNew = true;
         }else{
             $isNew = false;
@@ -59,6 +65,15 @@ final class ProfileController extends AbstractController{
             'form' => $form->createView()
         ]);
     }
+    #[Route('/profile/{id}', name: 'app_delete_picture', methods: ['POST'])]
+    public function deleteProfilePicture(Profile $profile, EntityManagerInterface $entityManager): Response
+    {
+        $profile->setProfilePicture(null);
+        $entityManager->persist($profile);
+        $entityManager->flush();
+        $this->addFlash('success', 'Profile picture deleted successfully.');
+        return $this->redirectToRoute('app_profile', [], Response::HTTP_SEE_OTHER);
+    }
 
     /**
      * @param  mixed  $imageFile
@@ -77,5 +92,8 @@ final class ProfileController extends AbstractController{
             } catch (\Exception $e) {
                 $this->addFlash('error', $e->getMessage());
             }
+            return null;
     }
+
+
 }

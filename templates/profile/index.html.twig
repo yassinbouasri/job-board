@@ -14,19 +14,20 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="md:col-span-1">
                                 <div class="space-y-4">
-                                    {% if app.user.profile.profilePicture is defined %}
+                                    {% if app.user.profile.profilePicture is not null %}
                                         <div class="relative">
                                             <img src="{{ asset('uploads/profiles/' ~ app.user.profile.profilePicture) }}"
                                                  alt="Current profile image"
                                                  class="h-48 w-48 rounded-lg object-cover shadow-sm border border-gray-200">
+
                                             <div class="absolute top-2 left-2">
-                                                <a href="#" class="text-red-500 hover:text-red-700"
-                                                   onclick="document.getElementById('remove_image').value = '1'; this.parentElement.parentElement.remove()">
-                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                <button type="submit" form="deleteProfilePicture" class="text-gray-400-500 hover:text-red-700">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                     </svg>
-                                                </a>
+                                                </button>
                                             </div>
+
                                         </div>
                                     {% endif %}
                             <div>
@@ -54,7 +55,7 @@
                             {{ form_errors(form.cv) }}
                             <span class="block text-gray-700 text-sm font-thin mt-1">
                                  {% if app.user.profile.cv is not null %}
-                                     download your cv <a href="{{ asset('uploads/resumes/' ~ app.user.profile.cv)  }}">here</a>
+                                     download your cv <a href="{{ asset('uploads/resumes/' ~ app.user.profile.cv)  }}" class="text-indigo-600  mt-2">here</a>
                                  {% endif %}
                             </span>
 
@@ -69,6 +70,10 @@
                     </div>
                     {{ form_end(form) }}
                 </div>
+                        <form method="POST" id="deleteProfilePicture" action="{{ path('app_delete_picture', {'id' : app.user.profile.id }) }}">
+                            <input type="hidden" name="_method" value="POST">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.profile.id) }}">
+                        </form>
             </div>
         </div>
     </div>
