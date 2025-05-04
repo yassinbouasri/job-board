@@ -19,7 +19,7 @@
                 <div class="relative ml-3" data-turbo-permanent>
                     <button type="button" class="flex items-center text-sm rounded-full focus:outline-none" id="user-menu-button" >
                         <span class="sr-only">Open user menu</span>
-                        {% if app.user.profile.profilePicture is defined %}
+                        {% if app.user.profile.profilePicture is not null %}
                             <img class="h-8 w-8 rounded-full" src="{{ asset('uploads/profiles/' ~ app.user.profile.profilePicture )}}" alt="User avatar" >
                         {% else %}
                                 <img class="h-8 w-8 rounded-full" src="http://picsum.photos/seed/900/900" alt="User avatar" >
