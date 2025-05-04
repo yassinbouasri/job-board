@@ -24,6 +24,8 @@ final class ProfileController extends AbstractController{
         $profile = $this->getUser()->getProfile();
         /** @var  User $user */
         $user = $this->getUser();
+
+
         if(!$profile){
             $profile = new Profile();
             $profile->setUserProfile($user);
@@ -37,6 +39,8 @@ final class ProfileController extends AbstractController{
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            dd($profile);
+
             $imageFile = $form->get('profilePicture')->getData();
             $cvFile = $form->get('cv')->getData();
 
@@ -63,7 +67,7 @@ final class ProfileController extends AbstractController{
             'form' => $form->createView()
         ]);
     }
-    #[Route('/profile/{id}', name: 'app_delete_picture', methods: ['GET'])]
+    #[Route('/profile/{id}', name: 'app_delete_picture', methods: ['POST'])]
     public function deleteProfilePicture(Profile $profile, EntityManagerInterface $entityManager): Response
     {
         $profile->setProfilePicture(null);
