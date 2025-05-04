@@ -39,8 +39,6 @@ final class ProfileController extends AbstractController{
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($profile);
-
             $imageFile = $form->get('profilePicture')->getData();
             $cvFile = $form->get('cv')->getData();
 
