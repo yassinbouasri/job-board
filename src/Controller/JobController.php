@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Job;
+use App\Enums\JobTypeEnum;
 use App\Form\JobType;
+use App\Form\JobTypeFormType;
 use App\Repository\JobRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,8 +26,14 @@ final class JobController extends AbstractController{
 
         $location = $request->query->get('location');
 
+        $form = $this->createForm(JobTypeFormType::class);
+        $form->handleRequest($request);
 
-        $query = $jobRepository->createPaginatedQueryBuilder($search, $location)
+        $selectedType = $this->getTypeEnum($request);
+
+
+
+        $query = $jobRepository->createPaginatedQueryBuilder($search, $location, selectedType: $selectedType->value ?? null)
             ->getQuery();
         $jobsPerPage = 2;
 
@@ -42,6 +50,8 @@ final class JobController extends AbstractController{
             'totalPages' => ceil($pagination->getTotalItemCount() / $jobsPerPage),
             'search' => $search,
             'location' => $location,
+            'jobTypes' => JobTypeEnum::cases(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -115,5 +125,18 @@ final class JobController extends AbstractController{
         }
 
         return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @param  Request  $request
+     * @return JobTypeEnum|null
+     */
+    private function getTypeEnum(Request $request): ?JobTypeEnum
+    {
+        $queryParams = $request->query->all();
+
+        $selectedValue = $queryParams['job_type_form']['jobType'] ?? null;
+
+        return $selectedValue ? JobTypeEnum::from($selectedValue) : null;
     }
 }
