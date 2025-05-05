@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enums\ExperienceEnum;
 use App\Enums\JobTypeEnum;
 use App\Repository\JobRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -55,6 +56,9 @@ class Job
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true, enumType: JobTypeEnum::class)]
     private ?array $jobType = null;
+
+    #[ORM\Column(nullable: true, enumType: ExperienceEnum::class)]
+    private ?ExperienceEnum $experience = null;
 
     public function __construct()
     {
@@ -197,6 +201,18 @@ class Job
     public function setJobType(?array $jobType): static
     {
         $this->jobType = $jobType;
+
+        return $this;
+    }
+
+    public function getExperience(): ?ExperienceEnum
+    {
+        return $this->experience;
+    }
+
+    public function setExperience(?ExperienceEnum $experience): static
+    {
+        $this->experience = $experience;
 
         return $this;
     }
