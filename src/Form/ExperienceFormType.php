@@ -16,7 +16,7 @@ class ExperienceFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Experience', EnumType::class, [
+            ->add('experience', EnumType::class, [
                 'class' => ExperienceEnum::class,
                 'choice_label' => fn (ExperienceEnum $experience) => $experience->value,
                 'required' => false,
