@@ -3,13 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Job;
-use App\Entity\user;
+use App\Enums\ExperienceEnum;
 use App\Enums\JobTypeEnum;
 use App\Form\DataTransformer\TagInputTransformer;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,6 +35,13 @@ class JobType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'placeholder' => 'Job Type',
+            ])
+            ->add('experience', EnumType::class, [
+                'class' => ExperienceEnum::class,
+                'choice_label' => fn (ExperienceEnum $experience) => $experience->value,
+                'required' => false,
+                'multiple' => false,
+                'placeholder' => ' ',
             ])
         ;
 
