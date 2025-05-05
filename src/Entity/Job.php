@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enums\JobTypeEnum;
 use App\Repository\JobRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -51,6 +52,9 @@ class Job
      */
     #[ORM\OneToMany(targetEntity: Application::class, mappedBy: 'job', orphanRemoval: true)]
     private Collection $applications;
+
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true, enumType: JobTypeEnum::class)]
+    private ?array $jobType = null;
 
     public function __construct()
     {
@@ -178,6 +182,21 @@ class Job
                 $application->setJob(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return JobTypeEnum[]|null
+     */
+    public function getJobType(): ?array
+    {
+        return $this->jobType;
+    }
+
+    public function setJobType(?array $jobType): static
+    {
+        $this->jobType = $jobType;
 
         return $this;
     }
