@@ -67,13 +67,20 @@
         <!-- Main Content -->
         <div class="container mx-auto px-4 py-8">
             <!-- Filters -->
+
             <div class="mb-8 flex flex-wrap gap-4 items-center">
-                <select class="p-2 border rounded-lg">
-                    <option>Job Type</option>
-                    <option>Full-time</option>
-                    <option>Part-time</option>
-                    <option>Contract</option>
-                </select>
+{#                <form method="GET" action="{{ path('app_job_index') }}">#}
+{#                    <select class="p-2 border rounded-lg" name="job-type">#}
+{#                        <option value="Job Type">Job Type</option>#}
+{#                        {% for jobType in jobTypes %}#}
+{#                            <option name="{{ jobType.value }}">{{ jobType.value }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+
+{#                </form>#}
+                {{ form_start(form, {'attr': {'class': 'auto-submit-form p-2 border rounded-lg bg-white'}}) }}
+                {{ form_widget(form.jobType) }}
+                {{ form_end(form) }}
 
                 <label>
                     <select class="p-2 border rounded-lg">

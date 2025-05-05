@@ -18,7 +18,7 @@ class JobRepository extends ServiceEntityRepository
         parent::__construct($registry, Job::class);
     }
 
-    public function createPaginatedQueryBuilder(?string $search = null, ?string $location = null, ?User $createdBy = null): QueryBuilder
+    public function createPaginatedQueryBuilder(?string $search = null, ?string $location = null, ?User $createdBy = null, $selectedType = null): QueryBuilder
     {
         $qb = $this->createQueryBuilder('j')
             ->orderBy('j.created_at', 'DESC');
@@ -32,7 +32,6 @@ class JobRepository extends ServiceEntityRepository
                 ->setParameter('search', "%{$search}%");
         }
 
-
         if ($location) {
             $qb->andWhere('j.location like :location')
                 ->setParameter('location', "%{$location}%");
@@ -41,6 +40,11 @@ class JobRepository extends ServiceEntityRepository
         if ($createdBy) {
             $qb->andWhere('j.createdBy = :createdBy')
                 ->setParameter('createdBy', $createdBy);
+        }
+
+        if ($selectedType) {
+            $qb->andWhere('j.jobType LIKE :jobType')
+                ->setParameter('jobType', '%' . $selectedType . '%');
         }
 
         return $qb;
