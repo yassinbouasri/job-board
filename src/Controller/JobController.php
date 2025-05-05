@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Job;
 use App\Enums\JobTypeEnum;
+use App\Form\ExperienceFormType;
 use App\Form\JobType;
 use App\Form\JobTypeFormType;
 use App\Repository\JobRepository;
 use App\Repository\UserRepository;
+use App\Service\Filter;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,13 +30,19 @@ final class JobController extends AbstractController{
 
         $form = $this->createForm(JobTypeFormType::class);
         $form->handleRequest($request);
+        $selectedType = Filter::getTypeEnum($request);
+        $experienceForm = $this->createForm(ExperienceFormType::class);
+        $experienceForm->handleRequest($request);
 
-        $selectedType = $this->getTypeEnum($request);
+
+        $selectedExperience = Filter::getExperienceEnum($request);
 
 
-
-        $query = $jobRepository->createPaginatedQueryBuilder($search, $location, selectedType: $selectedType->value ?? null)
-            ->getQuery();
+        $query = $jobRepository->createPaginatedQueryBuilder(
+            $search, $location,
+            selectedType: $selectedType->value ?? null,
+            experience: $selectedExperience->value ?? null,
+        )->getQuery();
         $jobsPerPage = 2;
 
         $page = $request->query->getInt('page', 1);
@@ -50,8 +58,8 @@ final class JobController extends AbstractController{
             'totalPages' => ceil($pagination->getTotalItemCount() / $jobsPerPage),
             'search' => $search,
             'location' => $location,
-            'jobTypes' => JobTypeEnum::cases(),
             'form' => $form->createView(),
+            'experienceForm' => $experienceForm->createView(),
         ]);
     }
 
@@ -127,16 +135,5 @@ final class JobController extends AbstractController{
         return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * @param  Request  $request
-     * @return JobTypeEnum|null
-     */
-    private function getTypeEnum(Request $request): ?JobTypeEnum
-    {
-        $queryParams = $request->query->all();
 
-        $selectedValue = $queryParams['job_type_form']['jobType'] ?? null;
-
-        return $selectedValue ? JobTypeEnum::from($selectedValue) : null;
-    }
 }
