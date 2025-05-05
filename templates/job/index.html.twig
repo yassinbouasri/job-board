@@ -69,27 +69,13 @@
             <!-- Filters -->
 
             <div class="mb-8 flex flex-wrap gap-4 items-center">
-{#                <form method="GET" action="{{ path('app_job_index') }}">#}
-{#                    <select class="p-2 border rounded-lg" name="job-type">#}
-{#                        <option value="Job Type">Job Type</option>#}
-{#                        {% for jobType in jobTypes %}#}
-{#                            <option name="{{ jobType.value }}">{{ jobType.value }}</option>#}
-{#                        {% endfor %}#}
-{#                    </select>#}
-
-{#                </form>#}
                 {{ form_start(form, {'attr': {'class': 'auto-submit-form p-2 border rounded-lg bg-white'}}) }}
                 {{ form_widget(form.jobType) }}
                 {{ form_end(form) }}
 
-                <label>
-                    <select class="p-2 border rounded-lg">
-                        <option>Experience Level</option>
-                        <option>Entry Level</option>
-                        <option>Mid Level</option>
-                        <option>Senior Level</option>
-                    </select>
-                </label>
+                {{ form_start(experienceForm, {'attr': {'class': 'auto-submit-form p-2 border rounded-lg bg-white'}}) }}
+                {{ form_widget(experienceForm.experience) }}
+                {{ form_end(experienceForm) }}
 
                 <div class="flex items-center gap-2">
                     <input type="checkbox" id="remote" class="h-4 w-4">
