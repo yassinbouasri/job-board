@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Job;
+use App\Enums\ExperienceEnum;
 use App\Enums\JobTypeEnum;
 use App\Form\ExperienceFormType;
 use App\Form\JobType;
 use App\Form\JobTypeFormType;
 use App\Repository\JobRepository;
 use App\Repository\UserRepository;
-use App\Service\Filter;
+use App\Service\EnumValues;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,16 +29,19 @@ final class JobController extends AbstractController{
 
         $location = $request->query->get('location');
 
-        dump($request->query->get('remote'));
+
 
         $form = $this->createForm(JobTypeFormType::class);
         $form->handleRequest($request);
-        $selectedType = Filter::getTypeEnum($request);
+
+        $selectedType = EnumValues::getEnum($request,JobTypeEnum::class ,$form->getName(), 'jobType');
         $experienceForm = $this->createForm(ExperienceFormType::class);
         $experienceForm->handleRequest($request);
 
 
-        $selectedExperience = Filter::getExperienceEnum($request);
+        $selectedExperience = EnumValues::getEnum($request, ExperienceEnum::class ,$experienceForm->getName(), 'experience');
+
+        dump($selectedExperience);
 
 
         $query = $jobRepository->createPaginatedQueryBuilder(
