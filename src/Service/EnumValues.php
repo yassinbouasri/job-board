@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class EnumValues
 {
-    public static function getEnum(Request $request, $enum,string $formName, string $queryParam): mixed
+    public static function getEnum(Request $request, $enumClass, string $formName, string $queryParam): mixed
     {
         $queryParams = $request->query->all();
 
         $selectedValue = $queryParams[$formName][$queryParam] ?? null;
 
-        return $selectedValue ? $enum::from($selectedValue) : null;
+        return $selectedValue ? $enumClass::from($selectedValue) : null;
     }
 }
