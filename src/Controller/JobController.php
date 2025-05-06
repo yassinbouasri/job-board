@@ -28,6 +28,8 @@ final class JobController extends AbstractController{
 
         $location = $request->query->get('location');
 
+        dump($request->query->get('remote'));
+
         $form = $this->createForm(JobTypeFormType::class);
         $form->handleRequest($request);
         $selectedType = Filter::getTypeEnum($request);
