@@ -29,6 +29,9 @@ final class JobController extends AbstractController{
 
         $location = $request->query->get('location');
 
+        $sort = $request->query->get('sort_by');
+
+        dump($this->getSortValues($sort));
 
 
         $form = $this->createForm(JobTypeFormType::class);
@@ -43,9 +46,12 @@ final class JobController extends AbstractController{
         $experienceForm = $this->createForm(ExperienceFormType::class);
         $experienceForm->handleRequest($request);
 
-
-        $selectedExperience = EnumValues::getEnum($request, ExperienceEnum::class ,$experienceForm->getName(), 'experience');
-
+        $selectedExperience = EnumValues::getEnum(
+            $request,
+            ExperienceEnum::class ,
+            $experienceForm->getName(),
+            'experience'
+        );
 
         $query = $jobRepository->createPaginatedQueryBuilder(
             $search, $location,
@@ -142,6 +148,24 @@ final class JobController extends AbstractController{
         }
 
         return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    private function getSortValues(string $sort): array
+    {
+        [$sortBy, $direction] = explode('_', $sort);
+
+        $allowedSorts = ['name','location','created'];
+
+        if (!in_array($sortBy, $allowedSorts)) {
+            return [];
+        }
+
+        if (!in_array($direction, ['asc', 'desc'])) {
+            return [];
+        }
+
+        return [$sortBy, $direction];
     }
 
 
