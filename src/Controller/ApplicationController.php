@@ -12,6 +12,7 @@ use App\Form\ApplicationType;
 use App\Repository\ApplicationRepository;
 use App\Repository\JobRepository;
 use App\Repository\UserRepository;
+use App\Service\FileHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\String\Slugger\SluggerInterface;
 #[IsGranted('ROLE_USER')]
 class ApplicationController extends AbstractController
 {
@@ -65,7 +65,7 @@ class ApplicationController extends AbstractController
         ]);
     }
     #[Route('/job/{id}/apply', name: 'app_apply', methods: ['GET', 'POST'])]
-    public function apply(Request $request ,Job $job, EntityManagerInterface $entityManager, SluggerInterface $slugger, ApplicationRepository $applicationRepository): Response
+    public function apply(Request $request ,Job $job, EntityManagerInterface $entityManager, ApplicationRepository $applicationRepository, FileHandler $fileHandler): Response
     {
 
         $application  =  new Application();
@@ -89,18 +89,8 @@ class ApplicationController extends AbstractController
             $application->setApplicant($user);
             $resume = $form->get('resume')->getData();
             if ($resume) {
-                try {
-                    $originalFilename = pathinfo($resume->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$resume->guessExtension();
-
-                    $resume->move($this->getParameter('resume_directory'), $newFilename);
-
-                    $application->setResume($newFilename);
-                }catch (\Exception $exception){
-                    $this->addFlash('error', $exception->getMessage());
-                }
-
+                $newResumePath = $fileHandler->handle($resume, 'resume_directory');
+                $application->setResume($newResumePath);
             } else {
                 $application->setResume($user->getProfile()->getCv());
             }
