@@ -34,14 +34,17 @@ final class JobController extends AbstractController{
         $form = $this->createForm(JobTypeFormType::class);
         $form->handleRequest($request);
 
-        $selectedType = EnumValues::getEnum($request,JobTypeEnum::class ,$form->getName(), 'jobType');
+        $selectedType = EnumValues::getEnum(
+            $request,
+            JobTypeEnum::class ,
+            $form->getName(),
+            'jobType'
+        );
         $experienceForm = $this->createForm(ExperienceFormType::class);
         $experienceForm->handleRequest($request);
 
 
         $selectedExperience = EnumValues::getEnum($request, ExperienceEnum::class ,$experienceForm->getName(), 'experience');
-
-        dump($selectedExperience);
 
 
         $query = $jobRepository->createPaginatedQueryBuilder(

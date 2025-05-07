@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\ProfileFormType;
+use App\Service\FileHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,10 +17,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[IsGranted("IS_AUTHENTICATED_FULLY")]
 final class ProfileController extends AbstractController{
 
-    public function __construct(private readonly SluggerInterface $slugger) { }
-
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
-    public function updateOrCreate(Request $request,ProfileFormType $form, EntityManagerInterface $entityManager): Response
+    public function updateOrCreate(Request $request,ProfileFormType $form, EntityManagerInterface $entityManager, FileHandler $fileHandler): Response
     {
         $profile = $this->getUser()->getProfile();
         /** @var  User $user */
@@ -30,7 +29,7 @@ final class ProfileController extends AbstractController{
             $profile = new Profile();
             $profile->setUserProfile($user);
             $isNew = true;
-        }else{
+        } else {
             $isNew = false;
         }
 
@@ -43,12 +42,12 @@ final class ProfileController extends AbstractController{
             $cvFile = $form->get('cv')->getData();
 
             if($imageFile){
-                $newProfileImage = $this->fileHandler($imageFile, 'profile_images_directory');
+                $newProfileImage = $fileHandler->handle($imageFile, 'profile_images_directory');
                 $profile->setProfilePicture($newProfileImage);
             }
 
             if($cvFile){
-                $newCV = $this->fileHandler($cvFile, 'resume_directory');
+                $newCV = $fileHandler->handle($cvFile, 'resume_directory');
                 $profile->setCv($newCV);
             }
 
@@ -74,26 +73,4 @@ final class ProfileController extends AbstractController{
         $this->addFlash('success', 'Profile picture deleted successfully.');
         return $this->redirectToRoute('app_profile', [], Response::HTTP_SEE_OTHER);
     }
-
-    /**
-     * @param  mixed  $imageFile
-     * @param  Profile  $profile
-     */
-    private function fileHandler(mixed $imageFile, string $directory)
-    {
-            try {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $this->slugger->slug($originalFilename);
-                $newFileName = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-
-                $imageFile->move($this->getParameter($directory), $newFileName);
-
-                return $newFileName;
-            } catch (\Exception $e) {
-                $this->addFlash('error', $e->getMessage());
-            }
-            return null;
-    }
-
-
 }
