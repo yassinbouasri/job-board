@@ -78,8 +78,22 @@
                 {{ form_end(experienceForm) }}
 
                 <div class="flex items-center gap-2">
-                    <input type="checkbox" id="remote" class="h-4 w-4">
-                    <label for="remote" class="text-sm">Remote Only</label>
+                    <form action="{{ path('app_job_index') }}" method="GET">
+                        <div class="auto-submit-form p-2 border rounded-lg bg-white">
+                            <label for="sort_by" class="sr-only">Sort by</label>
+                            <select name="sort_by" id="sort_by" class="text-sm border-none bg-transparent focus:ring-0 focus:outline-none"
+                                    onchange="this.form.submit()">
+                                <option value="name_desc">Sort by: Name DESC</option>
+                                <option value="name_asc">Sort by: Name ASC</option>
+                                <option value="price_desc">Sort by: Price DESC</option>
+                                <option value="price_asc">Sort by: Price ASC</option>
+                                <option value="createdAt_desc">Sort by: Date DESC</option>
+                                <option value="createdAt_asc">Sort by: Date ASC</option>
+                            </select>
+                            <input type="hidden" name="sort_direction" value="asc">
+                        </div>
+                    </form>
+
                 </div>
             </div>
             <div class="grid gap-4">
