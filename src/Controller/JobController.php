@@ -16,6 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -63,6 +64,7 @@ final class JobController extends AbstractController{
             selectedType: $selectedType->value ?? null,
             experience: $selectedExperience->value ?? null,
         )->getQuery();
+
         $jobsPerPage = 2;
 
         $page = $request->query->getInt('page', 1);
@@ -162,16 +164,13 @@ final class JobController extends AbstractController{
         if (empty($sort)) {
             return [];
         }
+
         [$sortBy, $direction] = explode('-', $sort);
 
         $allowedSorts = ['title','salary','created_at'];
 
-        if (!in_array($sortBy, $allowedSorts)) {
-            return [];
-        }
-
-        if (!in_array($direction, ['asc', 'desc'])) {
-            return [];
+        if (!in_array($sortBy, $allowedSorts, true) || !in_array($direction, ['asc', 'desc'], true)) {
+            [$sortBy, $direction] = ['',''];
         }
 
         return [$sortBy, $direction];

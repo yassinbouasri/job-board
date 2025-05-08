@@ -28,11 +28,12 @@ class JobRepository extends ServiceEntityRepository
         string $experience = null
     ): QueryBuilder
     {
-
         $qb = $this->createQueryBuilder('j');
 
-        if ($sortField !== null && $sortDirection !== null) {
+        if (!empty($sortField) || !empty($sortDirection)) {
             $qb->orderBy('j.' . $sortField, $sortDirection);
+        }else{
+            $qb->orderBy('j.id', 'DESC');
         }
         if ($search) {
             $qb->join('j.createdBy', 'u')
