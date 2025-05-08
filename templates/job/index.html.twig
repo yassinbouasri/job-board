@@ -78,8 +78,23 @@
                 {{ form_end(experienceForm) }}
 
                 <div class="flex items-center gap-2">
-                    <input type="checkbox" id="remote" class="h-4 w-4">
-                    <label for="remote" class="text-sm">Remote Only</label>
+                    <form action="{{ path('app_job_index') }}" method="GET">
+                        <div class="auto-submit-form p-2 border rounded-lg bg-white">
+                            <label for="sort_by" class="sr-only">Sort by</label>
+                            <select name="sort_by" id="sort_by" class="text-sm border-none bg-transparent focus:ring-0 focus:outline-none"
+                                    onchange="this.form.submit()">
+                                <option value="" {% if sort == '' %} selected {% endif %}>Default</option>
+                                <option value="title-desc" {% if sort == 'title-desc' %} selected {% endif %}>Sort by: Name DESC</option>
+                                <option value="title-asc" {% if sort == 'title-asc' %} selected {% endif %}>Sort by: Name ASC</option>
+                                <option value="salary-desc" {% if sort == 'salary-desc' %} selected {% endif %}>Sort by: Salary DESC</option>
+                                <option value="salary-asc" {% if sort == 'salary-asc' %} selected {% endif %}>Sort by: Salary ASC</option>
+                                <option value="created_at-desc" {% if sort == 'created_at-desc' %} selected {% endif %}>Sort by: Date DESC</option>
+                                <option value="created_at-asc" {% if sort == 'created_at-asc' %} selected {% endif %}>Sort by: Date ASC</option>
+                            </select>
+{#                            <input type="hidden" name="sort_direction" value="asc">#}
+                        </div>
+                    </form>
+
                 </div>
             </div>
             <div class="grid gap-4">

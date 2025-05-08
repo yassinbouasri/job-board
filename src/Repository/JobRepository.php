@@ -19,6 +19,8 @@ class JobRepository extends ServiceEntityRepository
     }
 
     public function createPaginatedQueryBuilder(
+        string $sortField = null,
+        string $sortDirection = null,
         ?string $search = null,
         ?string $location = null,
         ?User $createdBy = null,
@@ -26,9 +28,12 @@ class JobRepository extends ServiceEntityRepository
         string $experience = null
     ): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('j')
-            ->orderBy('j.created_at', 'DESC');
 
+        $qb = $this->createQueryBuilder('j');
+
+        if ($sortField !== null && $sortDirection !== null) {
+            $qb->orderBy('j.' . $sortField, $sortDirection);
+        }
         if ($search) {
             $qb->join('j.createdBy', 'u')
                ->addSelect('u')

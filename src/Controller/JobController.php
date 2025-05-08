@@ -29,6 +29,12 @@ final class JobController extends AbstractController{
 
         $location = $request->query->get('location');
 
+        $sort = $request->query->get('sort_by');
+
+
+        if (!empty($sort)){
+            [$sortField, $sortDirection] = $this->getSortValues($sort);
+        }
 
 
         $form = $this->createForm(JobTypeFormType::class);
@@ -43,11 +49,16 @@ final class JobController extends AbstractController{
         $experienceForm = $this->createForm(ExperienceFormType::class);
         $experienceForm->handleRequest($request);
 
-
-        $selectedExperience = EnumValues::getEnum($request, ExperienceEnum::class ,$experienceForm->getName(), 'experience');
-
+        $selectedExperience = EnumValues::getEnum(
+            $request,
+            ExperienceEnum::class ,
+            $experienceForm->getName(),
+            'experience'
+        );
 
         $query = $jobRepository->createPaginatedQueryBuilder(
+            $sortField ?? null,
+            $sortDirection ?? null,
             $search, $location,
             selectedType: $selectedType->value ?? null,
             experience: $selectedExperience->value ?? null,
@@ -69,6 +80,7 @@ final class JobController extends AbstractController{
             'location' => $location,
             'form' => $form->createView(),
             'experienceForm' => $experienceForm->createView(),
+            'sort' => $sort,
         ]);
     }
 
@@ -142,6 +154,27 @@ final class JobController extends AbstractController{
         }
 
         return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    private function getSortValues(string $sort = null): array
+    {
+        if (empty($sort)) {
+            return [];
+        }
+        [$sortBy, $direction] = explode('-', $sort);
+
+        $allowedSorts = ['title','salary','create_at'];
+
+        if (!in_array($sortBy, $allowedSorts)) {
+            return [];
+        }
+
+        if (!in_array($direction, ['asc', 'desc'])) {
+            return [];
+        }
+
+        return [$sortBy, $direction];
     }
 
 
