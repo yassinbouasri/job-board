@@ -31,7 +31,10 @@ final class JobController extends AbstractController{
 
         $sort = $request->query->get('sort_by');
 
-        dump($this->getSortValues($sort));
+
+        if (!empty($sort)){
+            [$sortField, $sortDirection] = $this->getSortValues($sort);
+        }
 
 
         $form = $this->createForm(JobTypeFormType::class);
@@ -54,6 +57,8 @@ final class JobController extends AbstractController{
         );
 
         $query = $jobRepository->createPaginatedQueryBuilder(
+            $sortField ?? null,
+            $sortDirection ?? null,
             $search, $location,
             selectedType: $selectedType->value ?? null,
             experience: $selectedExperience->value ?? null,
@@ -75,6 +80,7 @@ final class JobController extends AbstractController{
             'location' => $location,
             'form' => $form->createView(),
             'experienceForm' => $experienceForm->createView(),
+            'sort' => $sort,
         ]);
     }
 
@@ -151,11 +157,14 @@ final class JobController extends AbstractController{
     }
 
 
-    private function getSortValues(string $sort): array
+    private function getSortValues(string $sort = null): array
     {
-        [$sortBy, $direction] = explode('_', $sort);
+        if (empty($sort)) {
+            return [];
+        }
+        [$sortBy, $direction] = explode('-', $sort);
 
-        $allowedSorts = ['name','location','created'];
+        $allowedSorts = ['title','salary','create_at'];
 
         if (!in_array($sortBy, $allowedSorts)) {
             return [];
