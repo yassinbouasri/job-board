@@ -164,7 +164,7 @@ final class JobController extends AbstractController{
         }
         [$sortBy, $direction] = explode('-', $sort);
 
-        $allowedSorts = ['title','salary','create_at'];
+        $allowedSorts = ['title','salary','created_at'];
 
         if (!in_array($sortBy, $allowedSorts)) {
             return [];
