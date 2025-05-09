@@ -1,3 +1,3 @@
 easyadmin:
-    resource: .
+    resource: '@EasyAdminBundle/Controller/DashboardController.php'
     type: easyadmin.routes
