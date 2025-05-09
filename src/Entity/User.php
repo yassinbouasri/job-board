@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Job>
      */
-    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'createdBy')]
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'createdBy', cascade: ['all'])]
     private Collection $jobs;
 
     /**
