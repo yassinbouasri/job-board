@@ -34,7 +34,7 @@ class UserCrudController extends AbstractCrudController
                 ->setRequired(false),
             EmailField::new('email'),
             TextField::new('password')
-//                ->hideOnIndex()
+                ->hideOnIndex()
                 ->setFormType(PasswordType::class),
             BooleanField::new('isVerified')
                 ->renderAsSwitch(false),
