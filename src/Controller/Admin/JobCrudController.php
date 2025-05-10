@@ -28,17 +28,20 @@ class JobCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            IdField::new('id')
+                   ->onlyOnIndex(),
             TextField::new('title'),
-            TextEditorField::new('description'),
-            Field::new('location'),
+            TextEditorField::new('description')
+                           ->setRequired(false),
+            Field::new('location')
+                 ->setRequired(false),
             MoneyField::new('salary')
                       ->setCurrency('EUR')
                 ->setFormTypeOption('attr', [
                     'style' => 'text-align: left !important'
                 ]),
             Field::new('tags'),
-            DateTimeField::new('createdAt'),
+            DateTimeField::new('createdAt')->OnlyOnIndex(),
             AssociationField::new('createdBy')
                         ->autocomplete()
                         ->formatValue(
