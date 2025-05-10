@@ -33,21 +33,24 @@ class JobCrudController extends AbstractCrudController
             TextEditorField::new('description'),
             Field::new('location'),
             MoneyField::new('salary')
-                      ->setCurrency('EUR'),
+                      ->setCurrency('EUR')
+                ->setFormTypeOption('attr', [
+                    'style' => 'text-align: left !important'
+                ]),
             Field::new('tags'),
             DateTimeField::new('createdAt'),
             AssociationField::new('createdBy')
                         ->autocomplete()
-//                        ->formatValue(
-//                            static function ($value, ?Job $job)
-//                                {
-//                                    if (!$user = $job?->getCreatedBy()) {
-//                                        return null;
-//                                    }
-//
-//                                    return $user->getEmail();
-//                                }
-//                        )
+                        ->formatValue(
+                            static function ($value, ?Job $job)
+                                {
+                                    if (!$user = $job?->getCreatedBy()) {
+                                        return null;
+                                    }
+
+                                    return $user->getEmail();
+                                }
+                        )
                         ->setCrudController(UserCrudController::class),
         ];
     }
