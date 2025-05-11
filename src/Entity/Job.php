@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use function Symfony\Component\String\u;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -215,5 +216,9 @@ class Job
         $this->experience = $experience;
 
         return $this;
+    }
+    public function __toString(): string
+    {
+        return "Job #". $this->getId() .": ". u($this->getTitle())->truncate(strlen($this->getTitle()) / 4, '...');
     }
 }

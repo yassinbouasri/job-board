@@ -26,7 +26,7 @@ class Application
 
     #[ORM\ManyToOne(inversedBy: 'applications')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $applicant = null;
+    private ?User $applicant = null;
 
     public function getId(): ?int
     {
