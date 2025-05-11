@@ -3,12 +3,15 @@ module.exports = {
     content: [
         "./assets/**/*.js",
         "./templates/**/*.html.twig",
-        // Add these if using PHP files:
-        "./src/Controller/**/*.php",
-        "./src/Form/**/*.php"
+        "./templates/**/*.html.twig",
+        "./assets/**/*.js"
     ],
     theme: {
-        extend: {},
+        extend: {
+            screens: {
+                'print': {'raw': 'print'}
+            }
+        },
     },
     plugins: [],
     variants: {
