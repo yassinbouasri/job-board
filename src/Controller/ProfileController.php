@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[IsGranted("IS_AUTHENTICATED_FULLY")]
+#[IsGranted("ROLE_USER")]
 final class ProfileController extends AbstractController{
 
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
