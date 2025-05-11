@@ -7,7 +7,6 @@
     "@symfony/stimulus-bridge": "^3.2.0 || ^4.0.0",
     "@symfony/webpack-encore": "^5.1.0",
     "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/postcss": "^4.1.4",
     "autoprefixer": "^10.4.21",
     "core-js": "^3.38.0",
     "postcss": "^8.5.3",
@@ -16,7 +15,8 @@
     "regenerator-runtime": "^0.13.9",
     "tailwindcss": "^3.4.17",
     "webpack": "^5.74.0",
-    "webpack-cli": "^5.1.0"
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^5.2.1"
   },
   "license": "UNLICENSED",
   "private": true,
