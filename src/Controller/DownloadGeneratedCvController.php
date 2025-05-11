@@ -23,7 +23,7 @@ final class DownloadGeneratedCvController extends AbstractController{
 
         $response = new Response($pdfContent);
         $response->headers->set('Content-Type', 'application/pdf');
-        $response->headers->set('Content-Disposition', 'attachment; filename=cv_' . $user->getProfile()->getFullName() . '.pdf');
+        $response->headers->set('Content-Disposition', 'attachment; filename=cv_' . $user->getProfile()?->getFullName() ?? rand(1,20). '.pdf');
 
 //        return $response;
         return $this->render('cv/template.html.twig', [

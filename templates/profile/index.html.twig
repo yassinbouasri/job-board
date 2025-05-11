@@ -14,7 +14,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="md:col-span-1">
                                 <div class="space-y-4">
-                                    {% if app.user.profile.profilePicture is not null %}
+                                    {% if app.user.profile.profilePicture ?? false %}
                                         <div class="relative">
                                             <img src="{{ asset('uploads/profiles/' ~ app.user.profile.profilePicture) }}"
                                                  alt="Current profile image"
@@ -54,7 +54,7 @@
                             {{ form_widget(form.cv, {'attr': {'class': 'shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
                             {{ form_errors(form.cv) }}
                             <span class="block text-gray-700 text-sm font-thin mt-1">
-                                 {% if app.user.profile.cv is not null %}
+                                 {% if app.user.profile.cv ?? false %}
                                      Download your cv <a href="{{ asset('uploads/resumes/' ~ app.user.profile.cv)  }}" class="text-indigo-600  mt-2">here</a> Or
                                  {% endif %}
                             </span>
