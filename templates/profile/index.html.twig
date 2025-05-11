@@ -55,8 +55,11 @@
                             {{ form_errors(form.cv) }}
                             <span class="block text-gray-700 text-sm font-thin mt-1">
                                  {% if app.user.profile.cv is not null %}
-                                     download your cv <a href="{{ asset('uploads/resumes/' ~ app.user.profile.cv)  }}" class="text-indigo-600  mt-2">here</a>
+                                     Download your cv <a href="{{ asset('uploads/resumes/' ~ app.user.profile.cv)  }}" class="text-indigo-600  mt-2">here</a> Or
                                  {% endif %}
+                            </span>
+                            <span class="block text-gray-700 text-sm font-thin mt-1">
+                                     Generate CV <a href="{{ path('app_download_generated_cv')  }}" class="text-indigo-600  mt-2">here</a>
                             </span>
 
                         </div>
@@ -70,10 +73,12 @@
                     </div>
                     {{ form_end(form) }}
                 </div>
-                        <form method="POST" id="deleteProfilePicture" action="{{ path('app_delete_picture', {'id' : app.user.profile.id }) }}">
-                            <input type="hidden" name="_method" value="POST">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.profile.id) }}">
-                        </form>
+                        {% if app.user.profile.profilePicture is defined %}
+                            <form method="POST" id="deleteProfilePicture" action="{{ path('app_delete_picture', {'id' : app.user.profile.id }) }}">
+                                <input type="hidden" name="_method" value="POST">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.profile.id) }}">
+                            </form>
+                        {% endif %}
             </div>
         </div>
     </div>

@@ -3,110 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <title>CV of {{ profile.fullname }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; margin: 0; }
+        .container { max-width: 56rem; margin: 2rem auto; background: white; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(to right, #2563eb, #1e40af); color: white; padding: 2rem; }
+        .profile-img { width: 8rem; height: 8rem; border: 4px solid white; border-radius: 50%; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .section { padding: 2rem; }
+        h1 { font-size: 1.875rem; font-weight: 700; margin: 0 0 0.5rem; }
+        h2 { font-size: 1.25rem; font-weight: 600; color: #1d4ed8; border-bottom: 2px solid #bfdbfe; padding-bottom: 0.25rem; margin-bottom: 1rem; }
+        .contact-item { display: flex; align-items: center; gap: 0.5rem; }
+        .experience-item { border-left: 4px solid; padding-left: 1rem; margin-bottom: 1.5rem; }
     </style>
 </head>
-<body class="bg-gray-50">
-<div class="max-w-4xl mx-auto my-8 bg-white shadow-lg rounded-lg overflow-hidden">
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 text-white">
-        <div class="flex flex-col md:flex-row items-center">
-            <div class="w-32 h-32 rounded-full border-4 border-white shadow-lg overflow-hidden mb-4 md:mb-0 md:mr-8">
-                <img src="{{ asset( '/uploads/profiles/' ~ profile.profilePicture) }}"
-                     alt="Profile Photo"
-                     class="w-full h-full object-cover">
-            </div>
-            <div>
-                <h1 class="text-3xl font-bold">{{ profile.fullname }}</h1>
-                <div class="flex items-center mt-2">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                    <span>{{ user.email }}</span>
-                </div>
-                <div class="flex items-center mt-1">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                    </svg>
-                    <span>{{ profile.phone }}</span>
-                </div>
+<body>
+<div class="container">
+    <div class="header">
+        <div style="text-align: center;">
+            {% if app.user.profile.profilePicture is defined %}
+                <img src="{{ asset('/uploads/profiles/' ~ app.user.profile.profilePicture) }}" alt="Profile Photo" class="profile-img" >
+            {% endif %}
+                <h1>{{ profile.fullname }}</h1>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <div class="contact-item">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        {{ app.user.email }}
+                    </div>
+                    <div class="contact-item">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                        {{ profile.phone }}
+                    </div>
+
             </div>
         </div>
     </div>
 
-    <div class="p-8">
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 border-b-2 border-blue-200 pb-1 mb-4">Professional Summary</h2>
-            <p class="text-gray-700 italic bg-gray-50 p-4 rounded-lg">
-                [Sample Summary] Experienced professional with demonstrated skills in various technologies.
-                Adept at working in team environments to deliver high-quality solutions. Specializing in
-                web development with 5+ years of experience building scalable applications.
-            </p>
-        </div>
+    <div class="section">
+        <h2>Professional Summary</h2>
+        <p style="background: #f3f4f6; padding: 1rem; border-radius: 0.5rem;">
+            [Sample Summary] Experienced professional with demonstrated skills in various technologies.
+            Adept at working in team environments to deliver high-quality solutions.
+        </p>
 
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 border-b-2 border-blue-200 pb-1 mb-4">Experience</h2>
-
-            <div class="space-y-6">
-                <div class="border-l-4 border-blue-500 pl-4">
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <h3 class="text-lg font-medium text-gray-800">Senior Developer at Example Corp</h3>
-                        <div class="flex items-center text-sm text-gray-500 mt-1 mb-2">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <span>January 2020 - Present</span>
-                        </div>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>Lead development team building enterprise applications with modern web technologies</li>
-                            <li>Implemented CI/CD pipelines reducing deployment time by 40%</li>
-                            <li>Mentored junior developers and conducted code reviews</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="border-l-4 border-blue-300 pl-4">
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h3 class="text-lg font-medium text-gray-800">Junior Developer at Sample Company</h3>
-                        <div class="flex items-center text-sm text-gray-500 mt-1 mb-2">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <span>June 2018 - December 2019</span>
-                        </div>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>Developed and maintained internal business applications</li>
-                            <li>Collaborated with cross-functional teams to deliver new features</li>
-                            <li>Reduced application loading time by 30% through performance optimization</li>
-                        </ul>
-                    </div>
-                </div>
+        <h2>Experience</h2>
+        <div class="experience-item" style="border-color: #3b82f6;">
+            <h3>Senior Developer at Example Corp</h3>
+            <div class="contact-item">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                January 2020 - Present
             </div>
+            <ul>
+                <li>Lead development team building enterprise applications</li>
+                <li>Implemented CI/CD pipelines</li>
+                <li>Mentored junior developers</li>
+            </ul>
         </div>
 
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 border-b-2 border-blue-200 pb-1 mb-4">Education</h2>
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <div class="flex items-start">
-                    <div class="bg-blue-100 p-3 rounded-full mr-4">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-medium text-gray-800">B.Sc. Computer Science</h3>
-                        <p class="text-gray-600">State University</p>
-                        <div class="flex items-center text-sm text-gray-500 mt-1">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <span>2013 - 2017</span>
-                        </div>
-                    </div>
+        <div class="experience-item" style="border-color: #93c5fd;">
+            <h3>Junior Developer at Sample Company</h3>
+            <div class="contact-item">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                June 2018 - December 2019
+            </div>
+            <ul>
+                <li>Developed business applications</li>
+                <li>Collaborated cross-functionally</li>
+                <li>Optimized performance</li>
+            </ul>
+        </div>
+
+        <h2>Education</h2>
+        <div style="display: flex; gap: 1rem; align-items: start;">
+            <div style="background: #dbeafe; padding: 0.75rem; border-radius: 50%;">
+                <svg width="24" height="24" fill="none" stroke="#2563eb" viewBox="0 0 24 24">
+                    <path stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+            </div>
+            <div>
+                <h3>B.Sc. Computer Science</h3>
+                <p>State University</p>
+                <div class="contact-item">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    2013 - 2017
                 </div>
             </div>
         </div>
