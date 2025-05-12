@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Job;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Result;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -65,6 +67,23 @@ class JobRepository extends ServiceEntityRepository
         }
 
         return $qb;
+    }
+
+    public function getJobCountForEachMonth(EntityManagerInterface $entityManager, string $currentYear): Result
+    {
+        $sql = '
+        SELECT EXTRACT(MONTH FROM j.created_at) AS month, COUNT(j.id) AS jobCount
+        FROM job j
+        WHERE EXTRACT(YEAR FROM j.created_at) = :year
+        GROUP BY month
+        ORDER BY month ASC
+    ';
+        $query = $entityManager
+            ->getConnection()
+            ->prepare($sql);
+        $result = $query->executeQuery(['year' => $currentYear]);
+
+        return $result;
     }
 
 //    /**
