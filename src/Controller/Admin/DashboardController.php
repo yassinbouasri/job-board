@@ -6,6 +6,7 @@ use App\Entity\Application;
 use App\Entity\Job;
 use App\Entity\Profile;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -13,35 +14,24 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Stopwatch\Section;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
+#[IsGranted('ROLE_ADMIN')]
 class DashboardController extends AbstractDashboardController
 {
-    #[IsGranted('ROLE_ADMIN')]
+    public function __construct(
+        private ChartBuilderInterface $chartBuilder,
+        private EntityManagerInterface $entityManager,
+    ) { }
+
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
 
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // 1.1) If you have enabled the "pretty URLs" feature:
-        // return $this->redirectToRoute('admin_user_index');
-        //
-        // 1.2) Same example but using the "ugly URLs" that were used in previous EasyAdmin versions:
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirectToRoute('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
+        return $this->render('admin/index.html.twig', [
+            'chart' => $this->getChart(),
+        ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -52,7 +42,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-//        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Dashboard', 'fa-solid fa-chart-simple');
         yield MenuItem::section('Jobs Management');
         yield MenuItem::linkToRoute('Job Board', 'fa fa-home', 'app_job_index');
         yield MenuItem::linkToCrud('Jobs', 'fa fa-briefcase', Job::class);
@@ -67,6 +57,60 @@ class DashboardController extends AbstractDashboardController
     public function configureActions(): Actions
     {
         return parent::configureActions();
+    }
+    /**
+     * @return Chart
+     */
+    public function getChart(): Chart
+    {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+
+        $chart->setData(
+            [
+                'labels'   => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                'datasets' => [
+                    [
+                        'label'           => 'Jobs Posts',
+                        'backgroundColor' => 'rgb(255, 99, 132)',
+                        'borderColor'     => 'rgb(255, 99, 132)',
+                        'data'            => $this->getJobsGroupedByMonth($this->entityManager),
+                    ],
+                ],
+            ]
+        );
+
+        $chart->setOptions(
+            [
+                'scales' => [
+                    'y' => [
+                        'suggestedMin' => 0,
+                        'suggestedMax' => 100,
+                    ],
+                ],
+            ]
+        );
+
+        return $chart;
+    }
+
+    private function getJobsGroupedByMonth(EntityManagerInterface $entityManager)
+    {
+        $currentYear = (new \DateTime())->format('Y');
+        $jobRepository = $entityManager->getRepository(Job::class);
+
+        $result = $jobRepository->getJobCountForEachMonth($entityManager, $currentYear);
+
+        $data = $result->fetchAllAssociative();
+
+        $jobCounts = array_fill(0, 12, 0);
+
+        foreach ($data as $row) {
+            $month = (int) $row['month'] - 1;
+            $jobCounts[$month] = (int) $row['jobcount'];
+
+        }
+
+        return $jobCounts;
     }
 
 }

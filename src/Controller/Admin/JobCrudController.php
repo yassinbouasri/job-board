@@ -18,10 +18,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
+#[IsGranted('ROLE_ADMIN')]
 class JobCrudController extends AbstractCrudController
 {
-    #[IsGranted('ROLE_ADMIN')]
     public static function getEntityFqcn(): string
     {
         return Job::class;
