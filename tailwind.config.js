@@ -1,23 +1,14 @@
 module.exports = {
     content: [
         "./assets/**/*.js",
-        "./templates/**/*.html.twig",
-        "./templates/**/*.html.twig",
-        "./assets/**/*.js"
+        "./templates/**/*.html.twig"
     ],
     theme: {
         extend: {
             screens: {
-                'print': {'raw': 'print'}
+                'print': { 'raw': 'print' }
             }
-        },
+        }
     },
-    plugins: [],
-    variants: {
-        extend: {
-            backgroundColor: ['disabled', 'enabled'],
-            opacity: ['disabled'],
-            cursor: ['disabled'],
-        },
-    },
-}
+    plugins: []
+};
