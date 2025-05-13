@@ -21,7 +21,7 @@
             <!-- Tab Navigation -->
             <div class="border-b border-gray-200 mb-8">
                 <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                    <a href="#"
+                    <a href="{{ path('app_register_user') }}"
                        class="{{ app.request.attributes.get('_route') == 'app_register_user' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
                         User Registration
                     </a>
@@ -33,6 +33,7 @@
             </div>
 
             {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
+            {% if registrationForm.company_name is defined%}
             <div>
                 {{ form_label(registrationForm.company_name, 'Company Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
                 <div class="mt-1">
@@ -43,6 +44,7 @@
                     {{ form_errors(registrationForm.company_name, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
                 </div>
             </div>
+            {% endif %}
 
             <div>
                 {{ form_label(registrationForm.email, 'Email address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}

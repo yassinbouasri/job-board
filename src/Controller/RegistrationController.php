@@ -23,16 +23,25 @@ class RegistrationController extends AbstractController
     {
     }
 
-    #[Route('/register', name: 'app_register_company')]
-    public function companyRegistration(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    #[Route('/register/user', name: 'app_register_user')]
+    #[Route('/register/company', name: 'app_register_company')]
+    public function registration(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $isCompanyRegistraion = $request->attributes->get('_route') === 'app_register_company';
+        $form = $this->createForm(RegistrationFormType::class, $user, [
+            'is_company_registration' => $isCompanyRegistraion,
+        ]);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->register($form, $user, $userPasswordHasher, $entityManager, ['ROLE_USER', 'ROLE_PUBLISHER']);
+            if ($isCompanyRegistraion) {
+                $this->register($form, $user, $userPasswordHasher, $entityManager, ['ROLE_USER', 'ROLE_PUBLISHER']);
+            } else {
+                $this->register($form, $user, $userPasswordHasher, $entityManager);
+            }
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation(
