@@ -3,69 +3,82 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Create a new account
-            </h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                Or
-                <a href="{{ path('app_login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    login to existing account
-                </a>
-            </p>
-        </div>
+<div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Create a new account
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+            Or
+            <a href="{{ path('app_login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                login to existing account
+            </a>
+        </p>
+    </div>
 
-        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
-                <div>
-                    {{ form_label(registrationForm.company_name, 'Company Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.company_name, {'attr': {
-                            'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' ~ (form_errors(registrationForm.email) ? ' border-red-500' : ''),
-                            'autocomplete': 'email'
-                        }}) }}
-                        {{ form_errors(registrationForm.company_name, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
-                    </div>
-                </div>
-
-                {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
-                <div>
-                    {{ form_label(registrationForm.email, 'Email address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.email, {'attr': {
-                            'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' ~ (form_errors(registrationForm.email) ? ' border-red-500' : ''),
-                            'autocomplete': 'email'
-                        }}) }}
-                        {{ form_errors(registrationForm.email, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
-                    </div>
-                </div>
-
-                <div>
-                    {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {
-                            'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' ~ (form_errors(registrationForm.plainPassword) ? ' border-red-500' : ''),
-                            'autocomplete': 'new-password'
-                        }}) }}
-                        {{ form_errors(registrationForm.plainPassword, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
-                    </div>
-                </div>
-
-                <div class="flex items-center">
-                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'}}) }}
-                    {{ form_label(registrationForm.agreeTerms, 'I agree to the terms and conditions', {'label_attr': {'class': 'ml-2 block text-sm text-gray-900'}}) }}
-                    {{ form_errors(registrationForm.agreeTerms, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
-                </div>
-
-                <div>
-                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Register
-                    </button>
-                </div>
-                {{ form_end(registrationForm) }}
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <!-- Tab Navigation -->
+            <div class="border-b border-gray-200 mb-8">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <a href="#"
+                       class="{{ app.request.attributes.get('_route') == 'app_register_user' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                        User Registration
+                    </a>
+                    <a href="{{ path('app_register_company') }}"
+                       class="{{ app.request.attributes.get('_route') == 'app_register_company' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                        Company Registration
+                    </a>
+                </nav>
             </div>
+
+            {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
+            <div>
+                {{ form_label(registrationForm.company_name, 'Company Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(registrationForm.company_name, {'attr': {
+                        'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' ~ (form_errors(registrationForm.company_name) ? ' border-red-500' : ''),
+                        'autocomplete': 'organization'
+                    }}) }}
+                    {{ form_errors(registrationForm.company_name, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
+                </div>
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.email, 'Email address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(registrationForm.email, {'attr': {
+                        'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' ~ (form_errors(registrationForm.email) ? ' border-red-500' : ''),
+                        'autocomplete': 'email'
+                    }}) }}
+                    {{ form_errors(registrationForm.email, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
+                </div>
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {
+                        'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' ~ (form_errors(registrationForm.plainPassword) ? ' border-red-500' : ''),
+                        'autocomplete': 'new-password'
+                    }}) }}
+                    {{ form_errors(registrationForm.plainPassword, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
+                </div>
+            </div>
+
+            <div class="flex items-center">
+                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'}}) }}
+                {{ form_label(registrationForm.agreeTerms, 'I agree to the terms and conditions', {'label_attr': {'class': 'ml-2 block text-sm text-gray-900'}}) }}
+                {{ form_errors(registrationForm.agreeTerms, {'attr': {'class': 'mt-2 text-sm text-red-600'}}) }}
+            </div>
+
+            <div>
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Register Company
+                </button>
+            </div>
+            {{ form_end(registrationForm) }}
         </div>
     </div>
+</div>
 {% endblock %}
