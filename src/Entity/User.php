@@ -40,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private ?bool $isVerified = true;
+    private ?bool $isVerified = false;
 
     /**
      * @var Collection<int, Job>
