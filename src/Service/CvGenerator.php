@@ -7,7 +7,7 @@ namespace App\Service;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Symfony\Component\Security\Core\User\UserInterface;
+//use Symfony\Flex\Options;
 use Twig\Environment;
 
 class CvGenerator
