@@ -10,7 +10,7 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **Apply Online**: Submit applications directly through the platform 
 - **Profile Management**: Create and update professional profiles with resume/CV upload, or genereate a CV 
 - **Application Tracking**: Monitor applications
-- <img width="1238" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
+- <img width="300" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
 
 
 ### Employer
