@@ -12,6 +12,8 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **Application Tracking**: Monitor applications
  <img width="300" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
  <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/32fd397f-c04e-42fc-989a-3a2df7f7c506" />
+ <img width="300" alt="image" src="https://github.com/user-attachments/assets/609ff6fe-7929-429c-8c6c-98ec295a76da" />
+
 
 
 ### Employer
