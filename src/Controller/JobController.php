@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/job')]
-#[IsGranted("ROLE_USER")]
+#[IsGranted("IS_AUTHENTICATED_FULLY")]
 final class JobController extends AbstractController{
     #[Route(name: 'app_job_index', methods: ['GET'])]
     public function index(Request $request,JobRepository $jobRepository, PaginatorInterface $paginator): Response
