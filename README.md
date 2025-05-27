@@ -12,7 +12,6 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **Profile Management**: Create and update professional profiles with resume/CV upload, or genereate a CV 
 - **Application Tracking**: Monitor applications
  <img width="300" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
- <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/32fd397f-c04e-42fc-989a-3a2df7f7c506" />
  <img width="300" alt="image" src="https://github.com/user-attachments/assets/0c845f38-5468-469d-8a34-4c99fd100c93" />
  <img width="300" alt="image" src="https://github.com/user-attachments/assets/e040d07a-8d64-4657-bb98-98288d7b53d3" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/5c851d9b-0745-4d55-b09b-011b528a9524" />
@@ -24,7 +23,8 @@ A modern web application connecting job seekers with employers. Built with Symfo
 
 ### Employer
 - **Post Jobs**: Easy job listing creation  
-- **Manage Applications**: Track candidate applications in dashboard  
+- **Manage Applications**: Track candidate applications in dashboard
+<img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/32fd397f-c04e-42fc-989a-3a2df7f7c506" />
 
 ### Admin
 - **User Management**: Manage users and roles  
