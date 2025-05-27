@@ -86,3 +86,9 @@ npm run dev
   # Mailer Configuration (Mailtrap Example)
   MAILER_DSN="smtp://*****:*****@sandbox.smtp.mailtrap.io:2525"
 ```
+
+4. **Database Configuration**
+```bash
+symfony console doctrine:database:create
+symfony console doctrine:migrations:migrate
+```
