@@ -79,11 +79,10 @@ npm run dev
 ```bash
   cp .env .env.local
 ```
+
 3. **Database Configuration**
-   ```bash
-  DATABASE_URL="postgresql://app:your_password@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
-```
-# Mailer Configuration (Mailtrap Example)
 ```bash
+  DATABASE_URL="postgresql://app:your_password@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
+  # Mailer Configuration (Mailtrap Example)
   MAILER_DSN="smtp://*****:*****@sandbox.smtp.mailtrap.io:2525"
-   ```
+```
