@@ -71,5 +71,7 @@ cd job-board
 
 npm install
 npm run dev
+
 2. **Configure Environment**
+```bash
   cp .env .env.local
