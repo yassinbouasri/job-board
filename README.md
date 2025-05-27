@@ -30,6 +30,7 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **User Management**: Manage users and roles  
 - **Content Moderation**: Review and approve job postings  
 - **Analytics**: View platform usage statistics
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/fb70296c-c73f-459e-a2a8-b7b24edb313b" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/5c851d9b-0745-4d55-b09b-011b528a9524" />
 
 
