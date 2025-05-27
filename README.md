@@ -93,7 +93,15 @@ symfony console doctrine:database:create
 symfony console doctrine:migrations:migrate
 ```
 
- 5. **Run the Development Server**
+5. **Docker Setup**
+```bash
+docker-compose up -d --build
+docker-compose exec php composer install
+
+docker compose up -d
+```
+
+ 6. **Run the Development Server**
 ```bash
 symfony serve
 ```
