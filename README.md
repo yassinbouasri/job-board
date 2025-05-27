@@ -68,3 +68,6 @@ A modern web application connecting job seekers with employers. Built with Symfo
 ```bash
 git clone https://github.com/yourusername/job-board.git
 cd job-board
+
+npm install
+npm run dev
