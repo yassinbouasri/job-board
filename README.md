@@ -24,7 +24,9 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **Manage Applications**: Track candidate applications in dashboard
 <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/32fd397f-c04e-42fc-989a-3a2df7f7c506" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e040d07a-8d64-4657-bb98-98288d7b53d3" />
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/6d28d430-e5fc-4b71-9e40-7f1577e7e307" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/0ed530cf-f2d8-4f16-a181-c3d5bcecddae" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/124983ea-b140-45ca-a251-56b5352e2680" />
+
 
 
 
