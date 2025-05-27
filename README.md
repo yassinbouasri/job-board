@@ -92,3 +92,9 @@ npm run dev
 symfony console doctrine:database:create
 symfony console doctrine:migrations:migrate
 ```
+
+ 5. **Run the Development Server**
+```bash
+symfony serve
+```
+Visit `http://localhost:8000/login` in your browser.
