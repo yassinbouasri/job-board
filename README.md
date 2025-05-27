@@ -13,7 +13,6 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **Application Tracking**: Monitor applications
  <img width="300" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
  <img width="300" alt="image" src="https://github.com/user-attachments/assets/0c845f38-5468-469d-8a34-4c99fd100c93" />
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/5c851d9b-0745-4d55-b09b-011b528a9524" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/fda7dd21-144c-42c1-8f5e-723bc86919c9" />
 
 
@@ -30,7 +29,9 @@ A modern web application connecting job seekers with employers. Built with Symfo
 ### Admin
 - **User Management**: Manage users and roles  
 - **Content Moderation**: Review and approve job postings  
-- **Analytics**: View platform usage statistics  
+- **Analytics**: View platform usage statistics
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/5c851d9b-0745-4d55-b09b-011b528a9524" />
+
 
 ## Technology Stack
 
