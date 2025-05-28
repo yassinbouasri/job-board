@@ -106,3 +106,9 @@ docker compose up -d
 symfony serve
 ```
 Visit `http://localhost:8000/login` in your browser.
+
+7. **Future Features**
+- Job Alerts: Email notifications for new job listings based on preferences
+- Saved Jobs: Bookmark jobs to apply later
+- Dark Mode UI
+- API
