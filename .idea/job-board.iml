@@ -124,6 +124,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/dompdf/php-svg-lib" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/masterminds/html5" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sabberworm/php-css-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/messenger" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/remote-event" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/webhook" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

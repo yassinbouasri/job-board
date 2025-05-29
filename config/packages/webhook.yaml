@@ -1,0 +1,6 @@
+framework:
+  webhook:
+    routing:
+      EmailConsumer:
+        service: App\Webhook\EmailConsumerRequestParser
+        secret: your_secret_here

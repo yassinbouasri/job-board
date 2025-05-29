@@ -13,6 +13,15 @@
             "src/ApiResource/.gitignore"
         ]
     },
+    "doctrine/deprecations": {
+        "version": "1.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "87424683adc81d7dc305eefec1fced883084aab9"
+        }
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.14",
         "recipe": {
@@ -184,6 +193,18 @@
             "config/packages/mercure.yaml"
         ]
     },
+    "symfony/messenger": {
+        "version": "7.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "ba1ac4e919baba5644d31b57a3284d6ba12d52ee"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
+    },
     "symfony/routing": {
         "version": "7.2",
         "recipe": {
@@ -298,6 +319,18 @@
         "files": [
             "config/packages/web_profiler.yaml",
             "config/routes/web_profiler.yaml"
+        ]
+    },
+    "symfony/webhook": {
+        "version": "7.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.3",
+            "ref": "0bc853a74c98e448116ba53e118a7b6b3cdf9a03"
+        },
+        "files": [
+            "config/routes/webhook.yaml"
         ]
     },
     "symfony/webpack-encore-bundle": {
