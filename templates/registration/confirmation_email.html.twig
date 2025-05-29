@@ -1,11 +1,88 @@
-<h1>Hi! Please confirm your email!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your Email</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media (max-width: 600px) {
+            .container {
+                width: 100% !important;
+            }
+            .button {
+                display: block !important;
+                width: 100% !important;
+            }
+        }
+        .bg-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+<!-- Main container with centered content -->
+<table class="w-full" cellpadding="0" cellspacing="0" role="presentation">
+    <tr>
+        <td align="center" class="py-12 px-4">
+            <!-- Card container -->
+            <table class="container max-w-lg bg-white rounded-xl shadow-sm border border-gray-200" cellpadding="0" cellspacing="0" role="presentation">
+                <!-- Header -->
+                <tr>
+                    <td class="bg-gradient text-center py-8 rounded-t-xl">
+                        <h1 class="text-3xl font-bold text-white">Confirm Your Email</h1>
+                    </td>
+                </tr>
 
-<p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
-</p>
+                <!-- Content -->
+                <tr>
+                    <td class="px-6 py-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Welcome!</h2>
+                        <p class="text-gray-600 mb-6">
+                            Thank you for registering. Please confirm your email address to activate your account.
+                        </p>
 
-<p>
-    Cheers!
-</p>
+                        <!-- Action Button -->
+                        <table class="w-full mb-8" cellpadding="0" cellspacing="0" role="presentation">
+                            <tr>
+                                <td align="center">
+                                    <a href="{{ signedUrl|raw }}"
+                                       class="button inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                                        Confirm Email Address
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Expiration notice -->
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded">
+                            <p class="text-yellow-700">
+                                ⏳ This link expires in <strong>{{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}</strong>
+                            </p>
+                        </div>
+
+                        <!-- Support text -->
+                        <p class="text-gray-500 text-sm mb-4">
+                            If you didn't create this account, you can safely ignore this email.
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td class="bg-gray-50 px-6 py-4 text-center rounded-b-xl">
+                        <p class="text-gray-500 text-sm">
+                            Sent by <span class="font-medium">Job Board</span> •
+                            <a href="#" class="text-indigo-600 hover:text-indigo-700">Help Center</a>
+                        </p>
+                        <p class="text-gray-400 text-xs mt-2">
+                            © {{ "now"|date("Y") }} Job Board. All rights reserved.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
