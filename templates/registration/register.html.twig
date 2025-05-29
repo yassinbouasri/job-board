@@ -22,11 +22,11 @@
             <div class="border-b border-gray-200 mb-8">
                 <nav class="-mb-px flex space-x-8" aria-label="Tabs">
                     <a href="{{ path('app_register_user') }}"
-                       class="{{ app.request.attributes.get('_route') == 'app_register_user' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                       class="{{ app.current_route == 'app_register_user' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
                         User Registration
                     </a>
                     <a href="{{ path('app_register_company') }}"
-                       class="{{ app.request.attributes.get('_route') == 'app_register_company' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                       class="{{ app.current_route == 'app_register_company' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
                         Company Registration
                     </a>
                 </nav>
@@ -75,9 +75,16 @@
             </div>
 
             <div>
-                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Register Company
-                </button>
+                {% if  app.current_route == "app_register_user"%}
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Register user
+                    </button>
+                    {% else %}
+                        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Register Company
+                        </button>
+                {% endif %}
+
             </div>
             {{ form_end(registrationForm) }}
         </div>
