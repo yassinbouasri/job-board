@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Service\EmailDomainChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -50,6 +51,10 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             if ($isCompanyRegistraion) {
+                if (EmailDomainChecker::isFreeDomain($user->getEmail())) {
+                    $this->addFlash("error", "Free email services are not allowed. Please use your company email.");
+                    return $this->redirectToRoute('app_register_company');
+                }
                 $this->register($form, $user, $userPasswordHasher, $entityManager, ['ROLE_USER', 'ROLE_PUBLISHER']);
             } else {
                 $this->register($form, $user, $userPasswordHasher, $entityManager);
