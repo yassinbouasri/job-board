@@ -36,6 +36,8 @@ class RegistrationController extends AbstractController
         MailerInterface $mailer,
         LoggerInterface $logger,
     ): Response {
+        dump($this->getParameter('kernel.environment'));
+
         $user = new User();
         $isCompanyRegistraion = $request->attributes->get('_route') === 'app_register_company';
         $form = $this->createForm(
@@ -102,6 +104,7 @@ class RegistrationController extends AbstractController
         array $roles = ['ROLE_USER']
     ): void {
         /** @var string $plainPassword */
+
         $plainPassword = $form
             ->get('plainPassword')
             ->getData();
