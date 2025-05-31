@@ -1,20 +1,22 @@
-# Use PHP 8.2 FPM image
-FROM php:8.2-fpm
+# Use PHP 8.2 FPM Alpine image (smaller and more secure)
+FROM php:8.2-fpm-alpine
 
 # Set working directory inside container
 WORKDIR /var/www/html
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies and PHP extensions
+RUN apk add --no-cache \
     git \
     unzip \
-    libpq-dev \
+    postgresql-dev \
     libzip-dev \
-    zip \
-    libicu-dev \
-    libonig-dev \
+    icu-dev \
+    oniguruma-dev \
     libxml2-dev \
     curl \
+    openssl \
+    busybox-extras \  # Includes telnet
+    bind-tools \      # Includes dig, nslookup
     && docker-php-ext-install intl pdo pdo_pgsql zip
 
 # Install Composer (latest version)

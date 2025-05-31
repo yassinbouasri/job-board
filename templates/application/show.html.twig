@@ -2,6 +2,7 @@
 {% block title %}{% endblock %}
 {% block body %}
 
+
 <div class="container mx-auto px-4 py-8 max-w-4xl">
     <div class="mb-6 flex justify-between items-start">
         <a href="{{ path('app_your_jobs_index') }}" class="text-indigo-600 hover:text-indigo-800 flex items-center">
@@ -69,9 +70,18 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {{ application.applicant.email }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            {{ application.coverLetter|u.truncate(15, '...') }}
-                        </td>
+
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button onclick="window.dispatchEvent(new CustomEvent('open-modal'))" class="text-indigo-600 hover:underline">
+                                {{ application.coverLetter|u.truncate(15, '...') }}
+                                </button>
+                            </td>
+
+                        {% include 'components/modal.html.twig' with{
+                            content: application.coverLetter,
+                            title: 'Cover Letter'
+                        }%}
+
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <a href="{{ asset('uploads/resumes/' ~ application.resume) }}"
                                class="text-indigo-600 hover:text-indigo-900 mr-4"
