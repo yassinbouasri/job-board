@@ -31,6 +31,12 @@
             <div class="md:w-48 flex flex-col justify-between items-start md:items-end">
                 <div class="text-lg font-semibold text-green-700">{{ job.salary|format_currency('EUR') }}</div>
                 <div class="text-sm text-gray-500">{{ job.createdAt|ago }}</div>
+                <a href="{{ path('job_bookmark', {id: job.id}) }}"
+                   class="bookmark-btn {{ app.user.bookmarkedJobs.contains(job) ? 'bookmarked' : '' }}"
+                   data-controller="bookmark"
+                   data-action="ajax:success->bookmark#toggle">
+                    ♥
+                </a>
                 <a href="{{ path('app_apply', {'id': job.id }) }}" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
                     Apply Now
                 </a>
