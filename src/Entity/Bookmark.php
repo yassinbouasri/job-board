@@ -13,11 +13,11 @@ class Bookmark
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookmarks')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $usr = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookmarks')]
+    #[ORM\ManyToOne(targetEntity: Job::class, inversedBy: 'bookmarks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Job $job = null;
 
