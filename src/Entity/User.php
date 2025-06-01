@@ -57,10 +57,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'userProfile', cascade: ['persist', 'remove'])]
     private ?Profile $profile = null;
 
+    /**
+     * @var Collection<int, Bookmark>
+     */
+    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'usr')]
+    private Collection $bookmarks;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
         $this->applications = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -239,5 +246,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return "User #" . $this->getId() . " " . $this->email;
+    }
+
+    /**
+     * @return Collection<int, Bookmark>
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Bookmark $bookmark): static
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks->add($bookmark);
+            $bookmark->setUsr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): static
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getUsr() === $this) {
+                $bookmark->setUsr(null);
+            }
+        }
+
+        return $this;
     }
 }

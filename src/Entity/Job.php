@@ -61,9 +61,16 @@ class Job
     #[ORM\Column(nullable: true, enumType: ExperienceEnum::class)]
     private ?ExperienceEnum $experience = null;
 
+    /**
+     * @var Collection<int, Bookmark>
+     */
+    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'job')]
+    private Collection $bookmarks;
+
     public function __construct()
     {
         $this->applications = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -220,5 +227,35 @@ class Job
     public function __toString(): string
     {
         return "Job #". $this->getId() .": ". u($this->getTitle())->truncate(strlen($this->getTitle()) / 4, '...');
+    }
+
+    /**
+     * @return Collection<int, Bookmark>
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Bookmark $bookmark): static
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks->add($bookmark);
+            $bookmark->setJob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): static
+    {
+        if ($this->bookmarks->removeElement($bookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getJob() === $this) {
+                $bookmark->setJob(null);
+            }
+        }
+
+        return $this;
     }
 }
