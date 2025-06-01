@@ -251,16 +251,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Bookmark>
      */
-    public function getBookmarks(): Collection
+    public function getBookmarkedJobs(): Collection
     {
         return $this->bookmarks;
     }
 
-    public function addBookmark(Bookmark $bookmark): static
+    public function addBookmarkedJob(Bookmark $bookmark, Job $job): static
     {
         if (!$this->bookmarks->contains($bookmark)) {
             $this->bookmarks->add($bookmark);
             $bookmark->setUsr($this);
+            $bookmark->setJob($job);
         }
 
         return $this;
