@@ -256,15 +256,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->bookmarks;
     }
 
-    public function addBookmarkedJob(Bookmark $bookmark, Job $job): static
+    public function isBookmarkedJob(Job $job): bool
+    {
+        foreach ($this->bookmarks as $bookmark) {
+            if ($bookmark->getJob()->getId() === $job->getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function addBookmarkedJob(Bookmark $bookmark, Job $job): void
     {
         if (!$this->bookmarks->contains($bookmark)) {
             $this->bookmarks->add($bookmark);
             $bookmark->setUsr($this);
             $bookmark->setJob($job);
         }
-
-        return $this;
     }
 
     public function removeBookmark(Bookmark $bookmark): static
