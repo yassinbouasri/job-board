@@ -275,15 +275,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
     }
 
-    public function removeBookmark(Bookmark $bookmark): static
+    public function removeBookmark(Job $job): static
     {
-        if ($this->bookmarks->removeElement($bookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($bookmark->getUsr() === $this) {
+        foreach ($this->bookmarks as $bookmark) {
+            if ($bookmark->getJob()->getId() === $job->getId()) {
+                $this->bookmarks->removeElement($bookmark);
                 $bookmark->setUsr(null);
             }
         }
-
         return $this;
     }
 }

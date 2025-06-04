@@ -32,7 +32,9 @@ final class JobController extends AbstractController{
 
         $sort = $request->query->get('sort_by');
 
+        $user = $this->getUser();
 
+//        dd($user->isBookmarkedJob(369));
         if (!empty($sort)){
             [$sortField, $sortDirection] = $this->getSortValues($sort);
         }

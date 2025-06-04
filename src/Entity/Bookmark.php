@@ -50,8 +50,4 @@ class Bookmark
         return $this;
     }
 
-    public function isBookmarked(User $user, Job $job): bool
-    {
-        return $user->getBookmarkedJobs()->contains($job);
-    }
 }
