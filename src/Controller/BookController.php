@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Bookmark;
 use App\Entity\Job;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Orm\EntityRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,7 +33,8 @@ final class BookController extends AbstractController{
         return $this->redirectToRoute('app_job_index');
     }
 
-    public function unbookmark(Job $job, EntityManagerInterface $em,Bookmark $bookmark): Response
+    #[Route('/job/{id}/unbookmark', name: 'job_unbookmark')]
+    public function unbookmark(Job $job, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
 
@@ -41,13 +43,19 @@ final class BookController extends AbstractController{
             return $this->redirectToRoute('app_job_index');
         }
 
-        $user->removeBookmark($job);
+        $bookmark = $em->getRepository(Bookmark::class)->findOneBy([
+            'job' => $job,
+            'usr' => $user
+        ]);
 
-        $em->persist($bookmark);
+        if (!$bookmark){
+            $this->addFlash('warning', 'Job not found!');
+            return $this->redirectToRoute('app_job_index');
+        }
+
+        $em->remove($bookmark);
         $em->flush();
-        $this->addFlash('success', 'Job unbookmarked!');
+        $this->addFlash('success', 'Job removed from bookmark!');
         return $this->redirectToRoute('app_job_index');
-
-
     }
 }
