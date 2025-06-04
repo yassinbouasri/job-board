@@ -31,4 +31,23 @@ final class BookController extends AbstractController{
 
         return $this->redirectToRoute('app_job_index');
     }
+
+    public function unbookmark(Job $job, EntityManagerInterface $em,Bookmark $bookmark): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user){
+            $this->addFlash('warning', 'You must be logged in to bookmark jobs.');
+            return $this->redirectToRoute('app_job_index');
+        }
+
+        $user->removeBookmark($job);
+
+        $em->persist($bookmark);
+        $em->flush();
+        $this->addFlash('success', 'Job unbookmarked!');
+        return $this->redirectToRoute('app_job_index');
+
+
+    }
 }
