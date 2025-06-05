@@ -39,14 +39,17 @@
 
 
                 {% if app.user.isBookmarkedJob(job) == false %}
-                    <a href="{{ path('job_bookmark', {id: job.id}) }}">
+                    <a href="{{ path('job_bookmark', {id: job.id}) }}"
+                       class="text-gray-400 hover:text-red-500 text-xl transition">
                         ♡
                     </a>
                 {% else %}
-                    <a href="{{ path('job_unbookmark', {id: job.id}) }}">
+                    <a href="{{ path('job_unbookmark', {id: job.id}) }}"
+                       class="text-red-500 hover:text-red-600 text-xl transition">
                         ♥
                     </a>
                 {% endif %}
+
                 <a href="{{ path('app_apply', {'id': job.id }) }}"
                    class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
                     Apply Now
