@@ -5,13 +5,12 @@ namespace App\Controller;
 use App\Entity\Bookmark;
 use App\Entity\Job;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Contracts\Orm\EntityRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class BookController extends AbstractController{
-    #[Route('/job/{id}/bookmark', name: 'job_bookmark')]
+    #[Route('/job/{id}/bookmark', name: 'job_bookmark', methods: ['GET'])]
     public function bookmark(Job $job, EntityManagerInterface $em,): Response
     {
 
@@ -33,7 +32,7 @@ final class BookController extends AbstractController{
         return $this->redirectToRoute('app_job_index');
     }
 
-    #[Route('/job/{id}/unbookmark', name: 'job_unbookmark')]
+    #[Route('/job/{id}/unbookmark', name: 'job_unbookmark', methods: ['GET'])]
     public function unbookmark(Job $job, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
