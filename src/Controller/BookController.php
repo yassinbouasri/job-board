@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Bookmark;
 use App\Entity\Job;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -55,6 +57,35 @@ final class BookController extends AbstractController{
         $em->remove($bookmark);
         $em->flush();
         $this->addFlash('success', 'Job removed from bookmark!');
+
         return $this->redirectToRoute('app_job_index');
+    }
+
+    #[Route("/bookmarkList", name: 'app_bookmarkList', methods: ['GET'])]
+    public function bookmarkList(Request $request ,EntityManagerInterface $em, PaginatorInterface $paginator): Response
+    {
+        $user = $this->getUser();
+        $bookmarks = $em->getRepository(Bookmark::class)->findBy([
+            'usr' => $user
+        ]);
+
+        $jobs = null;
+
+        foreach ($bookmarks as $bookmark){
+          $jobs[] = $bookmark->getJob();
+        }
+
+        $page = $request->query->getInt('page', 1);
+        $pagination = $paginator->paginate(
+            $jobs,
+            $page,
+            3
+        );
+
+
+        return $this->render('bookmark/list.html.twig', [
+            'jobs' => $jobs,
+            'pagination' => $pagination,
+        ]);
     }
 }

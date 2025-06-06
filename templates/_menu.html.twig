@@ -33,6 +33,7 @@
                             {% if is_granted('ROLE_PUBLISHER') %}
                                 <a href="{{ path('app_your_jobs_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Jobs</a>
                             {% endif %}
+                            <a href="{{ path('app_bookmarkList') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Bookmarks</a>
                             <a href="{{ path('app_logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
                         </div>
                     </div>
