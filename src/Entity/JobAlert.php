@@ -1,0 +1,139 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\JobAlertRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: JobAlertRepository::class)]
+class JobAlert
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'jobAlert')]
+    private Collection $usr;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $keyword = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $location = null;
+
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private ?array $tags = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $frequency = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastNotifiedAt = null;
+
+    public function __construct()
+    {
+        $this->usr = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsr(): Collection
+    {
+        return $this->usr;
+    }
+
+    public function addUsr(User $usr): static
+    {
+        if (!$this->usr->contains($usr)) {
+            $this->usr->add($usr);
+            $usr->setJobAlert($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsr(User $usr): static
+    {
+        if ($this->usr->removeElement($usr)) {
+            // set the owning side to null (unless already changed)
+            if ($usr->getJobAlert() === $this) {
+                $usr->setJobAlert(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getKeyword(): ?string
+    {
+        return $this->keyword;
+    }
+
+    public function setKeyword(?string $keyword): static
+    {
+        $this->keyword = $keyword;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): static
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getTags(): ?array
+    {
+        return $this->tags;
+    }
+
+    public function setTags(?array $tags): static
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
+
+    public function getFrequency(): ?string
+    {
+        return $this->frequency;
+    }
+
+    public function setFrequency(?string $frequency): static
+    {
+        $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    public function getLastNotifiedAt(): ?\DateTimeImmutable
+    {
+        return $this->lastNotifiedAt;
+    }
+
+    public function setLastNotifiedAt(?\DateTimeImmutable $lastNotifiedAt): static
+    {
+        $this->lastNotifiedAt = $lastNotifiedAt;
+
+        return $this;
+    }
+}

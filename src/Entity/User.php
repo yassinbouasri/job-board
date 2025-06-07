@@ -63,6 +63,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'usr')]
     private Collection $bookmarks;
 
+    #[ORM\ManyToOne(inversedBy: 'usr')]
+    private ?JobAlert $jobAlert = null;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
@@ -283,6 +286,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $bookmark->setUsr(null);
             }
         }
+        return $this;
+    }
+
+    public function getJobAlert(): ?JobAlert
+    {
+        return $this->jobAlert;
+    }
+
+    public function setJobAlert(?JobAlert $jobAlert): static
+    {
+        $this->jobAlert = $jobAlert;
+
         return $this;
     }
 }
