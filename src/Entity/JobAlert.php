@@ -19,7 +19,7 @@ class JobAlert
     /**
      * @var Collection<int, User>
      */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'jobAlert')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'jobAlerts')]
     private Collection $usr;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -59,7 +59,7 @@ class JobAlert
     {
         if (!$this->usr->contains($usr)) {
             $this->usr->add($usr);
-            $usr->setJobAlert($this);
+            $usr->setJobAlerts($this);
         }
 
         return $this;
@@ -69,8 +69,8 @@ class JobAlert
     {
         if ($this->usr->removeElement($usr)) {
             // set the owning side to null (unless already changed)
-            if ($usr->getJobAlert() === $this) {
-                $usr->setJobAlert(null);
+            if ($usr->getJobAlerts() === $this) {
+                $usr->setJobAlerts(null);
             }
         }
 

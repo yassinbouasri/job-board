@@ -63,8 +63,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'usr')]
     private Collection $bookmarks;
 
-    #[ORM\ManyToOne(inversedBy: 'usr')]
-    private ?JobAlert $jobAlert = null;
+    #[ORM\OneToMany(targetEntity:JobAlert::class, mappedBy: 'usr')]
+    private ?JobAlert $jobAlerts = null;
 
     public function __construct()
     {
@@ -289,14 +289,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getJobAlert(): ?JobAlert
+    public function getJobAlerts(): ?JobAlert
     {
-        return $this->jobAlert;
+        return $this->jobAlerts;
     }
 
-    public function setJobAlert(?JobAlert $jobAlert): static
+    public function setJobAlerts(?JobAlert $jobAlerts): static
     {
-        $this->jobAlert = $jobAlert;
+        $this->jobAlerts = $jobAlerts;
 
         return $this;
     }
