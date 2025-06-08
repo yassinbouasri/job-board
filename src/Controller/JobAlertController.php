@@ -58,33 +58,15 @@ final class JobAlertController extends AbstractController{
         ]);
     }
 
-    #[Route('/job/alert/{id}', name: 'app_job_alert_edit')]
-    public function edit(Request $request, EntityManagerInterface $em): Response
+    #[Route('/job/alert/{id}', name: 'app_job_alert_delete', methods: ['POST'])]
+    public function delete(Request $request, EntityManagerInterface $em, JobAlert $jobAlert): Response
     {
-        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
-            'usr' => $this->getUser()
-        ]);
+        if ($this->isCsrfTokenValid('delete'.$jobAlert->getId(), $request->getPayload()->getString('_token'))) {
+            $em->remove($jobAlert);
+            $em->flush();
+            $this->addFlash('success', 'Job Alert deleted.');
+        }
 
-        $form = $this->createForm(JobAlertFormType::class, $job_alerts);
-        $form->handleRequest($request);
-        return $this->render('job_alert/index.html.twig', [
-            'form' => $form->createView(),
-            'job_alerts' => $job_alerts,
-        ]);
-    }
-
-    #[Route('/job/alert/{id}/delete', name: 'app_job_alert_delete')]
-    public function delete(Request $request, EntityManagerInterface $em): Response
-    {
-        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
-            'usr' => $this->getUser()
-        ]);
-
-        $form = $this->createForm(JobAlertFormType::class, $job_alerts);
-        $form->handleRequest($request);
-        return $this->render('job_alert/index.html.twig', [
-            'form' => $form->createView(),
-            'job_alerts' => $job_alerts,
-        ]);
+        return $this->redirectToRoute('app_job_alert');
     }
 }
