@@ -90,7 +90,7 @@ class JobAlert
 
     public function setTags(?array $tags): static
     {
-        $this->tags = $tags;
+        $this->tags = $tags ?? [];
 
         return $this;
     }
