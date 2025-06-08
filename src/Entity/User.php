@@ -63,11 +63,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'usr')]
     private Collection $bookmarks;
 
+    #[ORM\OneToMany(targetEntity:JobAlert::class, mappedBy: 'usr')]
+    private ?Collection $jobAlerts = null;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
+        $this->jobAlerts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -283,6 +287,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $bookmark->setUsr(null);
             }
         }
+        return $this;
+    }
+
+    public function getJobAlerts(): ?JobAlert
+    {
+        return $this->jobAlerts;
+    }
+
+    public function setJobAlerts(?JobAlert $jobAlerts): static
+    {
+        $this->jobAlerts = $jobAlerts;
+
         return $this;
     }
 }

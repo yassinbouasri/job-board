@@ -1,0 +1,96 @@
+{# templates/job_alert/new.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Job Alert{% endblock %}
+
+{% block body %}
+    <div class="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow rounded-lg p-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Create Job Alert</h1>
+
+            {{ form_start(form) }}
+            <div class="space-y-6">
+                {# Keyword Field #}
+                <div>
+                    {{ form_label(form.keyword, null, {
+                        'label_attr': {'class': 'block text-sm font-medium text-gray-700'}
+                    }) }}
+                    {{ form_widget(form.keyword) }}
+                    {{ form_help(form.keyword, {
+                        'help_attr': {'class': 'mt-1 text-sm text-gray-500'}
+                    }) }}
+                </div>
+
+                {# Location Field #}
+                <div>
+                    {{ form_label(form.location, null, {
+                        'label_attr': {'class': 'block text-sm font-medium text-gray-700'}
+                    }) }}
+                    {{ form_widget(form.location) }}
+                </div>
+
+                {# Tags Field #}
+
+                <div class="tags-field">
+                    {{ form_label(form.tags, null, {
+                        'label_attr': {'class': 'block text-sm font-medium text-gray-700'}
+                    }) }}
+
+                    {{ form_errors(form.tags) }}
+
+                    <div class="tags-container mb-2"
+                         data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}">
+                        {% for tag in form.tags %}
+                            <div class="tag-entry mb-2">
+                                {{ form_widget(tag) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% do form.tags.setRendered %}
+
+                    <button type="button" class="add-tag-btn inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Add Tag
+                    </button>
+                </div>
+
+
+
+                {# Frequency Field #}
+                <div>
+                    {{ form_label(form.frequency, null, {
+                        'label_attr': {'class': 'block text-sm font-medium text-gray-700'}
+                    }) }}
+                    {{ form_widget(form.frequency) }}
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <a href="{{ path('app_job_alert') }}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Cancel
+                </a>
+                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Save Alert
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.querySelector('.tags-container');
+                const addButton = document.querySelector('.add-tag-btn');
+                let index = container.querySelectorAll('.tag-entry').length;
+
+                addButton.addEventListener('click', () => {
+                    const prototype = container.dataset.prototype;
+                    const newForm = prototype.replace(/__name__/g, index);
+                    const newTag = document.createElement('div');
+                    newTag.classList.add('tag-entry');
+                    newTag.innerHTML = newForm;
+                    container.appendChild(newTag);
+                    index++;
+                });
+            });
+        </script>
+
+    </div>
+{% endblock %}
