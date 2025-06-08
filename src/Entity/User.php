@@ -64,13 +64,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $bookmarks;
 
     #[ORM\OneToMany(targetEntity:JobAlert::class, mappedBy: 'usr')]
-    private ?JobAlert $jobAlerts = null;
+    private ?Collection $jobAlerts = null;
 
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
+        $this->jobAlerts = new ArrayCollection();
     }
 
     public function getId(): ?int

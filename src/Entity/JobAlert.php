@@ -16,11 +16,8 @@ class JobAlert
     #[ORM\Column]
     private ?int $id = null;
 
-    /**
-     * @var Collection<int, User>
-     */
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'jobAlerts')]
-    private Collection $usr;
+    private User $usr;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $keyword = null;
@@ -39,7 +36,7 @@ class JobAlert
 
     public function __construct()
     {
-        $this->usr = new ArrayCollection();
+        $this->usr = new User();
     }
 
     public function getId(): ?int
@@ -50,29 +47,14 @@ class JobAlert
     /**
      * @return Collection<int, User>
      */
-    public function getUsr(): Collection
+    public function getUsr(): User
     {
         return $this->usr;
     }
 
     public function addUsr(User $usr): static
     {
-        if (!$this->usr->contains($usr)) {
-            $this->usr->add($usr);
-            $usr->setJobAlerts($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUsr(User $usr): static
-    {
-        if ($this->usr->removeElement($usr)) {
-            // set the owning side to null (unless already changed)
-            if ($usr->getJobAlerts() === $this) {
-                $usr->setJobAlerts(null);
-            }
-        }
+        $this->usr = $usr;
 
         return $this;
     }
