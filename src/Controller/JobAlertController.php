@@ -12,9 +12,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class JobAlertController extends AbstractController{
-    #[Route('/job/alert', name: 'app_job_alert')]
+    #[Route('/job/alert/new', name: 'app_job_alert')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
+        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
+            'usr' => $this->getUser()
+        ]);
         $jobAlert = new JobAlert();
 
         /** @var User $user */
@@ -36,6 +39,52 @@ final class JobAlertController extends AbstractController{
 
         return $this->render('job_alert/index.html.twig', [
             'form' => $form->createView(),
+            'job_alerts' => $job_alerts,
+        ]);
+    }
+
+    #[Route('/job/alert', name: 'app_job_alert_index')]
+    public function index(Request $request, EntityManagerInterface $em): Response
+    {
+        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
+            'usr' => $this->getUser()
+        ]);
+
+        $form = $this->createForm(JobAlertFormType::class, $job_alerts);
+        $form->handleRequest($request);
+        return $this->render('job_alert/index.html.twig', [
+            'form' => $form->createView(),
+            'job_alerts' => $job_alerts,
+        ]);
+    }
+
+    #[Route('/job/alert/{id}', name: 'app_job_alert_edit')]
+    public function edit(Request $request, EntityManagerInterface $em): Response
+    {
+        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
+            'usr' => $this->getUser()
+        ]);
+
+        $form = $this->createForm(JobAlertFormType::class, $job_alerts);
+        $form->handleRequest($request);
+        return $this->render('job_alert/index.html.twig', [
+            'form' => $form->createView(),
+            'job_alerts' => $job_alerts,
+        ]);
+    }
+
+    #[Route('/job/alert/{id}/delete', name: 'app_job_alert_delete')]
+    public function delete(Request $request, EntityManagerInterface $em): Response
+    {
+        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
+            'usr' => $this->getUser()
+        ]);
+
+        $form = $this->createForm(JobAlertFormType::class, $job_alerts);
+        $form->handleRequest($request);
+        return $this->render('job_alert/index.html.twig', [
+            'form' => $form->createView(),
+            'job_alerts' => $job_alerts,
         ]);
     }
 }
