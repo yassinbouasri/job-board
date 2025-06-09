@@ -10,9 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 final class JobAlertController extends AbstractController{
-    #[Route('/job/alert/new', name: 'app_job_alert')]
+    #[Route('/job/alert', name: 'app_job_alert')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $job_alerts = $em->getRepository(JobAlert::class)->findBy([
@@ -50,7 +52,7 @@ final class JobAlertController extends AbstractController{
             'usr' => $this->getUser()
         ]);
 
-        $form = $this->createForm(JobAlertFormType::class, $job_alerts);
+        $form = $this->createForm(JobAlertFormType::class);
         $form->handleRequest($request);
         return $this->render('job_alert/index.html.twig', [
             'form' => $form->createView(),
