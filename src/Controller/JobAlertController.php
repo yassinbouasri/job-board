@@ -10,11 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 final class JobAlertController extends AbstractController{
     #[Route('/job/alert', name: 'app_job_alert')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
+        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
+            'usr' => $this->getUser()
+        ]);
         $jobAlert = new JobAlert();
 
         /** @var User $user */
@@ -36,6 +41,34 @@ final class JobAlertController extends AbstractController{
 
         return $this->render('job_alert/index.html.twig', [
             'form' => $form->createView(),
+            'job_alerts' => $job_alerts,
         ]);
+    }
+
+    #[Route('/job/alert', name: 'app_job_alert_index')]
+    public function index(Request $request, EntityManagerInterface $em): Response
+    {
+        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
+            'usr' => $this->getUser()
+        ]);
+
+        $form = $this->createForm(JobAlertFormType::class);
+        $form->handleRequest($request);
+        return $this->render('job_alert/index.html.twig', [
+            'form' => $form->createView(),
+            'job_alerts' => $job_alerts,
+        ]);
+    }
+
+    #[Route('/job/alert/{id}', name: 'app_job_alert_delete', methods: ['POST'])]
+    public function delete(Request $request, EntityManagerInterface $em, JobAlert $jobAlert): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$jobAlert->getId(), $request->getPayload()->getString('_token'))) {
+            $em->remove($jobAlert);
+            $em->flush();
+            $this->addFlash('success', 'Job Alert deleted.');
+        }
+
+        return $this->redirectToRoute('app_job_alert');
     }
 }
