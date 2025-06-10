@@ -26,7 +26,7 @@ final class JobController extends AbstractController{
     public function index(Request $request,EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         if ($jobs = $this->notificationJobs($this->getUser(), $entityManager)){
-            //TODO: send notofication mail
+            //TODO: send notification mail
         }
 
 
