@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Job;
+use App\Entity\JobAlert;
+use App\Entity\User;
 use App\Enums\ExperienceEnum;
 use App\Enums\JobTypeEnum;
 use App\Form\ExperienceFormType;
@@ -32,9 +34,7 @@ final class JobController extends AbstractController{
 
         $sort = $request->query->get('sort_by');
 
-        $user = $this->getUser();
 
-//        dd($user->isBookmarkedJob(369));
         if (!empty($sort)){
             [$sortField, $sortDirection] = $this->getSortValues($sort);
         }
@@ -99,15 +99,17 @@ final class JobController extends AbstractController{
 
 
         $user = $this->getUser();
+        $this->notify($user, $entityManager);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
 
 
             $job->setCreatedBy($user);
-
             $entityManager->persist($job);
             $entityManager->flush();
+
+
             $this->addFlash('success', 'Job created.');
 
             return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
@@ -178,5 +180,19 @@ final class JobController extends AbstractController{
         return [$sortBy, $direction];
     }
 
+    private function notify(User $user, EntityManagerInterface $em)
+    {
+        $jobAlert = $em->getRepository(JobAlert::class)->findBy([
+            'usr' => $user,
+        ]);
 
+        $job = [];
+
+        foreach ($jobAlert as $alert) {
+            $results = $em->getRepository(Job::class)->findByWildcard($alert)->getQuery()->getResult();
+            $job = array_merge($job, $results);
+        }
+        //todo
+
+    }
 }

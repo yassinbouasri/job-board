@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Job;
+use App\Entity\JobAlert;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -84,6 +86,27 @@ class JobRepository extends ServiceEntityRepository
         $result = $query->executeQuery(['year' => $currentYear]);
 
         return $result;
+    }
+
+    public function findByWildcard(JobAlert $jobAlert):QueryBuilder
+    {
+        $criteria = Criteria::create();
+
+        $qb = $this->createQueryBuilder('j');
+        if (!empty($jobAlert->getKeyword())) {
+            $qb->andWhere('j.title LIKE :keyword')
+                ->setParameter('keyword', "%{$jobAlert->getKeyword()}%");
+        }
+        if (!empty($jobAlert->getLocation())) {
+            $qb->orWhere('j.location like :location')
+                ->setParameter('location', "%{$jobAlert->getLocation()}%");
+        }
+        if (!empty($jobAlert->getTags())) {
+            foreach ($jobAlert->getTags() as $tag) {
+                $criteria->andWhere(Criteria::expr()->contains('tags', $tag));
+            }
+        }
+        return $qb;
     }
 
 //    /**

@@ -19,7 +19,7 @@ class JobAlertFormType extends AbstractType
                 'label' => 'Keywords',
                 'required' => false,
                 'attr' => [
-                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500',
+                    'class' => 'mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500',
                     'placeholder' => 'Job title, skills, or company'
                 ]
             ])
@@ -27,7 +27,7 @@ class JobAlertFormType extends AbstractType
                 'label' => 'Location',
                 'required' => false,
                 'attr' => [
-                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500',
+                    'class' => 'mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500',
                     'placeholder' => 'City, state, or remote'
                 ]
             ])
@@ -37,7 +37,7 @@ class JobAlertFormType extends AbstractType
                 'entry_type' => TextType::class,
                 'entry_options' => [
                     'attr' => [
-                        'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 tag-field'
+                        'class' => 'mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 tag-field'
                     ]
                 ],
                 'allow_add' => true,
