@@ -11,8 +11,8 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **Apply Online**: Submit applications directly through the platform 
 - **Profile Management**: Create and update professional profiles with resume/CV upload, or genereate a CV
 - **Bookmark/unbookmark**: Any job posting, View a dedicated list of saved jobs, Remove jobs from bookmarks
- <img width="300" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
- <img width="300" alt="image" src="https://github.com/user-attachments/assets/0c845f38-5468-469d-8a34-4c99fd100c93" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/0c845f38-5468-469d-8a34-4c99fd100c93" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/fda7dd21-144c-42c1-8f5e-723bc86919c9" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/0c800316-5ce8-42e3-81bc-01a72f62e77f" />
 
