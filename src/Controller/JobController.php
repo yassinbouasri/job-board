@@ -11,11 +11,13 @@ use App\Form\ExperienceFormType;
 use App\Form\JobType;
 use App\Form\JobTypeFormType;
 use App\Service\EnumValues;
+use App\Service\notifyUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -23,10 +25,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted("IS_AUTHENTICATED_FULLY")]
 final class JobController extends AbstractController{
     #[Route(name: 'app_job_index', methods: ['GET'])]
-    public function index(Request $request,EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+    public function index(Request $request,EntityManagerInterface $entityManager, PaginatorInterface $paginator, MailerInterface $mailer): Response
     {
-        if ($jobs = $this->notificationJobs($this->getUser(), $entityManager)){
-            //TODO: send notification mail
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($jobs = $this->notificationJobs($user, $entityManager)){
+            notifyUser::jobNotification($jobs, $user, $mailer, $entityManager);
         }
 
 
@@ -164,8 +168,6 @@ final class JobController extends AbstractController{
 
         return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
     private function getSortValues(string $sort = null): array
     {
         if (empty($sort)) {
