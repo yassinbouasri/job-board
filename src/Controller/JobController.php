@@ -10,15 +10,12 @@ use App\Enums\JobTypeEnum;
 use App\Form\ExperienceFormType;
 use App\Form\JobType;
 use App\Form\JobTypeFormType;
-use App\Repository\JobRepository;
-use App\Repository\UserRepository;
 use App\Service\EnumValues;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -26,8 +23,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted("IS_AUTHENTICATED_FULLY")]
 final class JobController extends AbstractController{
     #[Route(name: 'app_job_index', methods: ['GET'])]
-    public function index(Request $request,JobRepository $jobRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request,EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
+        if ($jobs = $this->notificationJobs($this->getUser(), $entityManager)){
+            //TODO: send notification mail
+        }
+
+
         $search = $request->query->get('search');
 
         $location = $request->query->get('location');
@@ -59,6 +61,7 @@ final class JobController extends AbstractController{
             'experience'
         );
 
+        $jobRepository = $entityManager->getRepository(Job::class);
         $query = $jobRepository->createPaginatedQueryBuilder(
             $sortField ?? null,
             $sortDirection ?? null,
@@ -75,6 +78,7 @@ final class JobController extends AbstractController{
             $page,
             $jobsPerPage
         );
+
 
         return $this->render('job/index.html.twig', [
             'pagination' => $pagination,
@@ -99,7 +103,6 @@ final class JobController extends AbstractController{
 
 
         $user = $this->getUser();
-        $this->notify($user, $entityManager);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -180,7 +183,7 @@ final class JobController extends AbstractController{
         return [$sortBy, $direction];
     }
 
-    private function notify(User $user, EntityManagerInterface $em)
+    private function notificationJobs(User $user, EntityManagerInterface $em): array
     {
         $jobAlert = $em->getRepository(JobAlert::class)->findBy([
             'usr' => $user,
@@ -192,7 +195,8 @@ final class JobController extends AbstractController{
             $results = $em->getRepository(Job::class)->findByWildcard($alert)->getQuery()->getResult();
             $job = array_merge($job, $results);
         }
-        //todo
+
+        return $job;
 
     }
 }

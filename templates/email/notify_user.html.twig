@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Job Matches - Job Board</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            padding: 24px;
+            background-color: #4f46e5;
+            color: white;
+            text-align: center;
+        }
+        .content {
+            padding: 32px;
+            background-color: white;
+        }
+        .job-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .footer {
+            padding: 24px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 600;">Job Board</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <h2 style="font-size: 20px; font-weight: 600; color: #111827; margin-bottom: 24px;">
+            Hello {{ user.email|default('User') }},
+        </h2>
+
+        <p style="color: #4b5563; margin-bottom: 24px;">
+            We found <strong>{{ jobs|length }} new job(s)</strong> that match your preferences:
+        </p>
+
+        <!-- Job Listings -->
+        {% for job in jobs %}
+            <div class="job-card">
+                <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin: 0 0 8px 0;">
+                    {{ job.title }}
+                </h3>
+                <p style="color: #6b7280; margin: 0 0 8px 0;">
+                    {{ job.location }}
+                </p>
+                <div style="margin-bottom: 12px;">
+                    {% for tag in job.tags|default([]) %}
+                        <span style="display: inline-block; background-color: #e0e7ff; color: #4f46e5; padding: 2px 8px; border-radius: 4px; margin-right: 4px; font-size: 12px;">
+                        {{ tag }}
+                    </span>
+                    {% endfor %}
+                </div>
+                <a href="{{ absolute_url(path('app_job_show', {'id': job.id})) }}"
+                   style="display: inline-block; background-color: #4f46e5; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-weight: 500;">
+                    View Job
+                </a>
+            </div>
+        {% endfor %}
+
+        <!-- CTA -->
+        <div style="text-align: center; margin-top: 32px;">
+            <a href="{{ absolute_url(path('app_job_index')) }}"
+               style="display: inline-block; background-color: #4f46e5; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: 500;">
+                Browse All Jobs
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p style="margin: 0 0 8px 0;">
+            <a href="{{ absolute_url(path('app_job_alert_index')) }}" style="color: #4f46e5; text-decoration: none;">
+                Manage your notifications
+            </a>
+        </p>
+        <p style="margin: 0 0 8px 0;">
+            If these emails are no longer useful, you can
+            <a href="#" style="color: #4f46e5; text-decoration: none;">
+                unsubscribe
+            </a>
+        </p>
+        <p style="margin: 0; color: #9ca3af;">
+            &copy; {{ "now"|date("Y") }} Job Board. All rights reserved.
+        </p>
+    </div>
+</div>
+</body>
+</html>

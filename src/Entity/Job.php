@@ -40,7 +40,7 @@ class Job
     #[Assert\GreaterThan(0)]
     private ?int $salary = null;
 
-    #[ORM\Column(type: Types::JSON, nullable: true, options: ["jsonb" => true])]
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private ?array $tags = null;
 
     #[ORM\Column(type: 'datetime_immutable',nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
