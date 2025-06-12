@@ -290,7 +290,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getJobAlerts(): ?JobAlert
+    public function getJobAlerts(): ArrayCollection|Collection
     {
         return $this->jobAlerts;
     }
