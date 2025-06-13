@@ -17,7 +17,7 @@ class notifyUser
     /**
      * @throws TransportExceptionInterface
      */
-    public static function jobNotification(array $jobs, User $user, MailerInterface $mailer, EntityManagerInterface $entityManager): void
+    public static function jobEmailNotification(array $jobs, User $user, MailerInterface $mailer, EntityManagerInterface $entityManager): void
     {
         $now = new \DateTimeImmutable();
         $cutoffs = [

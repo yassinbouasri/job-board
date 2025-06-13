@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notification Center{% endblock %}
+
+{% block body %}
+    <div class="max-w-4xl mx-auto py-8 px-4">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Notification Center</h1>
+            <div class="flex space-x-2">
+                <button class="px-3 py-1 text-sm text-indigo-600 hover:text-indigo-800">
+                    Mark all as read
+                </button>
+                <button class="px-3 py-1 text-sm text-indigo-600 hover:text-indigo-800">
+                    Settings
+                </button>
+            </div>
+        </div>
+
+        <div class="flex border-b border-gray-200">
+            <button class="px-4 py-2 font-medium text-sm border-b-2 border-indigo-500 text-indigo-600">
+                All
+            </button>
+            <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
+                Unread
+            </button>
+            <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
+                Alerts
+            </button>
+            <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
+                Mentions
+            </button>
+        </div>
+
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+            <ul class="divide-y divide-gray-200">
+                <!-- Sample Notification Item - Unread -->
+                {% for job in jobs %}
+                <li class="bg-blue-50">
+                    <a href="#" class="block hover:bg-gray-50">
+                        <div class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium text-indigo-600 truncate">
+                                    {{ job.title|u.truncate(20) }}
+                                </p>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    New
+                                </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        <!-- Heroicon name: solid/briefcase -->
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" />
+                                            <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
+                                        </svg>
+                                        {{ job.description|u.truncate(30, '...') }}
+                                    </p>
+                                    <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                                        <!-- Heroicon name: solid/location-marker -->
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                        </svg>
+                                        {{ job.location }}
+                                    </p>
+                                </div>
+                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                    <!-- Heroicon name: solid/clock -->
+                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                    </svg>
+                                    <p>
+                                        {{ job.createdAt|ago }}
+                                    </p>
+                                </div>
+                            </div>
+                            {% for tag in job.tags %}
+                                    <div class="mt-2 flex flex-wrap gap-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                    {{ tag }}
+                                </span>
+                                    </div>
+                            {% endfor %}
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+
+                <!-- Sample Notification Item - Read -->
+                <li>
+                    <a href="#" class="block hover:bg-gray-50">
+                        <div class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium text-gray-900 truncate">
+                                    Your application was viewed
+                                </p>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    Viewed
+                                </span>
+                                </div>
+                            </div>
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        <!-- Heroicon name: solid/building -->
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" />
+                                        </svg>
+                                        TechCorp Inc.
+                                    </p>
+                                </div>
+                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                    <!-- Heroicon name: solid/clock -->
+                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                    </svg>
+                                    <p>
+                                        <time datetime="2023-01-22T14:09">Yesterday, 2:09 PM</time>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- Sample Notification Item - Alert -->
+                <li>
+                    <a href="#" class="block hover:bg-gray-50">
+                        <div class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium text-gray-900 truncate">
+                                    Your job alert was triggered
+                                </p>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    Alert
+                                </span>
+                                </div>
+                            </div>
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        <!-- Heroicon name: solid/bell -->
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                                        </svg>
+                                        5 new "Remote Developer" jobs
+                                    </p>
+                                </div>
+                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                    <!-- Heroicon name: solid/clock -->
+                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                    </svg>
+                                    <p>
+                                        <time datetime="2023-01-21T09:12">2 days ago</time>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
