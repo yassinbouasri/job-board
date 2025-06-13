@@ -19,31 +19,38 @@ class notifyUser
      */
     public static function jobNotification(array $jobs, User $user, MailerInterface $mailer, EntityManagerInterface $entityManager): void
     {
-        if (empty($jobs)) {
-            return;
-        }
+        $now = new \DateTimeImmutable();
+        $cutoffs = [
+           'daily' => $now->modify('-1 day'),
+           'weekly' => $now->modify('-7 days'),
+        ];
         $alerts = $user->getJobAlerts();
 
-        if (empty($alerts)) {
+        if (empty($jobs) || empty($alerts)) {
             return;
         }
 
+        $shouldNotify = false;
+
         foreach ($alerts as $alert) {
-            if ($alert->getLastNotifiedAt() === null){
-                continue;
+            dump($alert);
+            if ($alert->getLastNotifiedAt() === null || $alert->getLastNotifiedAt() <= $cutoffs[$alert->getFrequency()]){
+                $shouldNotify = true;
+                break;
             }
-            if ($alert->getLastNotifiedAt() <= new \DateTimeImmutable('now')) {
-                return;
-            }
+        }
+        if (!$shouldNotify) {
+            return;
         }
 
         self::sendMailNotification($user, $jobs, $mailer);
 
         foreach ($alerts as $alert) {
             $alert->setLastNotifiedAt(new \DateTimeImmutable('now'));
-            $entityManager->flush($alert);
+            $entityManager->persist($alert);
 
         }
+        $entityManager->flush();
 
     }
 
