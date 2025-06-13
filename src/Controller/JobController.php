@@ -11,6 +11,7 @@ use App\Form\ExperienceFormType;
 use App\Form\JobType;
 use App\Form\JobTypeFormType;
 use App\Service\EnumValues;
+use App\Service\MatchedJobsPreferences;
 use App\Service\notifyUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -29,8 +30,8 @@ final class JobController extends AbstractController{
     {
         /** @var User $user */
         $user = $this->getUser();
-        if ($jobs = $this->notificationJobs($user, $entityManager)){
-            notifyUser::jobNotification($jobs, $user, $mailer, $entityManager);
+        if ($jobs = MatchedJobsPreferences::getJobs($user, $entityManager)){
+            notifyUser::jobEmailNotification($jobs, $user, $mailer, $entityManager);
         }
 
 
@@ -183,22 +184,5 @@ final class JobController extends AbstractController{
         }
 
         return [$sortBy, $direction];
-    }
-
-    private function notificationJobs(User $user, EntityManagerInterface $em): array
-    {
-        $jobAlert = $em->getRepository(JobAlert::class)->findBy([
-            'usr' => $user,
-        ]);
-
-        $job = [];
-
-        foreach ($jobAlert as $alert) {
-            $results = $em->getRepository(Job::class)->findByWildcard($alert)->getQuery()->getResult();
-            $job = array_merge($job, $results);
-        }
-
-        return $job;
-
     }
 }
