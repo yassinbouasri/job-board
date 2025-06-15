@@ -66,12 +66,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity:JobAlert::class, mappedBy: 'usr')]
     private ?Collection $jobAlerts = null;
 
+    /**
+     * @var Collection<int, Notification>
+     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'usr')]
+    private Collection $notifications;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
         $this->jobAlerts = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -298,6 +305,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setJobAlerts(?JobAlert $jobAlerts): static
     {
         $this->jobAlerts = $jobAlerts;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUsr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getUsr() === $this) {
+                $notification->setUsr(null);
+            }
+        }
 
         return $this;
     }
