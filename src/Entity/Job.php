@@ -67,10 +67,17 @@ class Job
     #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'job')]
     private Collection $bookmarks;
 
+    /**
+     * @var Collection<int, Notification>
+     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'job')]
+    private Collection $notifications;
+
     public function __construct()
     {
         $this->applications = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -253,6 +260,36 @@ class Job
             // set the owning side to null (unless already changed)
             if ($bookmark->getJob() === $this) {
                 $bookmark->setJob(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setJob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getJob() === $this) {
+                $notification->setJob(null);
             }
         }
 
