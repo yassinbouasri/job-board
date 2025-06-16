@@ -22,4 +22,9 @@ final class NotificationController extends AbstractController{
             'jobs' => $jobs,
         ]);
     }
+
+    public function markAsRead(): Response
+    {
+
+    }
 }
