@@ -34,9 +34,19 @@ class JobAlert
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $lastNotifiedAt = null;
 
+    #[ORM\Column]
+    private ?bool $isRead = false;
+
+    /**
+     * @var Collection<int, Job>
+     */
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'jobAlert')]
+    private Collection $Jobs;
+
     public function __construct()
     {
         $this->usr = new User();
+        $this->Jobs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -115,6 +125,48 @@ class JobAlert
     public function setLastNotifiedAt(?\DateTimeImmutable $lastNotifiedAt): static
     {
         $this->lastNotifiedAt = $lastNotifiedAt;
+
+        return $this;
+    }
+
+    public function isRead(): ?bool
+    {
+        return $this->isRead;
+    }
+
+    public function setIsRead(bool $isRead): static
+    {
+        $this->isRead = $isRead;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Job>
+     */
+    public function getJobs(): Collection
+    {
+        return $this->Jobs;
+    }
+
+    public function addJob(Job $job): static
+    {
+        if (!$this->Jobs->contains($job)) {
+            $this->Jobs->add($job);
+            $job->setJobAlert($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJob(Job $job): static
+    {
+        if ($this->Jobs->removeElement($job)) {
+            // set the owning side to null (unless already changed)
+            if ($job->getJobAlert() === $this) {
+                $job->setJobAlert(null);
+            }
+        }
 
         return $this;
     }
