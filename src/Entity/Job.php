@@ -73,6 +73,9 @@ class Job
     #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'job')]
     private Collection $notifications;
 
+    #[ORM\ManyToOne(inversedBy: 'Jobs')]
+    private ?JobAlert $jobAlert = null;
+
     public function __construct()
     {
         $this->applications = new ArrayCollection();
@@ -292,6 +295,18 @@ class Job
                 $notification->setJob(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getJobAlert(): ?JobAlert
+    {
+        return $this->jobAlert;
+    }
+
+    public function setJobAlert(?JobAlert $jobAlert): static
+    {
+        $this->jobAlert = $jobAlert;
 
         return $this;
     }
