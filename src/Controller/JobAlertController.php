@@ -87,4 +87,22 @@ final class JobAlertController extends AbstractController{
 
         return $this->redirectToRoute('app_job_alert');
     }
+
+    #[Route('mar-all-as-read', name: 'notification_mark_read_all', methods: ['POST'])]
+    public function markAllAsRead(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        $jobAlerts = $user->getJobAlerts();
+
+        if ($jobAlerts->isEmpty()) {
+            return $this->redirectToRoute('app_job_alert');
+        }
+
+        foreach ($jobAlerts as $jobAlert){
+            $jobAlert->setIsRead(true);
+        }
+
+        return $this->redirectToRoute('app_job_alert');
+    }
 }
