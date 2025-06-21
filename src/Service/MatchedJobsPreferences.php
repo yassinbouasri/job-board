@@ -7,6 +7,7 @@ namespace App\Service;
 
 use App\Entity\Job;
 use App\Entity\JobAlert;
+use App\Entity\Notification;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -18,14 +19,36 @@ class MatchedJobsPreferences
             'usr' => $user,
         ]);
 
-        $job = [];
+        $jobs = [];
 
         foreach ($jobAlert as $alert) {
             $results = $em->getRepository(Job::class)->findByWildcard($alert)->getQuery()->getResult();
-            $job = array_merge($job, $results);
+            $jobs = array_merge($jobs, $results);
         }
 
-        return $job;
 
+        return array_unique($jobs);
+
+    }
+
+    public static function createNotification(User $user, EntityManagerInterface $entityManager, array $jobs): array
+    {
+        $newNotificationsArray = array();
+        foreach ($jobs as $job) {
+            $newNotification = new Notification();
+            $newNotification->setJob($job);
+
+            $newNotificationsArray[] = $newNotification;
+        }
+
+
+        $entityManager->persist($newNotification);
+        $entityManager->flush();
+
+        $user->addNotification($newNotification);
+        $entityManager->persist($user);
+
+
+        return $newNotificationsArray;
     }
 }
