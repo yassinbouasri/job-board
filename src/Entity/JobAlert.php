@@ -40,7 +40,7 @@ class JobAlert
     /**
      * @var Collection<int, Job>
      */
-    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'jobAlert')]
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'jobAlert', fetch: 'EAGER')]
     private Collection $Jobs;
 
     public function __construct()
@@ -154,6 +154,15 @@ class JobAlert
         if (!$this->Jobs->contains($job)) {
             $this->Jobs->add($job);
             $job->setJobAlert($this);
+        }
+
+        return $this;
+    }
+
+    public function addJobs(array $jobs): static
+    {
+        foreach ($jobs as $job) {
+            $this->addJob($job);
         }
 
         return $this;
