@@ -34,20 +34,25 @@ class MatchedJobsPreferences
     public static function createNotification(User $user, EntityManagerInterface $entityManager, array $jobs): array
     {
         $newNotificationsArray = array();
+
+        $notificationRepo = $entityManager->getRepository(Notification::class);
         foreach ($jobs as $job) {
+            if ($notificationRepo->findOneBy(['usr' => $user, 'job' => $job,])){
+                continue;
+            }
             $newNotification = new Notification();
             $newNotification->setJob($job);
+            $newNotification->setUsr($user);
+
+            $entityManager->persist($newNotification);
+
+            $user->addNotification($newNotification);
 
             $newNotificationsArray[] = $newNotification;
         }
 
 
-        $entityManager->persist($newNotification);
         $entityManager->flush();
-
-        $user->addNotification($newNotification);
-        $entityManager->persist($user);
-
 
         return $newNotificationsArray;
     }
