@@ -37,7 +37,7 @@ final class NotificationController extends AbstractController{
         ]);
     }
 
-    #[Route('/mark-as-read/{id}', name: 'notification_mark_read', methods: ['POST'])]
+    #[Route('/mark-as-read/{id}', name: 'notification_mark_as_read')]
     public function markAsRead(Notification $notification, EntityManagerInterface $entityManager): Response
     {
         $notification->setIsRead(true);
@@ -59,6 +59,27 @@ final class NotificationController extends AbstractController{
         }
 
         $entityManager->flush();
+
+        $this->addFlash('success', 'All notifications have been marked as read.');
+
+
+        return $this->redirectToRoute('app_notifications');
+    }
+
+    #[Route('/unread-all', name: 'unread_all')]
+    public function unreadAll(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        $notifications = $user->getNotifications() ?? array();
+
+        foreach ($notifications as $notification){
+            $notification->setIsRead(false);
+        }
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'All notifications have been marked as unread.');
 
         return $this->redirectToRoute('app_notifications');
     }
