@@ -19,10 +19,21 @@ final class NotificationController extends AbstractController{
         /** @var User $user */
         $user = $this->getUser();
         $jobs = MatchedJobsPreferences::getJobs($user, $entityManager);
+
         $job_alerts = $user->getJobAlerts() ?? array();
+
+        MatchedJobsPreferences::createNotification($user, $entityManager, $jobs);
+
+        $notifications = $user->getNotifications();
+
+        foreach ($notifications as $notification) {
+            dump($notification);
+        }
+
         return $this->render('notification/index.html.twig', [
             'job_alerts' => $job_alerts,
             'jobs' => $jobs,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -36,6 +47,7 @@ final class NotificationController extends AbstractController{
         return $this->redirectToRoute('app_notifications');
     }
 
+    #[Route('/mark-all-as-read', name: 'mark_all_as_read')]
     public function markAllAsRead(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -46,8 +58,8 @@ final class NotificationController extends AbstractController{
             $notification->setIsRead(true);
         }
 
-        $entityManager->persist($notifications);
         $entityManager->flush();
+
         return $this->redirectToRoute('app_notifications');
     }
 }
