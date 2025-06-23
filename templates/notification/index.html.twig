@@ -34,8 +34,8 @@
 
         <div class="bg-white shadow overflow-hidden sm:rounded-md">
             <ul class="divide-y divide-gray-200">
-                <!-- Sample Notification Item - Unread -->
                 {% for notification in notifications %}
+
                     {% set job = notification.job %}
                     {% if notification.isRead %}
                         <li>
@@ -104,6 +104,7 @@
                         </li>
                     {% else %}
                         <li class="bg-blue-50">
+
                             <a href="#" class="block hover:bg-gray-50">
                                 <div class="px-4 py-4 sm:px-6">
                                     <div class="flex items-center justify-between">
@@ -171,53 +172,4 @@
 
                 {% endfor %}
 
-                <!-- Sample Notification Item - Read -->
-
-
-                <!-- Sample Notification Item - Alert -->
-                <li>
-                    <a href="#" class="block hover:bg-gray-50">
-                        <div class="px-4 py-4 sm:px-6">
-                            <div class="flex items-center justify-between">
-                                <p class="text-sm font-medium text-gray-900 truncate">
-                                    Your job alert was triggered
-                                </p>
-                                <div class="ml-2 flex-shrink-0 flex">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                    Alert
-                                </span>
-                                </div>
-                            </div>
-                            <div class="mt-2 sm:flex sm:justify-between">
-                                <div class="sm:flex">
-                                    <p class="flex items-center text-sm text-gray-500">
-                                        <!-- Heroicon name: solid/bell -->
-                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                             aria-hidden="true">
-                                            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
-                                        </svg>
-                                        5 new "Remote Developer" jobs
-                                    </p>
-                                </div>
-                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                                    <!-- Heroicon name: solid/clock -->
-                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                         aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-                                    <p>
-                                        <time datetime="2023-01-21T09:12">2 days ago</time>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
 {% endblock %}
