@@ -38,9 +38,10 @@ final class NotificationController extends AbstractController{
     }
 
     #[Route('/mark-as-read/{id}', name: 'notification_mark_as_read')]
-    public function markAsRead(Notification $notification, EntityManagerInterface $entityManager): Response
+    public function markAsReadUnread(Notification $notification, EntityManagerInterface $entityManager): Response
     {
-        $notification->setIsRead(true);
+        $isRead = $notification->isRead();
+        $notification->setIsRead(!$isRead);
         $entityManager->persist($notification);
         $entityManager->flush();
 
