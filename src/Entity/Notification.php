@@ -27,6 +27,7 @@ class Notification
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Job $job = null;
 
     public function getId(): ?int

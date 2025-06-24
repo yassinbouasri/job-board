@@ -34,81 +34,71 @@
     </div>
 
     <div class="bg-white shadow overflow-hidden sm:rounded-md">
-    <ul class="divide-y divide-gray-200">
-    {% for notification in notifications %}
+        <ul class="divide-y divide-gray-200">
+            {% for notification in notifications %}
+                {% set job = notification.job %}
+                {% set bgClass = notification.isRead ? '' : 'bg-blue-50' %}
 
-        {% set job = notification.job %}
-        <li class="{{ notification.isRead ? '' : 'bg-blue-50' }}">
-            <a href="{{ path('notification_mark_as_read', {id: notification.id}) }}" class="block hover:bg-gray-50">
-                <div class="px-4 py-4 sm:px-6">
-                    <div class="flex items-center justify-between">
-                        <p class="text-sm font-medium text-indigo-600 truncate">
-                            {{ job.title|u.truncate(20) }}
-                        </p>
-                        {% if notification.isRead %}
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-gray-800">
+                <li class="{{ bgClass }}">
+                    <a href="{{ path('notification_mark_as_read', {id: notification.id}) }}" class="block hover:bg-gray-50">
+                        <div class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium text-indigo-600 truncate">
+                                    {{ job.title|u.truncate(20) }}
+                                </p>
+                                {% if notification.isRead %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-gray-800">
                                     Viewed
-                              </span>
-                        {% else %}
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-gray-800">
+                                </span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-gray-800">
                                     New
                                 </span>
-                        {% endif %}
-                    </div>
+                                {% endif %}
+                            </div>
 
-                    <div class="mt-2 sm:flex sm:justify-between">
-                        <div class="sm:flex">
-                            <p class="flex items-center text-sm text-gray-500">
-                                <!-- Heroicon name: solid/briefcase -->
-                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                     fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                          d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
-                                          clip-rule="evenodd"/>
-                                    <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"/>
-                                </svg>
-                                {{ job.description|u.truncate(30, '...') }}
-                            </p>
-                            <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
-                                <!-- Heroicon name: solid/location-marker -->
-                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                     fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                          d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                          clip-rule="evenodd"/>
-                                </svg>
-                                {{ job.location }}
-                            </p>
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        <!-- Heroicon: briefcase -->
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.95 22.95 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                                            <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"/>
+                                        </svg>
+                                        {{ job.description|u.truncate(30, '...') }}
+                                    </p>
+                                    <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                                        <!-- Heroicon: location-marker -->
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                        </svg>
+                                        {{ job.location }}
+                                    </p>
+                                </div>
+                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                    <!-- Heroicon: clock -->
+                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <p>{{ job.createdAt|ago }}</p>
+                                </div>
+                            </div>
+
+                            {% if job.tags is not empty %}
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                    {% for tag in job.tags %}
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                        {{ tag }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
-                        <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                            <!-- Heroicon name: solid/clock -->
-                            <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                 fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                                      clip-rule="evenodd"/>
-                            </svg>
-                            <p>
-                                {{ job.createdAt|ago }}
-                            </p>
-                        </div>
-                    </div>
-                    {% for tag in job.tags %}
-                        <div class="mt-2 flex flex-wrap gap-2">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                    {{ tag }}
-                                </span>
-                        </div>
-                    {% endfor %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
-
-                </div>
-            </a>
-        </li>
-
-    {% endfor %}
 
 {% endblock %}
