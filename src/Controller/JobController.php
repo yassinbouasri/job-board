@@ -35,6 +35,8 @@ final class JobController extends AbstractController{
         }
 
 
+
+
         $search = $request->query->get('search');
 
         $location = $request->query->get('location');
