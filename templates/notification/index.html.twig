@@ -23,13 +23,10 @@
             All
         </button>
         <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
+            Read
+        </button>
+        <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
             Unread
-        </button>
-        <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
-            Alerts
-        </button>
-        <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
-            Mentions
         </button>
     </div>
 
@@ -40,7 +37,7 @@
                 {% set bgClass = notification.isRead ? '' : 'bg-blue-50' %}
 
                 <li class="{{ bgClass }}">
-                    <a href="{{ path('notification_mark_as_read', {id: notification.id}) }}" class="block hover:bg-gray-50">
+                    <a href="{{ path('notification_mark_as_read', {id: notification.id}) }}" class="block hover:bg-gray-50 cursor-pointer">
                         <div class="px-4 py-4 sm:px-6">
                             <div class="flex items-center justify-between">
                                 <p class="text-sm font-medium text-indigo-600 truncate">
@@ -67,6 +64,11 @@
                                         </svg>
                                         {{ job.description|u.truncate(30, '...') }}
                                     </p>
+                                    {% if notification.message is defined and notification.message %}
+                                        <p class="mt-1 text-sm text-gray-700">
+                                            {{ notification.message }}
+                                        </p>
+                                    {% endif %}
                                     <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
                                         <!-- Heroicon: location-marker -->
                                         <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
