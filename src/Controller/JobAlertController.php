@@ -15,65 +15,56 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_USER')]
 final class JobAlertController extends AbstractController{
-    #[Route('/job/alert', name: 'app_job_alert')]
-    public function new(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator): Response
+    #[Route('/job/alert/{tab}', name: 'app_job_alert', defaults: ['tab' => 'alerts'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, string $tab): Response
     {
-        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
-            'usr' => $this->getUser()
-        ]);
-        $jobAlert = new JobAlert();
+        if ($tab === 'create'){
+            $jobAlert = new JobAlert();
 
-        /** @var User $user */
-        $user = $this->getUser();
+            /** @var User $user */
+            $user = $this->getUser();
 
-        $jobAlert->addUsr($user);
-        $jobAlert->setTags([]);
+            $jobAlert->addUsr($user);
+            $jobAlert->setTags([]);
 
 
-        $form = $this->createForm(JobAlertFormType::class, $jobAlert);
-        $form->handleRequest($request);
+            $form = $this->createForm(JobAlertFormType::class, $jobAlert);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($jobAlert);
-            $em->flush();
-            $this->addFlash('success', 'Job Alert created.');
-            return $this->redirectToRoute('app_job_alert');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->persist($jobAlert);
+                $em->flush();
+                $this->addFlash('success', 'Job Alert created.');
+                return $this->redirectToRoute('app_job_alert');
+            }
+            return $this->render('job_alert/index.html.twig', [
+                'form' => $form->createView(),
+                'tab' => $tab,
+            ]);
         }
+        if ($tab === 'alerts'){
+            $job_alerts = $em->getRepository(JobAlert::class)->findBy([
+                'usr' => $this->getUser()
+            ]);
 
-        $pagination = $paginator->paginate(
-            $job_alerts,
-            $request->query->getInt('page', 1),
-            3
-        );
-        return $this->render('job_alert/index.html.twig', [
-            'form' => $form->createView(),
-            'job_alerts' => $job_alerts,
-            'pagination' => $pagination,
-        ]);
-    }
+            $form = $this->createForm(JobAlertFormType::class);
+            $form->handleRequest($request);
 
-    #[Route('/job/alert', name: 'app_job_alert_index')]
-    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator): Response
-    {
-        $job_alerts = $em->getRepository(JobAlert::class)->findBy([
-            'usr' => $this->getUser()
-        ]);
-
-        $form = $this->createForm(JobAlertFormType::class);
-        $form->handleRequest($request);
-
-        $pagination = $paginator->paginate(
-            $job_alerts,
-            $request->query->getInt('page', 1),
-            3
-        );
+            $pagination = $paginator->paginate(
+                $job_alerts,
+                $request->query->getInt('page', 1),
+                3
+            );
 
 
-        return $this->render('job_alert/index.html.twig', [
-            'form' => $form->createView(),
-            'job_alerts' => $job_alerts,
-            'pagination' => $pagination,
-        ]);
+            return $this->render('job_alert/index.html.twig', [
+                'form' => $form->createView(),
+                'job_alerts' => $job_alerts,
+                'pagination' => $pagination,
+                'tab' => $tab
+            ]);
+        }
+        return $this->redirectToRoute('app_job_alert', ['tab' => 'alerts']);
     }
 
     #[Route('/job/alert/{id}', name: 'app_job_alert_delete', methods: ['POST'])]
@@ -85,26 +76,6 @@ final class JobAlertController extends AbstractController{
             $this->addFlash('success', 'Job Alert deleted.');
         }
 
-        return $this->redirectToRoute('app_job_alert');
+        return $this->redirectToRoute('app_job_alert', ['tab' => 'alerts']);
     }
-
-//    #[Route('mark-all-as-read', name: 'notification_mark_all_read')]
-//    public function markAllAsRead(EntityManagerInterface $entityManager): Response
-//    {
-//        $user = $this->getUser();
-//
-//        $jobAlerts = $user->getJobAlerts();
-//
-//        if ($jobAlerts->isEmpty()) {
-//            return $this->redirectToRoute('app_notifications');
-//        }
-//
-//        foreach ($jobAlerts as $jobAlert){
-//            $jobAlert->setIsRead(true);
-//        }
-////        $entityManager->persist($jobAlerts);
-//        $entityManager->flush();
-//
-//        return $this->redirectToRoute('app_notifications');
-//    }
 }

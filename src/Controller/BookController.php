@@ -69,7 +69,7 @@ final class BookController extends AbstractController{
             'usr' => $user
         ]);
 
-        $jobs = null;
+        $jobs = [];
 
         foreach ($bookmarks as $bookmark){
           $jobs[] = $bookmark->getJob();

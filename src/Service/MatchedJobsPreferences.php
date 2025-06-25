@@ -26,6 +26,8 @@ class MatchedJobsPreferences
             $jobs = array_merge($jobs, $results);
         }
 
+        static::createNotification($user, $em, array_unique($jobs));
+
 
         return array_unique($jobs);
 

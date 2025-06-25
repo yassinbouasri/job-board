@@ -37,7 +37,8 @@ class JobAlertFormType extends AbstractType
                 'entry_type' => TextType::class,
                 'entry_options' => [
                     'attr' => [
-                        'class' => 'mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 tag-field'
+                        'class' => 'mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 tag-field',
+                        'placeholder' => 'Enter a tag...'
                     ]
                 ],
                 'allow_add' => true,
