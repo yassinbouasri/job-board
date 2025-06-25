@@ -22,7 +22,6 @@ final class NotificationController extends AbstractController{
 
         $job_alerts = $user->getJobAlerts() ?? array();
 
-        MatchedJobsPreferences::createNotification($user, $entityManager, $jobs);
 
         $notifications = $user->getNotifications();
 
