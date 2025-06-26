@@ -70,7 +70,7 @@ class Job
     /**
      * @var Collection<int, Notification>
      */
-    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'job')]
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'job', cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
     #[ORM\ManyToOne(inversedBy: 'Jobs')]
