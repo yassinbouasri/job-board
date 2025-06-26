@@ -26,7 +26,7 @@ class Notification
     #[ORM\Column(type: 'datetime_immutable',nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notifications')]
+    #[ORM\ManyToOne(inversedBy: 'notifications', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     private ?Job $job = null;
 

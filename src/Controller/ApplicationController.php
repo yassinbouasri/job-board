@@ -32,7 +32,7 @@ class ApplicationController extends AbstractController
 
         $applications = $this->getUser()->getApplications();
 
-        $jobPerPage = 1;
+        $jobPerPage = 5;
 
         $pagination = $paginator->paginate(
             $company->getJobs()->toArray() ?? [],
@@ -112,4 +112,5 @@ class ApplicationController extends AbstractController
             'applied' => $applied,
         ]);
     }
+
 }

@@ -67,9 +67,10 @@ final class JobAlertController extends AbstractController{
         return $this->redirectToRoute('app_job_alert', ['tab' => 'alerts']);
     }
 
-    #[Route('/job/alert/{id}', name: 'app_job_alert_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_job_alert_delete', methods: ['POST'])]
     public function delete(Request $request, EntityManagerInterface $em, JobAlert $jobAlert): Response
     {
+
         if ($this->isCsrfTokenValid('delete'.$jobAlert->getId(), $request->getPayload()->getString('_token'))) {
             $em->remove($jobAlert);
             $em->flush();
