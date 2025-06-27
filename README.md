@@ -12,6 +12,7 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **Profile Management**: Create and update professional profiles with resume/CV upload, or genereate a CV
 - **Bookmark/unbookmark**: Any job posting, View a dedicated list of saved jobs, Remove jobs from bookmarks
 - **Job Notification**: Sends users email alerts (daily or weekly) with matching new job posts from the Job Board platform based on saved preferences like keywords, location, and tags.
+- **In-app notifications**: Displays job alerts based on user preferences
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/0c845f38-5468-469d-8a34-4c99fd100c93" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/fda7dd21-144c-42c1-8f5e-723bc86919c9" />
