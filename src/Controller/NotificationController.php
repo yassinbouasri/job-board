@@ -34,6 +34,7 @@ final class NotificationController extends AbstractController
                 'job_alerts'    => $job_alerts,
                 'jobs'          => $jobs,
                 'notifications' => $notifications,
+                'notificationType' => $notificationType,
             ]
         );
     }
