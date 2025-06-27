@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Notification;
 use App\Entity\User;
 use App\Service\MatchedJobsPreferences;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,9 +13,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted("ROLE_USER")]
-final class NotificationController extends AbstractController{
-    #[Route('/notification', name: 'app_notifications')]
-    public function index(EntityManagerInterface $entityManager): Response
+final class NotificationController extends AbstractController
+{
+    #[Route('/notification/{notificationType}', name: 'app_notifications', methods: ['get', 'post'])]
+    public function index(EntityManagerInterface $entityManager, string $notificationType): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -23,17 +25,52 @@ final class NotificationController extends AbstractController{
         $job_alerts = $user->getJobAlerts() ?? array();
 
 
-        $notifications = $user->getNotifications();
+        $notifications = $this->showByIsRead($entityManager, $notificationType);
 
-        foreach ($notifications as $notification) {
-            dump($notification);
+
+        return $this->render(
+            'notification/index.html.twig',
+            [
+                'job_alerts'    => $job_alerts,
+                'jobs'          => $jobs,
+                'notifications' => $notifications,
+            ]
+        );
+    }
+
+    private function showByIsRead(EntityManagerInterface $entityManager, string $notificationType): Array
+    {
+        $user = $this->getUser();
+
+        if ($notificationType == 'Unread') {
+            return $entityManager
+                ->getRepository(Notification::class)
+                ->findBy(
+                    [
+                        'isRead' => false,
+                        'usr'    => $user,
+                    ]
+                );
         }
 
-        return $this->render('notification/index.html.twig', [
-            'job_alerts' => $job_alerts,
-            'jobs' => $jobs,
-            'notifications' => $notifications,
-        ]);
+        if ($notificationType == 'Read') {
+            return $entityManager
+                ->getRepository(Notification::class)
+                ->findBy(
+                    [
+                        'isRead' => true,
+                        'usr'    => $user,
+                    ]
+                );
+        }
+
+        return $entityManager
+            ->getRepository(Notification::class)
+            ->findBy(
+                [
+                    'usr' => $user,
+                ]
+            );
     }
 
     #[Route('/mark-as-read/{id}', name: 'notification_mark_as_read')]
@@ -54,7 +91,7 @@ final class NotificationController extends AbstractController{
 
         $notifications = $user->getNotifications() ?? array();
 
-        foreach ($notifications as $notification){
+        foreach ($notifications as $notification) {
             $notification->setIsRead(true);
         }
 
@@ -73,7 +110,7 @@ final class NotificationController extends AbstractController{
 
         $notifications = $user->getNotifications() ?? array();
 
-        foreach ($notifications as $notification){
+        foreach ($notifications as $notification) {
             $notification->setIsRead(false);
         }
 
