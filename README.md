@@ -19,6 +19,8 @@ A modern web application connecting job seekers with employers. Built with Symfo
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/0c800316-5ce8-42e3-81bc-01a72f62e77f" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/3bae269a-56a2-4cce-9e4b-5e090df84f4d" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/76cf560c-d59a-4257-9272-abe9ba28b634" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/b1b78c44-3366-4519-b2a5-ba2b5665c919" />
+
 
 
 
