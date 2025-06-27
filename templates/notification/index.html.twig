@@ -19,15 +19,15 @@
     </div>
 
     <div class="flex border-b border-gray-200">
-        <button class="px-4 py-2 font-medium text-sm border-b-2 border-indigo-500 text-indigo-600">
+        <a href="{{ path('app_notifications', {'notificationType' : 'All'}) }}" class="px-4 py-2 font-medium text-sm border-b-2 {% if notificationType == 'All' %}border-indigo-500 {% endif %} text-indigo-600">
             All
-        </button>
-        <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
+        </a>
+        <a href="{{ path('app_notifications', {'notificationType' : 'Read'}) }}"  class="px-4 py-2 font-medium text-sm border-b-2  {% if notificationType == 'Read' %}border-indigo-500 {% endif %} text-indigo-600">
             Read
-        </button>
-        <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-gray-700">
+        </a>
+        <a href="{{ path('app_notifications', {'notificationType' : 'Unread'}) }}" class="px-4 py-2 font-medium text-sm border-b-2 {% if notificationType == 'Unread' %}border-indigo-500 {% endif %}  text-indigo-600">
             Unread
-        </button>
+        </a>
     </div>
 
     <div class="bg-white shadow overflow-hidden sm:rounded-md">
