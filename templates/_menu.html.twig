@@ -15,7 +15,7 @@
                 {% if is_granted('ROLE_PUBLISHER') %}
                     <a href="{{ path('app_job_new') }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Post a Job</a>
                 {% endif %}
-                <a href="{{ path('app_notifications') }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Notifications</a>
+                <a href="{{ path('app_notifications', {'notificationType' : 'all'}) }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Notifications</a>
 
 
                 <div class="relative ml-3" data-turbo-permanent>
