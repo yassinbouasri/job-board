@@ -11,11 +11,13 @@
             </div>
 
             <div class="flex items-center space-x-8">
-                <a href="{{ path('app_job_index') }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Browse Jobs</a>
+                <a href="{{ path('app_job_index') }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium"><i class="fa fa-search" aria-hidden="true"></i>
+                    Browse Jobs</a>
                 {% if is_granted('ROLE_PUBLISHER') %}
-                    <a href="{{ path('app_job_new') }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Post a Job</a>
+                    <a href="{{ path('app_job_new') }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium"><i class="fa fa-briefcase" aria-hidden="true"></i> Post a Job</a>
                 {% endif %}
-                <a href="{{ path('app_notifications', {'notificationType' : 'all'}) }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium">Notifications</a>
+
+                <a href="{{ path('app_notifications', {'notificationType' : 'All'}) }}" class="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium"><i class="fas fa-bell mr-2"></i>Notifications</a>
 
 
                 <div class="relative ml-3" data-turbo-permanent>
@@ -31,13 +33,13 @@
                     <div class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu">
                         <div class="py-1">
                             <span class="block px-4 py-2 text-sm text-gray-400 hover:bg-gray-100" role="menuitem">{{ app.user.email }}</span>
-                            <a href="{{ path('app_profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
+                            <a href="{{ path('app_profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
                             {% if is_granted('ROLE_PUBLISHER') %}
-                                <a href="{{ path('app_your_jobs_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">My Jobs</a>
+                                <a href="{{ path('app_your_jobs_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"><i class="fa fa-briefcase" aria-hidden="true"></i> My Jobs</a>
                             {% endif %}
-                            <a href="{{ path('app_bookmarkList') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Bookmarks</a>
-                            <a href="{{ path('app_job_alert', {'tab': 'alerts'} ) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Alerts</a>
-                            <a href="{{ path('app_logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+                            <a href="{{ path('app_bookmarkList') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"><i class="fa fa-bookmark" aria-hidden="true"></i> Bookmarks</a>
+                            <a href="{{ path('app_job_alert', {'tab': 'alerts'} ) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"><i class="fa fa-bell" aria-hidden="true"></i> Alerts</a>
+                            <a href="{{ path('app_logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign out</a>
                         </div>
                     </div>
                 </div>
