@@ -133,8 +133,14 @@ final class JobController extends AbstractController{
     #[Route('/{id}', name: 'app_job_show', methods: ['GET'])]
     public function show(Job $job): Response
     {
+        $user = $this->getUser();
+        $showEdit = false;
+        if (self::checkJobBelongToUser($job, $user)) {
+            $showEdit = true;
+        }
         return $this->render('job/show.html.twig', [
             'job' => $job,
+            'showEdit' => $showEdit,
         ]);
     }
 
@@ -142,6 +148,11 @@ final class JobController extends AbstractController{
     #[Route('/{id}/edit', name: 'app_job_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Job $job, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!self::checkJobBelongToUser($job, $user)){
+            throw $this->createAccessDeniedException("Job is not belongs to you.");
+        }
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
@@ -184,5 +195,17 @@ final class JobController extends AbstractController{
         }
 
         return [$sortBy, $direction];
+    }
+
+    private static function checkJobBelongToUser(Job $job, User $user): bool
+    {
+        $userJobs = $user->getJobs();
+        foreach ($userJobs as $userJob) {
+            if ($job->getId() === $userJob->getId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
