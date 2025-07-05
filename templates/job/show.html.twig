@@ -12,7 +12,7 @@
                 Back to Jobs
             </a>
 
-            {% if is_granted('ROLE_PUBLISHER') %}
+            {% if is_granted('ROLE_PUBLISHER') and showEdit %}
             <div class="flex space-x-2">
                 <a href="{{ path('app_job_edit', {'id': job.id}) }}"
                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md flex items-center">
