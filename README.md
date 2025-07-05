@@ -14,7 +14,7 @@ A modern web application connecting job seekers with employers. Built with Symfo
 - **Job Notification**: Sends users email alerts (daily or weekly) with matching new job posts from the Job Board platform based on saved preferences like keywords, location, and tags.
 - **In-app notifications**: Displays job alerts based on user preferences
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/90e7cbce-0125-4afc-9d9b-a411f2b360c5" />
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/ff55787e-929a-41dd-a470-5fdc3e47e080" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/cfbea678-6365-4dda-808b-85caaaec7c84" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/fda7dd21-144c-42c1-8f5e-723bc86919c9" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/0c800316-5ce8-42e3-81bc-01a72f62e77f" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/3bae269a-56a2-4cce-9e4b-5e090df84f4d" />
