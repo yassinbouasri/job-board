@@ -133,8 +133,14 @@ final class JobController extends AbstractController{
     #[Route('/{id}', name: 'app_job_show', methods: ['GET'])]
     public function show(Job $job): Response
     {
+        $user = $this->getUser();
+        $showEdit = false;
+        if (self::checkJobBelongToUser($job, $user)) {
+            $showEdit = true;
+        }
         return $this->render('job/show.html.twig', [
             'job' => $job,
+            'showEdit' => $showEdit,
         ]);
     }
 
