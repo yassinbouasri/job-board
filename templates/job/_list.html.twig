@@ -26,6 +26,7 @@
                 <p class="text-gray-600 mb-4 line-clamp-2">
                     {{ job.description }}
                 </p>
+
                 <div class="flex flex-wrap gap-2 mb-4">
                     {% for tag in job.tags %}
                         <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full"><a
@@ -49,11 +50,12 @@
                         ♥
                     </a>
                 {% endif %}
-
-                <a href="{{ path('app_apply', {'id': job.id }) }}"
-                   class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                    Apply Now
-                </a>
+                {% if check_Job_Belong_To_User(job,app.user) != true %}
+                    <a href="{{ path('app_apply', {'id': job.id }) }}"
+                       class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Apply Now
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>
