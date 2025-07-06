@@ -55,6 +55,11 @@
                        class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
                         Apply Now
                     </a>
+                    {% else %}
+                        <a href="{{ path('app_job_edit', {'id': job.id }) }}"
+                           class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                            Edit
+                        </a>
                 {% endif %}
             </div>
         </div>
