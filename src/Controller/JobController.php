@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Job;
-use App\Entity\JobAlert;
 use App\Entity\User;
 use App\Enums\ExperienceEnum;
 use App\Enums\JobTypeEnum;
 use App\Form\ExperienceFormType;
 use App\Form\JobType;
 use App\Form\JobTypeFormType;
+use App\Service\CheckJob;
 use App\Service\EnumValues;
 use App\Service\MatchedJobsPreferences;
 use App\Service\notifyUser;
@@ -24,13 +24,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/job')]
 #[IsGranted("IS_AUTHENTICATED_FULLY")]
-final class JobController extends AbstractController{
+final class JobController extends AbstractController
+{
     #[Route(name: 'app_job_index', methods: ['GET'])]
-    public function index(Request $request,EntityManagerInterface $entityManager, PaginatorInterface $paginator, MailerInterface $mailer): Response
-    {
+    public function index(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator,
+        MailerInterface $mailer
+    ): Response {
         /** @var User $user */
         $user = $this->getUser();
-        if ($jobs = MatchedJobsPreferences::getJobs($user, $entityManager)){
+        if ($jobs = MatchedJobsPreferences::getJobs($user, $entityManager)) {
             notifyUser::jobEmailNotification($jobs, $user, $mailer, $entityManager);
         }
 
@@ -42,7 +47,7 @@ final class JobController extends AbstractController{
         $sort = $request->query->get('sort_by');
 
 
-        if (!empty($sort)){
+        if (!empty($sort)) {
             [$sortField, $sortDirection] = $this->getSortValues($sort);
         }
 
@@ -52,7 +57,7 @@ final class JobController extends AbstractController{
 
         $selectedType = EnumValues::getEnum(
             $request,
-            JobTypeEnum::class ,
+            JobTypeEnum::class,
             $form->getName(),
             'jobType'
         );
@@ -61,19 +66,22 @@ final class JobController extends AbstractController{
 
         $selectedExperience = EnumValues::getEnum(
             $request,
-            ExperienceEnum::class ,
+            ExperienceEnum::class,
             $experienceForm->getName(),
             'experience'
         );
 
         $jobRepository = $entityManager->getRepository(Job::class);
-        $query = $jobRepository->createPaginatedQueryBuilder(
-            $sortField ?? null,
-            $sortDirection ?? null,
-            $search, $location,
-            selectedType: $selectedType->value ?? null,
-            experience: $selectedExperience->value ?? null,
-        )->getQuery();
+        $query = $jobRepository
+            ->createPaginatedQueryBuilder(
+                $sortField ?? null,
+                $sortDirection ?? null,
+                $search,
+                $location,
+                selectedType: $selectedType->value ?? null,
+                experience  : $selectedExperience->value ?? null,
+            )
+            ->getQuery();
 
         $jobsPerPage = 2;
 
@@ -85,16 +93,36 @@ final class JobController extends AbstractController{
         );
 
 
-        return $this->render('job/index.html.twig', [
-            'pagination' => $pagination,
-            'page' => $page,
-            'totalPages' => ceil($pagination->getTotalItemCount() / $jobsPerPage),
-            'search' => $search,
-            'location' => $location,
-            'form' => $form->createView(),
-            'experienceForm' => $experienceForm->createView(),
-            'sort' => $sort,
-        ]);
+        return $this->render(
+            'job/index.html.twig',
+            [
+                'pagination'     => $pagination,
+                'page'           => $page,
+                'totalPages'     => ceil($pagination->getTotalItemCount() / $jobsPerPage),
+                'search'         => $search,
+                'location'       => $location,
+                'form'           => $form->createView(),
+                'experienceForm' => $experienceForm->createView(),
+                'sort'           => $sort,
+            ]
+        );
+    }
+
+    private function getSortValues(string $sort = null): array
+    {
+        if (empty($sort)) {
+            return [];
+        }
+
+        [$sortBy, $direction] = explode('-', $sort);
+
+        $allowedSorts = ['title', 'salary', 'created_at'];
+
+        if (!in_array($sortBy, $allowedSorts, true) || !in_array($direction, ['asc', 'desc'], true)) {
+            [$sortBy, $direction] = ['', ''];
+        }
+
+        return [$sortBy, $direction];
     }
 
     #[Route('/new', name: 'app_job_new', methods: ['GET', 'POST'])]
@@ -104,7 +132,6 @@ final class JobController extends AbstractController{
         $job = new Job();
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
-
 
 
         $user = $this->getUser();
@@ -123,11 +150,14 @@ final class JobController extends AbstractController{
             return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('job/new.html.twig', [
-            'job' => $job,
-            'form' => $form,
-            'title' => 'Create New Job',
-        ]);
+        return $this->render(
+            'job/new.html.twig',
+            [
+                'job'   => $job,
+                'form'  => $form,
+                'title' => 'Create New Job',
+            ]
+        );
     }
 
     #[Route('/{id}', name: 'app_job_show', methods: ['GET'])]
@@ -135,14 +165,20 @@ final class JobController extends AbstractController{
     {
         $user = $this->getUser();
         $showEdit = false;
-        if (self::checkJobBelongToUser($job, $user)) {
+
+        if (CheckJob::belongToUser($job, $user)) {
             $showEdit = true;
         }
-        return $this->render('job/show.html.twig', [
-            'job' => $job,
-            'showEdit' => $showEdit,
-        ]);
+
+        return $this->render(
+            'job/show.html.twig',
+            [
+                'job'      => $job,
+                'showEdit' => $showEdit,
+            ]
+        );
     }
+
 
     #[IsGranted("ROLE_PUBLISHER")]
     #[Route('/{id}/edit', name: 'app_job_edit', methods: ['GET', 'POST'])]
@@ -150,7 +186,8 @@ final class JobController extends AbstractController{
     {
         /** @var User $user */
         $user = $this->getUser();
-        if (!self::checkJobBelongToUser($job, $user)){
+
+        if (!CheckJob::belongToUser($job, $user)) {
             throw $this->createAccessDeniedException("Job is not belongs to you.");
         }
         $form = $this->createForm(JobType::class, $job);
@@ -159,53 +196,34 @@ final class JobController extends AbstractController{
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
             $this->addFlash('success', 'Job updated.');
+
             return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('job/edit.html.twig', [
-            'job' => $job,
-            'form' => $form,
-            'title' => 'Edit Job',
-        ]);
+        return $this->render(
+            'job/edit.html.twig',
+            [
+                'job'   => $job,
+                'form'  => $form,
+                'title' => 'Edit Job',
+            ]
+        );
     }
 
     #[Route('/{id}', name: 'app_job_delete', methods: ['POST'])]
     public function delete(Request $request, Job $job, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$job->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid(
+            'delete'.$job->getId(),
+            $request
+                ->getPayload()
+                ->getString('_token')
+        )) {
             $entityManager->remove($job);
             $entityManager->flush();
             $this->addFlash('success', 'Job deleted.');
         }
 
         return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
-    }
-    private function getSortValues(string $sort = null): array
-    {
-        if (empty($sort)) {
-            return [];
-        }
-
-        [$sortBy, $direction] = explode('-', $sort);
-
-        $allowedSorts = ['title','salary','created_at'];
-
-        if (!in_array($sortBy, $allowedSorts, true) || !in_array($direction, ['asc', 'desc'], true)) {
-            [$sortBy, $direction] = ['',''];
-        }
-
-        return [$sortBy, $direction];
-    }
-
-    private static function checkJobBelongToUser(Job $job, User $user): bool
-    {
-        $userJobs = $user->getJobs();
-        foreach ($userJobs as $userJob) {
-            if ($job->getId() === $userJob->getId()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
