@@ -1,3 +1,12 @@
+# 💼 Job Board Application
+
+![Symfony](https://img.shields.io/badge/Symfony-7.2-black?logo=symfony&style=flat)
+![PHP](https://img.shields.io/badge/PHP-8.2-blue?logo=php&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue?logo=postgresql)
+![Tailwind CSS](https://img.shields.io/badge/Frontend-Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-enabled-2496ED?logo=docker&logoColor=white)
+![License](https://img.shields.io/github/license/yassinbouasri/job-board?style=flat)
+![Issues](https://img.shields.io/github/issues/yassinbouasri/job-board)
 
   # Job Board Application
 
