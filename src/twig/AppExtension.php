@@ -7,6 +7,7 @@ namespace App\twig;
 
 use App\Entity\Job;
 use App\Entity\User;
+use App\Service\CheckJob;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -21,13 +22,6 @@ class AppExtension  extends AbstractExtension
 
     public function checkJobBelongToUser(Job $job, User $user): bool
     {
-        $userJobs = $user->getJobs();
-        foreach ($userJobs as $userJob) {
-            if ($job->getId() === $userJob->getId()) {
-                return true;
-            }
-        }
-
-        return false;
+        return CheckJob::belongToUser($job, $user);
     }
 }
