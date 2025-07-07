@@ -17,7 +17,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[IsGranted("ROLE_USER")]
 final class ProfileController extends AbstractController{
 
-    #[Route('/profile/edit', name: 'app_profile_show', methods: ['GET'])]
+    #[Route('/profile/show', name: 'app_profile_show', methods: ['GET'])]
     public function showProfile(EntityManagerInterface $entityManager): Response
     {
         /** @var User $user */
@@ -92,7 +92,7 @@ final class ProfileController extends AbstractController{
         $entityManager->persist($profile);
         $entityManager->flush();
         $this->addFlash('success', 'Profile picture deleted successfully.');
-        return $this->redirectToRoute('app_profile', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_profile_show', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/test-profile', name: 'test_profile')]
