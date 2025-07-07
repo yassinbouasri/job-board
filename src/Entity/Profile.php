@@ -28,7 +28,7 @@ class Profile
     private ?string $cv = null;
 
     #[ORM\OneToOne(inversedBy: 'profile', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $userProfile = null;
 
     public function getId(): ?int
@@ -89,9 +89,17 @@ class Profile
         return $this->userProfile;
     }
 
-    public function setUserProfile(user $userProfile): static
+    public function setUserProfile(?User $user): static
     {
-        $this->userProfile = $userProfile;
+        if ($user === $this->userProfile) {
+            return $this;
+        }
+
+        $this->userProfile = $user;
+
+        if ($user && $user->getProfile() !== $this) {
+            $user->setProfile($this);
+        }
 
         return $this;
     }
