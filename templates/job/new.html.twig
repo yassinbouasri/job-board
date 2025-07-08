@@ -3,65 +3,72 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto px-4 py-8 ">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
         <div class="mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">{{ title }}</h1>
-            <a href="{{ path('app_job_index') }}" class="text-indigo-600 hover:text-indigo-800 text-sm mt-2 inline-block">
-                ← Back to list
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ title }}</h1>
+            <a href="{{ path('app_job_index') }}" class="text-indigo-600 hover:text-indigo-800 text-sm inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to list
             </a>
         </div>
 
-        {{ form_start(form, {'attr': {'class': 'bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'}}) }}
-        <div class="grid grid-cols-1 gap-6">
-        <div>
-            {{ form_label(form.title, 'Title', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-            {{ form_widget(form.title, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
-            {{ form_errors(form.title) }}
-        </div>
+        {{ form_start(form, {'attr': {'class': 'bg-white shadow-sm rounded-lg px-6 py-5'}}) }}
+        <div class="grid grid-cols-1 gap-5">
+            <div>
+                {{ form_label(form.title, 'Title', {'label_attr': {'class': 'block text-gray-700 text-sm font-medium mb-2'}}) }}
+                {{ form_widget(form.title, {'attr': {'class': 'shadow-sm border rounded-md w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                {{ form_errors(form.title) }}
+            </div>
 
-        <div>
-            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-32 resize-none leading-tight focus:outline-none focus:shadow-outline'}}) }}
-            {{ form_errors(form.description) }}
-        </div>
+            <div>
+                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-gray-700 text-sm font-medium mb-2'}}) }}
+                {{ form_widget(form.description, {'attr': {'class': 'shadow-sm border rounded-md w-full py-2 px-3 text-gray-700 text-sm h-32 resize-none leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
 
-        <div>
-            {{ form_label(form.location, 'Location', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-            {{ form_widget(form.location, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
-            {{ form_errors(form.location) }}
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    {{ form_label(form.location, 'Location', {'label_attr': {'class': 'block text-gray-700 text-sm font-medium mb-2'}}) }}
+                    {{ form_widget(form.location, {'attr': {'class': 'shadow-sm border rounded-md w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                    {{ form_errors(form.location) }}
+                </div>
 
-        <div>
-            {{ form_label(form.salary, 'Salary', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-            {{ form_widget(form.salary, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
-            {{ form_errors(form.salary) }}
-        </div>
+                <div>
+                    {{ form_label(form.salary, 'Salary', {'label_attr': {'class': 'block text-gray-700 text-sm font-medium mb-2'}}) }}
+                    {{ form_widget(form.salary, {'attr': {'class': 'shadow-sm border rounded-md w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                    {{ form_errors(form.salary) }}
+                </div>
+            </div>
 
-        <div>
-            {{ form_label(form.tags, 'Tags', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-            {{ form_widget(form.tags, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
-            <p class="text-gray-600 text-xs italic mt-1">Separate tags with commas</p>
-            {{ form_errors(form.tags) }}
-        </div>
+            <div>
+                {{ form_label(form.tags, 'Tags', {'label_attr': {'class': 'block text-gray-700 text-sm font-medium mb-2'}}) }}
+                {{ form_widget(form.tags, {'attr': {'class': 'shadow-sm border rounded-md w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                <p class="text-gray-500 text-xs mt-1">Separate tags with commas</p>
+                {{ form_errors(form.tags) }}
+            </div>
 
-        <div>
-            {{ form_label(form.jobType, 'Job Type', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-            {{ form_widget(form.jobType, {'attr': {'class': 'shadow appearance-none border rounded w-1/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
-            {{ form_errors(form.jobType) }}
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    {{ form_label(form.jobType, 'Job Type', {'label_attr': {'class': 'block text-gray-700 text-sm font-medium mb-2'}}) }}
+                    {{ form_widget(form.jobType, {'attr': {'class': 'shadow-sm border rounded-md w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                    {{ form_errors(form.jobType) }}
+                </div>
 
-        <div>
-            {{ form_label(form.experience, 'Experience', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-            {{ form_widget(form.experience, {'attr': {'class': 'shadow appearance-none border rounded w-1/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
-            {{ form_errors(form.experience) }}
-        </div>
+                <div>
+                    {{ form_label(form.experience, 'Experience', {'label_attr': {'class': 'block text-gray-700 text-sm font-medium mb-2'}}) }}
+                    {{ form_widget(form.experience, {'attr': {'class': 'shadow-sm border rounded-md w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                    {{ form_errors(form.experience) }}
+                </div>
+            </div>
 
-        <div class="flex items-center justify-between mt-6">
-            <button type="submit" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Save
-            </button>
+            <div class="mt-4">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    Save Job
+                </button>
+            </div>
         </div>
-    </div>
-    {{ form_end(form) }}
+        {{ form_end(form) }}
     </div>
 {% endblock %}
