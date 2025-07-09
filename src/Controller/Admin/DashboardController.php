@@ -6,6 +6,7 @@ use App\Entity\Application;
 use App\Entity\Job;
 use App\Entity\Profile;
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -24,20 +25,97 @@ class DashboardController extends AbstractDashboardController
     public function __construct(
         private ChartBuilderInterface $chartBuilder,
         private EntityManagerInterface $entityManager,
-    ) { }
+    )
+    {
+    }
 
     public function index(): Response
     {
 
-        return $this->render('admin/index.html.twig', [
-            'chart' => $this->getChart(),
-        ]);
+        return $this->render(
+            'admin/index.html.twig',
+            [
+                'chart' => $this->getChart(),
+            ]
+        );
+    }
+
+    /**
+     * @return Chart
+     */
+    public function getChart(): Chart
+    {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $countsPerMonth = $this->getJobsGroupedByMonth($this->entityManager);
+
+
+
+        $chart->setData(
+            [
+                'labels'   => [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September',
+                    'October',
+                    'November',
+                    'December',
+                ],
+                'datasets' => [
+                    [
+                        'label'           => 'Jobs Posts',
+                        'backgroundColor' => 'rgb(255, 99, 132)',
+                        'borderColor'     => 'rgb(255, 99, 132)',
+                        'data'            => $countsPerMonth,
+                    ],
+                ],
+            ]
+        );
+        rsort($countsPerMonth);
+        $highestNumber = $countsPerMonth[0] + 1;
+        $chart->setOptions(
+            [
+                'scales' => [
+                    'y' => [
+                        'suggestedMin' => 0,
+                        'suggestedMax' => $highestNumber,
+                    ],
+                ],
+            ]
+        );
+
+        return $chart;
+    }
+
+    private function getJobsGroupedByMonth(EntityManagerInterface $entityManager): array
+    {
+        $currentYear = (new DateTime())->format('Y');
+        $jobRepository = $entityManager->getRepository(Job::class);
+
+        $result = $jobRepository->getJobCountForEachMonth($entityManager, $currentYear);
+
+        $data = $result->fetchAllAssociative();
+
+        $jobCounts = array_fill(0, 12, 0);
+
+        foreach ($data as $row) {
+            $month = (int)$row['month'] - 1;
+            $jobCounts[$month] = (int)$row['jobcount'];
+
+        }
+
+        return $jobCounts;
     }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Job Board');
+                        ->setTitle('Job Board');
     }
 
     public function configureMenuItems(): iterable
@@ -58,59 +136,6 @@ class DashboardController extends AbstractDashboardController
     {
         return parent::configureActions();
     }
-    /**
-     * @return Chart
-     */
-    public function getChart(): Chart
-    {
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
 
-        $chart->setData(
-            [
-                'labels'   => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                'datasets' => [
-                    [
-                        'label'           => 'Jobs Posts',
-                        'backgroundColor' => 'rgb(255, 99, 132)',
-                        'borderColor'     => 'rgb(255, 99, 132)',
-                        'data'            => $this->getJobsGroupedByMonth($this->entityManager),
-                    ],
-                ],
-            ]
-        );
-
-        $chart->setOptions(
-            [
-                'scales' => [
-                    'y' => [
-                        'suggestedMin' => 0,
-                        'suggestedMax' => 100,
-                    ],
-                ],
-            ]
-        );
-
-        return $chart;
-    }
-
-    private function getJobsGroupedByMonth(EntityManagerInterface $entityManager)
-    {
-        $currentYear = (new \DateTime())->format('Y');
-        $jobRepository = $entityManager->getRepository(Job::class);
-
-        $result = $jobRepository->getJobCountForEachMonth($entityManager, $currentYear);
-
-        $data = $result->fetchAllAssociative();
-
-        $jobCounts = array_fill(0, 12, 0);
-
-        foreach ($data as $row) {
-            $month = (int) $row['month'] - 1;
-            $jobCounts[$month] = (int) $row['jobcount'];
-
-        }
-
-        return $jobCounts;
-    }
 
 }
