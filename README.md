@@ -124,7 +124,7 @@ docker compose up -d
 
  6. **Run the Development Server**
 ```bash
-symfony serve
+symfony serve -d
 ```
 Visit `http://localhost:8000/login` in your browser.
 
